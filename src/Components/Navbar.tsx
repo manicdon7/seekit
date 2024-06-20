@@ -8,29 +8,26 @@ import "../../src/app/globals.css";
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [user, setUser] = useState<User | null>(null); // State to hold user information
+  const [user, setUser] = useState<User | null>(null);
 
-  const auth = getAuth(app); // Get the auth instance from the Firebase app
-  const dropdownRef = useRef<HTMLDivElement>(null); // Ref to hold reference of dropdown menu
+  const auth = getAuth(app);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Function to sign in with Google
   const signInWithGoogle = async () => {
     const provider = new GoogleAuthProvider();
     try {
       const result = await signInWithPopup(auth, provider);
-      setUser(result.user); // Set user state with user information
+      setUser(result.user);
     } catch (error) {
       if (error instanceof Error) {
         console.error("Error occurred during sign-in:", error.message);
       }
     }
   };
-
-  // Function to sign out
   const handleSignOut = async () => {
     try {
       await signOut(auth);
-      setUser(null); // Reset user state
+      setUser(null);
     } catch (error) {
       if (error instanceof Error) {
         console.error("Error occurred during sign-out:", error.message);
@@ -84,7 +81,7 @@ const Navbar: React.FC = () => {
             <Link href="/">
               <p className="text-white hover:text-gray-600 cursor-pointer">Home</p>
             </Link>
-            <Link href="/about">
+            <Link href="#about">
               <p className="text-white hover:text-gray-600 cursor-pointer">About</p>
             </Link>
             <Link href="/contact">
