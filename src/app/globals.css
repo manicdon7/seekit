@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Playwrite+SK:wght@100..400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
@@ -15,7 +18,7 @@
     --background-end-rgb: 0, 0, 0;
   }
 }
-
+/* 
 body {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
@@ -24,10 +27,247 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
-}
+} */
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+}
+#playwrite-sk-regular {
+  font-family: "Playwrite SK", cursive;
+  font-optical-sizing: auto;
+  font-weight: 800;
+  font-style: normal;
+}
+
+.poppins-thin {
+  font-family: "Poppins", sans-serif;
+  font-weight: 100;
+  font-style: normal;
+}
+
+.poppins-extralight {
+  font-family: "Poppins", sans-serif;
+  font-weight: 200;
+  font-style: normal;
+}
+
+.poppins-light {
+  font-family: "Poppins", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+}
+
+.poppins-regular {
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.poppins-medium {
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+}
+
+#poppins-semibold {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-style: normal;
+}
+
+.poppins-bold {
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.poppins-extrabold {
+  font-family: "Poppins", sans-serif;
+  font-weight: 800;
+  font-style: normal;
+}
+
+.poppins-black {
+  font-family: "Poppins", sans-serif;
+  font-weight: 900;
+  font-style: normal;
+}
+
+.poppins-thin-italic {
+  font-family: "Poppins", sans-serif;
+  font-weight: 100;
+  font-style: italic;
+}
+
+.poppins-extralight-italic {
+  font-family: "Poppins", sans-serif;
+  font-weight: 200;
+  font-style: italic;
+}
+
+.poppins-light-italic {
+  font-family: "Poppins", sans-serif;
+  font-weight: 300;
+  font-style: italic;
+}
+
+.poppins-regular-italic {
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.poppins-medium-italic {
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  font-style: italic;
+}
+
+.poppins-semibold-italic {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-style: italic;
+}
+
+.poppins-bold-italic {
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  font-style: italic;
+}
+
+.poppins-extrabold-italic {
+  font-family: "Poppins", sans-serif;
+  font-weight: 800;
+  font-style: italic;
+}
+
+.poppins-black-italic {
+  font-family: "Poppins", sans-serif;
+  font-weight: 900;
+  font-style: italic;
+}
+
+.anton-regular {
+  font-family: "Anton", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+
+/* home animation*/
+.pl {
+  display: block;
+  width: 9.375em;
+  height: 9.375em;
+}
+
+.pl__arrows,
+.pl__ring-rotate,
+.pl__ring-stroke,
+.pl__tick {
+  animation-duration: 2s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.pl__arrows {
+  animation-name: arrows42;
+  transform: rotate(45deg);
+  transform-origin: 16px 52px;
+}
+
+.pl__ring-rotate,
+.pl__ring-stroke {
+  transform-origin: 80px 80px;
+}
+
+.pl__ring-rotate {
+  animation-name: ringRotate42;
+}
+
+.pl__ring-stroke {
+  animation-name: ringStroke42;
+  transform: rotate(-45deg);
+}
+
+.pl__tick {
+  animation-name: tick42;
+}
+
+.pl__tick:nth-child(2) {
+  animation-delay: -1.75s;
+}
+
+.pl__tick:nth-child(3) {
+  animation-delay: -1.5s;
+}
+
+.pl__tick:nth-child(4) {
+  animation-delay: -1.25s;
+}
+
+.pl__tick:nth-child(5) {
+  animation-delay: -1s;
+}
+
+.pl__tick:nth-child(6) {
+  animation-delay: -0.75s;
+}
+
+.pl__tick:nth-child(7) {
+  animation-delay: -0.5s;
+}
+
+.pl__tick:nth-child(8) {
+  animation-delay: -0.25s;
+}
+
+/* Animations */
+@keyframes arrows42 {
+  from {
+    transform: rotate(45deg);
+  }
+
+  to {
+    transform: rotate(405deg);
+  }
+}
+
+@keyframes ringRotate42 {
+  from {
+    transform: rotate(0);
+  }
+
+  to {
+    transform: rotate(720deg);
+  }
+}
+
+@keyframes ringStroke42 {
+  from,
+	to {
+    stroke-dashoffset: 452;
+    transform: rotate(-45deg);
+  }
+
+  50% {
+    stroke-dashoffset: 169.5;
+    transform: rotate(-180deg);
+  }
+}
+
+@keyframes tick42 {
+  from,
+	3%,
+	47%,
+	to {
+    stroke-dashoffset: -12;
+  }
+
+  14%,
+	36% {
+    stroke-dashoffset: 0;
   }
 }
