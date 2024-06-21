@@ -70,7 +70,7 @@ const Home: React.FC = () => {
             <h1 className='text-4xl font-anton font-semibold'>
               Reuniting You with Your Lost Treasures
             </h1>
-            <p className='font-light font-sans text-xl'>Seekit helps you find lost items quickly and efficiently. Post and browse listings of lost and found belongings with ease. Reconnect with your cherished possessions and support our community.</p>
+            <p className='font-light font-sans text-xl text-[#EEEEEE]'>Seekit helps you find lost items quickly and efficiently. Post and browse listings of lost and found belongings with ease. Reconnect with your cherished possessions and support our community.</p>
           </div>
         </div>
         <div className='w-full pl-60 space-y-8 text-left'>
