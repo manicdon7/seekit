@@ -5,6 +5,8 @@ import Link from "next/link";
 import { app } from "../utils/firebase";
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, User } from "firebase/auth";
 import "../../src/app/globals.css";
+import Image from "next/image";
+import google from '@/app/assets/google_icon.png';
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -69,7 +71,7 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <nav className="bg-[#232931] shadow-lg text-white">
+    <nav className="bg-[#393E46] text-white top-0 z-50 fixed w-full backdrop-filter backdrop-blur-lg shadow-2xl bg-opacity-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex-shrink-0 flex items-center">
@@ -84,8 +86,11 @@ const Navbar: React.FC = () => {
             <Link href="#about">
               <p className="text-white hover:text-gray-600 cursor-pointer">About</p>
             </Link>
-            <Link href="/contact">
-              <p className="text-white hover:text-gray-600 cursor-pointer">Contact</p>
+            <Link href="/seek">
+              <p className="text-white hover:text-gray-600 cursor-pointer">Seek</p>
+            </Link>
+            <Link href="/found">
+              <p className="text-white hover:text-gray-600 cursor-pointer">Found</p>
             </Link>
             {/* Conditional rendering based on user state */}
             {user ? (
@@ -95,7 +100,7 @@ const Navbar: React.FC = () => {
                   className="flex items-center focus:outline-none"
                 >
                   <img
-                    src={user.photoURL || "/default-avatar.png"} // Use a default avatar if photoURL is not available
+                    src={user.photoURL || "/default-avatar.png"}
                     alt="User Avatar"
                     className="h-8 w-8 rounded-full"
                   />
@@ -114,10 +119,10 @@ const Navbar: React.FC = () => {
               </div>
             ) : (
               <button
-                className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+                className="bg-blue-600 flex text-white px-4 py-2 rounded-md hover:bg-blue-700"
                 onClick={signInWithGoogle}
               >
-                Sign Up
+                Sign Up <Image src={google} alt="google" width={30} height={30}/>
               </button>
             )}
           </div>
@@ -153,8 +158,11 @@ const Navbar: React.FC = () => {
             <Link href="/about">
               <p className="block px-3 py-2 rounded-md text-base font-medium text-white hover:text-gray-600 cursor-pointer">About</p>
             </Link>
-            <Link href="/contact">
-              <p className="block px-3 py-2 rounded-md text-base font-medium text-white hover:text-gray-600 cursor-pointer">Contact</p>
+            <Link href="/seek">
+              <p className="block px-3 py-2 rounded-md text-base font-medium text-white hover:text-gray-600 cursor-pointer">Seek</p>
+            </Link>
+            <Link href="/found">
+              <p className="block px-3 py-2 rounded-md text-base font-medium text-white hover:text-gray-600 cursor-pointer">Found</p>
             </Link>
             {user ? (
               <button
@@ -166,9 +174,9 @@ const Navbar: React.FC = () => {
             ) : (
               <button
                 onClick={signInWithGoogle}
-                className="block w-full text-center bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+                className="block w-full text-center bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
               >
-                Sign Up
+                Sign Up <Image src={google} alt="google" width={30} height={30}/>
               </button>
             )}
           </div>

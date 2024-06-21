@@ -59,10 +59,11 @@ const electronVariant = {
 
 const Home: React.FC = () => {
   return (
+    <div className=''>
     <main className="bg-[#232931] text-white">
       <Navbar />
       <div>
-        <h1 className='font-semibold text-6xl text-center my-7 font-anton text-white'>Seek It</h1>
+        <h1 className='font-semibold text-6xl text-center py-7 font-anton text-white pt-28'>Seek It</h1>
       </div>
       <div className='grid grid-cols-2 items-center mt-20 mx-28'>
         <div className=''>
@@ -146,17 +147,17 @@ const Home: React.FC = () => {
             {/* <div className="relative  w-full h-full flex justify-center items-center">
               {words.map((word, index) => (
                 <motion.div
-                  key={index}
-                  className="absolute text-lg font-bold font-mono text-[#4ECCA3]"
-                  variants={electronVariant}
-                  initial="initial"
-                  animate="animate"
-                  custom={index}
+                key={index}
+                className="absolute text-lg font-bold font-mono text-[#4ECCA3]"
+                variants={electronVariant}
+                initial="initial"
+                animate="animate"
+                custom={index}
                 >
-                  {word}
+                {word}
                 </motion.div>
-              ))}
-            </div> */}
+                ))}
+                </div> */}
           </div>
         </div>
       </div>
@@ -164,6 +165,7 @@ const Home: React.FC = () => {
         <About />
       </div>
     </main>
+                </div>
   );
 }
 

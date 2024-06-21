@@ -11,7 +11,7 @@ export default function Page() {
     const handleComplete = () => {
       setTimeout(() => {
         setLoading(false);
-      }, 0); // Ensures loader shows for at least 3 seconds
+      }, 0);
     };
 
     if (document.readyState === 'complete') {
