@@ -14,11 +14,7 @@ const About: React.FC = () => {
       </div>
       <div className='grid grid-cols-2 mt-10'>
         <div>
-<<<<<<< HEAD
-          {/* <img src={img} alt='Image'/> */}
-=======
           <Image src={img} alt="Image"/>
->>>>>>> 64e05c9317f7c37b413ac22d2afbf2a9914a2388
         </div>
         <div className=''>
         <div className='pt-10'>

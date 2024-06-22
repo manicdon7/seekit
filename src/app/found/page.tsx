@@ -6,6 +6,8 @@ import { FileInput } from "flowbite-react";
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { onAuthStateChanged } from 'firebase/auth';
 import { storage, auth } from '@/utils/firebase';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 type Props = {};
 
@@ -85,10 +87,12 @@ const FoundItemForm: React.FC<Props> = (props: Props) => {
       }
 
       const result = await response.json();
+      toast.success("Details Submitted Successfully!");
       console.log('Found Item Details:', result);
 
       setFormData(initialFormData);
     } catch (error) {
+      toast.error("Error Submitting Form :(")
       console.error('Error submitting form:', error);
     }
   };
@@ -236,6 +240,15 @@ const FoundItemForm: React.FC<Props> = (props: Props) => {
           </button>
         </form>
       </motion.div>
+      <ToastContainer
+                    position="top-right"
+                    autoClose={5000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    theme="colored" />
     </div>
   );
 };
