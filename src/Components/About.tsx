@@ -1,18 +1,22 @@
+import Image from "next/image";
 import img from '../Assets/Startup business landing page, isometric rocket.png';
 
 
 const About: React.FC = () => {
   return (
-    <main className="mx-28 py-10">
-      <div className='text-4xl font-anton capitalize font-semibold text-left'>
+    <main className="mx-28 py-28">
+      <div className='text-4xl font-anton capitalize font-semibold text-center'>
         why this platform
+      </div>
+      <div className="pt-10">
+      <h1 className='text-2xl font-semibold'>Motive</h1>
+      <p className='text-2xl font-light text-justify text-[#EEEEEE] pt-4'>SeekIt is dedicated to bridging the gap between lost items and their rightful owners. Our mission is to create a community-driven platform where people can easily report and find lost possessions, ensuring valuable items are returned to their owners swiftly and securely.</p>
       </div>
       <div className='grid grid-cols-2 mt-10'>
         <div>
-          <img src={img} alt='Image'/>
+          <Image src={img} alt="Image"/>
         </div>
         <div className=''>
-        <p className='text-xl font-light text-[#EEEEEE]'>SeekIt is dedicated to bridging the gap between lost items and their rightful owners. Our mission is to create a community-driven platform where people can easily report and find lost possessions, ensuring valuable items are returned to their owners swiftly and securely.</p>
         <div className='pt-10'>
         <h1 className='text-2xl font-semibold'>Report Lost Items</h1>
         <p className='font-light text-[#EEEEEE] pt-2'>Users can quickly create a report for their lost items, including descriptions, photos, and the last known location.</p>
