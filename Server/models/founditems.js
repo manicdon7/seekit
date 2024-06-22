@@ -10,7 +10,8 @@ const foundItemSchema = new mongoose.Schema({
   imageURL: { type: String },
   phone: { type: String, required: true },
   address: { type: String, required: true },
-  gmail: { type: String }
+  gmail: { type: String },
+  founderEmail: {type: String}
 });
 
 module.exports = mongoose.model('FoundItem', foundItemSchema);

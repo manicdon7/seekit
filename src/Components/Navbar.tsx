@@ -119,7 +119,7 @@ const Navbar: React.FC = () => {
               </div>
             ) : (
               <button
-                className="bg-blue-600 flex text-white px-4 py-2 rounded-md hover:bg-blue-700"
+                className="bg-[#4ECCA3] flex text-white px-4 py-2 rounded-md hover:bg-emerald-500"
                 onClick={signInWithGoogle}
               >
                 Sign Up <Image src={google} alt="google" width={30} height={30}/>
@@ -174,7 +174,7 @@ const Navbar: React.FC = () => {
             ) : (
               <button
                 onClick={signInWithGoogle}
-                className="block w-full text-center bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+                className="block w-full text-center bg-[#4ECCA3] text-white px-4 py-2 rounded-md hover:bg-emerald-500"
               >
                 Sign Up <Image src={google} alt="google" width={30} height={30}/>
               </button>

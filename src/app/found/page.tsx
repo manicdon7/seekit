@@ -4,8 +4,10 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { FileInput } from "flowbite-react";
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
-import { onAuthStateChanged } from 'firebase/auth';
+import { onAuthStateChanged, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { storage, auth } from '@/utils/firebase';
+import Image from "next/image";
+import google from '@/app/assets/google_icon.png';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -22,16 +24,24 @@ const FoundItemForm: React.FC<Props> = (props: Props) => {
     imageURL: '',
     phone: '',
     address: '',
-    gmail: ''
+    gmail: '',
+    founderEmail: ''
   };
 
   const [formData, setFormData] = useState(initialFormData);
   const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [showSignInPopup, setShowSignInPopup] = useState(false);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setUserEmail(user.email);
+        setFormData((prevData) => ({
+          ...prevData,
+          founderEmail: user.email || ""
+        }));
+      } else {
+        setUserEmail(null);
       }
     });
 
@@ -71,6 +81,12 @@ const FoundItemForm: React.FC<Props> = (props: Props) => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (!userEmail) {
+      setShowSignInPopup(true);
+      return;
+    }
+
     console.log(formData);
 
     try {
@@ -94,6 +110,16 @@ const FoundItemForm: React.FC<Props> = (props: Props) => {
     } catch (error) {
       toast.error("Error Submitting Form :(")
       console.error('Error submitting form:', error);
+    }
+  };
+
+  const handleSignIn = async () => {
+    const provider = new GoogleAuthProvider();
+    try {
+      await signInWithPopup(auth, provider);
+      setShowSignInPopup(false);
+    } catch (error) {
+      console.error('Error signing in:', error);
     }
   };
 
@@ -232,23 +258,45 @@ const FoundItemForm: React.FC<Props> = (props: Props) => {
               className="mt-2 block w-full px-3 py-2 bg-gray-900 border border-gray-600 rounded-md"
             />
           </div>
+          <input
+            type="hidden"
+            name="founderEmail"
+            value={formData.founderEmail}
+          />
           <button
             type="submit"
-            className="w-full py-3 mt-4 bg-blue-600 rounded-md hover:bg-blue-700 transition-colors"
+            className="w-full py-3 mt-4 bg-[#4ECCA3] rounded-md hover:bg-emerald-500 transition-colors"
           >
             Submit
           </button>
         </form>
       </motion.div>
+      {showSignInPopup && (
+        <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
+          <div className="bg-gray-700 p-8 rounded-lg shadow-lg text-center">
+            <h3 className="text-3xl mb-4 font-bold text-white">Sign In Required</h3>
+            <hr className="border-gray-500 mb-6" />
+            <p className="text-gray-300 mb-6">To submit the form, please sign in with your Google account. This helps us to verify the information and contact you if necessary.</p>
+            <button
+              onClick={handleSignIn}
+              className="py-2 px-4 flex justify-center bg-[#4ECCA3] rounded-md text-white hover:bg-emerald-500 transition-colors"
+            >
+              <p>Sign in with Google</p> <Image src={google} alt="google" width={30} height={30}/>
+            </button>
+          </div>
+        </div>
+      )}
+
       <ToastContainer
-                    position="top-right"
-                    autoClose={5000}
-                    hideProgressBar={false}
-                    newestOnTop={false}
-                    closeOnClick
-                    rtl={false}
-                    pauseOnFocusLoss
-                    theme="colored" />
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        theme="colored"
+      />
     </div>
   );
 };
