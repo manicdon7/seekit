@@ -1,8 +1,11 @@
 "use client";
 import Navbar from '@/Components/Navbar';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { FileInput, Label } from "flowbite-react";
+import { FileInput } from "flowbite-react";
+import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
+import { onAuthStateChanged } from 'firebase/auth';
+import { storage, auth } from '@/utils/firebase';
 
 type Props = {};
 
@@ -14,11 +17,22 @@ const FoundItemForm: React.FC<Props> = (props: Props) => {
     category: '',
     color: '',
     description: '',
-    image: null as File | null,
+    imageURL: '',
     phone: '',
     address: '',
     gmail: ''
   });
+  const [userEmail, setUserEmail] = useState<string | null>(null);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUserEmail(user.email);
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -28,20 +42,51 @@ const FoundItemForm: React.FC<Props> = (props: Props) => {
     });
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const { files } = e.target;
     if (files && files.length > 0) {
-      setFormData({
-        ...formData,
-        image: files[0]
-      });
+      const imageFile = files[0];
+      const storageRef = ref(storage, `images/${imageFile.name}`);
+      const uploadTask = uploadBytesResumable(storageRef, imageFile);
+
+      try {
+        await uploadTask;
+        const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+
+        setFormData({
+          ...formData,
+          imageURL: downloadURL
+        });
+
+        console.log('Image uploaded and URL fetched:', downloadURL);
+      } catch (error) {
+        console.error('Image upload failed:', error);
+      }
     }
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Submit form data to the platform's backend or perform necessary actions
-    console.log('Found Item Details:', formData);
+    console.log(formData);
+
+    try {
+      const response = await fetch('http://localhost:5000/api/found-items', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const result = await response.json();
+      console.log('Found Item Details:', result);
+    } catch (error) {
+      console.error('Error submitting form:', error);
+    }
   };
 
   return (
@@ -53,10 +98,10 @@ const FoundItemForm: React.FC<Props> = (props: Props) => {
         transition={{ duration: 0.8, ease: 'easeOut' }}
         className="container mx-auto p-8"
       >
-        <h2 className="text-4xl font-bold mb-10 text-center pt-20">Report Found Item</h2>
-        <form onSubmit={handleSubmit} className="bg-gray-700 p-8 rounded-lg shadow-lg">
+        <h2 className="text-3xl font-bold mb-6 text-center pt-20">Report Found Item</h2>
+        <form onSubmit={handleSubmit} className="bg-gray-700 p-6 rounded-lg shadow-lg">
           <div className="mb-6">
-            <label htmlFor="itemName" className="block text-gray-300">Name of the Item</label>
+            <label htmlFor="itemName" className="block text-gray-300">Name of Thing</label>
             <input
               type="text"
               id="itemName"
@@ -135,17 +180,18 @@ const FoundItemForm: React.FC<Props> = (props: Props) => {
           </div>
           <div className="mb-6">
             <label htmlFor="image" className="block text-gray-300">Upload Image (optional)</label>
-            <FileInput
-              id="image"
-              name="image"
-              onChange={handleFileChange}
-              className="mt-2 block w-full px-3 py-2 bg-gray-900 border border-gray-600 rounded-md"
-            />
+            <div>
+              <FileInput
+                id="file-upload"
+                onChange={handleFileChange}
+                className="mt-2 block w-full px-3 py-2 bg-gray-900 border border-gray-600 rounded-md"
+              />
+            </div>
           </div>
           <div className="mb-6">
-            <label htmlFor="phone" className="block text-gray-300">Phone Number or What's app</label>
+            <label htmlFor="phone" className="block text-gray-300">Phone Number</label>
             <input
-              type="tel"
+              type="text"
               id="phone"
               name="phone"
               value={formData.phone}
@@ -167,7 +213,7 @@ const FoundItemForm: React.FC<Props> = (props: Props) => {
             />
           </div>
           <div className="mb-6">
-            <label htmlFor="gmail" className="block text-gray-300">Gmail (optional)</label>
+            <label htmlFor="gmail" className="block text-gray-300">Gmail</label>
             <input
               type="email"
               id="gmail"
@@ -179,7 +225,7 @@ const FoundItemForm: React.FC<Props> = (props: Props) => {
           </div>
           <button
             type="submit"
-            className="w-full bg-[#4ECCA3] hover:bg-green-600 text-white py-2 rounded-md transition duration-300 ease-in-out"
+            className="w-full py-3 mt-4 bg-blue-600 rounded-md hover:bg-blue-700 transition-colors"
           >
             Submit
           </button>
