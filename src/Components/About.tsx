@@ -9,7 +9,7 @@ const About: React.FC = () => {
       </div>
       <div className='grid grid-cols-2 mt-10'>
         <div>
-          <img src={img} alt='Image'/>
+          {/* <img src={img} alt='Image'/> */}
         </div>
         <div className=''>
         <p className='text-xl font-light text-[#EEEEEE]'>SeekIt is dedicated to bridging the gap between lost items and their rightful owners. Our mission is to create a community-driven platform where people can easily report and find lost possessions, ensuring valuable items are returned to their owners swiftly and securely.</p>

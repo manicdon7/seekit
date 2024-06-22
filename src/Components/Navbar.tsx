@@ -83,8 +83,8 @@ const Navbar: React.FC = () => {
             <Link href="/">
               <p className="text-white hover:text-gray-600 cursor-pointer">Home</p>
             </Link>
-            <Link href="#about">
-              <p className="text-white hover:text-gray-600 cursor-pointer">About</p>
+            <Link href="/lost">
+              <p className="text-white hover:text-gray-600 cursor-pointer">Lost</p>
             </Link>
             <Link href="/seek">
               <p className="text-white hover:text-gray-600 cursor-pointer">Seek</p>
@@ -155,8 +155,8 @@ const Navbar: React.FC = () => {
             <Link href="/">
               <p className="block px-3 py-2 rounded-md text-base font-medium text-white hover:text-gray-600 cursor-pointer">Home</p>
             </Link>
-            <Link href="/about">
-              <p className="block px-3 py-2 rounded-md text-base font-medium text-white hover:text-gray-600 cursor-pointer">About</p>
+            <Link href="/lost">
+              <p className="block px-3 py-2 rounded-md text-base font-medium text-white hover:text-gray-600 cursor-pointer">Lost</p>
             </Link>
             <Link href="/seek">
               <p className="block px-3 py-2 rounded-md text-base font-medium text-white hover:text-gray-600 cursor-pointer">Seek</p>

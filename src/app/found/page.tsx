@@ -10,7 +10,7 @@ import { storage, auth } from '@/utils/firebase';
 type Props = {};
 
 const FoundItemForm: React.FC<Props> = (props: Props) => {
-  const [formData, setFormData] = useState({
+  const initialFormData = {
     itemName: '',
     time: '',
     place: '',
@@ -21,7 +21,9 @@ const FoundItemForm: React.FC<Props> = (props: Props) => {
     phone: '',
     address: '',
     gmail: ''
-  });
+  };
+
+  const [formData, setFormData] = useState(initialFormData);
   const [userEmail, setUserEmail] = useState<string | null>(null);
 
   useEffect(() => {
@@ -84,6 +86,8 @@ const FoundItemForm: React.FC<Props> = (props: Props) => {
 
       const result = await response.json();
       console.log('Found Item Details:', result);
+
+      setFormData(initialFormData);
     } catch (error) {
       console.error('Error submitting form:', error);
     }
@@ -170,6 +174,7 @@ const FoundItemForm: React.FC<Props> = (props: Props) => {
             <label htmlFor="description" className="block text-gray-300">Description</label>
             <textarea
               id="description"
+              placeholder='give a description about founded thing to help us'
               name="description"
               value={formData.description}
               onChange={handleChange}

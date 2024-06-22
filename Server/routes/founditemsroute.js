@@ -15,7 +15,7 @@ router.post('/', async (req, res) => {
       category,
       color,
       description,
-      imageURL, // Ensure imageURL is included here
+      imageURL,
       phone,
       address,
       gmail
