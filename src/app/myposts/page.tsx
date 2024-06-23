@@ -36,22 +36,31 @@ const MyPostsPage: React.FC = () => {
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      if (user) {
-        const { email, displayName, photoURL } = user;
-        setCurrentUser({ email: email!, displayName: displayName!, photoURL: photoURL ?? null });
-        fetchUserPosts(email);
-      } else {
+    const fetchData = async () => {
+      try {
+        const user = await auth.currentUser;
+        if (user) {
+          const { email, displayName, photoURL } = user;
+          setCurrentUser({ email: email!, displayName: displayName!, photoURL: photoURL ?? null });
+          fetchUserPosts(email);
+        } else {
+          setCurrentUser(null);
+          setPosts([]);
+          setLoading(false);
+        }
+      } catch (error) {
+        console.error('Error fetching user:', error);
         setCurrentUser(null);
         setPosts([]);
         setLoading(false);
       }
-    });
+    };
+
+    fetchData();
 
     document.addEventListener('mousedown', handleClickOutside);
 
     return () => {
-      unsubscribe();
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
