@@ -50,7 +50,7 @@ const electronVariant = {
       
     ],
     transition: {
-      duration: 8, // Slowing down the speed
+      duration: 8,
       repeat: Infinity,
       repeatType: "loop",
       delay: i * 0.2

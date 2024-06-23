@@ -10,7 +10,7 @@ import google from '@/app/assets/google_icon.png';
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [user, setUser] = useState<User | null>(null);
-  const [myPostsActive, setMyPostsActive] = useState<boolean>(false); // State to manage active link state
+  const [myPostsActive, setMyPostsActive] = useState<boolean>(false);
 
   const auth = getAuth(app);
   const dropdownRef = useRef<HTMLDivElement>(null);
