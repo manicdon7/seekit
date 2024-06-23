@@ -11,6 +11,7 @@ import google from '@/app/assets/google_icon.png';
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [user, setUser] = useState<User | null>(null);
+  const [myPostsActive, setMyPostsActive] = useState<boolean>(false); // State to manage active link state
 
   const auth = getAuth(app);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -20,12 +21,14 @@ const Navbar: React.FC = () => {
     try {
       const result = await signInWithPopup(auth, provider);
       setUser(result.user);
+      
     } catch (error) {
       if (error instanceof Error) {
         console.error("Error occurred during sign-in:", error.message);
       }
     }
   };
+
   const handleSignOut = async () => {
     try {
       await signOut(auth);
@@ -70,6 +73,17 @@ const Navbar: React.FC = () => {
     setIsOpen(!isOpen);
   };
 
+  // Function to handle clicking on "My Posts" link
+  const handleMyPostsClick = () => {
+    setMyPostsActive(true); // Set active state for "My Posts"
+    setIsOpen(false); // Close dropdown
+
+    // Navigate to "/my-posts" route or implement fetching posts logic
+    // Replace with actual logic based on your routing and data fetching needs
+    // Example:
+    // router.push('/my-posts');
+  };
+
   return (
     <nav className="bg-[#393E46] text-white top-0 z-50 fixed w-full backdrop-filter backdrop-blur-lg shadow-2xl bg-opacity-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -81,42 +95,47 @@ const Navbar: React.FC = () => {
           </div>
           <div className="hidden md:flex md:justify-between md:items-center md:space-x-10">
             <Link href="/">
-              <p className="text-white hover:text-gray-600 cursor-pointer">Home</p>
+              <p className={`text-white hover:text-gray-600 cursor-pointer ${myPostsActive ? 'text-gray-600' : ''}`} onClick={() => setMyPostsActive(false)}>Home</p>
             </Link>
             <Link href="/lost">
-              <p className="text-white hover:text-gray-600 cursor-pointer">Lost</p>
+              <p className={`text-white hover:text-gray-600 cursor-pointer ${myPostsActive ? 'text-gray-600' : ''}`} onClick={() => setMyPostsActive(false)}>Lost</p>
             </Link>
             <Link href="/seek">
-              <p className="text-white hover:text-gray-600 cursor-pointer">Seek</p>
+              <p className={`text-white hover:text-gray-600 cursor-pointer ${myPostsActive ? 'text-gray-600' : ''}`} onClick={() => setMyPostsActive(false)}>Seek</p>
             </Link>
             <Link href="/found">
-              <p className="text-white hover:text-gray-600 cursor-pointer">Found</p>
+              <p className={`text-white hover:text-gray-600 cursor-pointer ${myPostsActive ? 'text-gray-600' : ''}`} onClick={() => setMyPostsActive(false)}>Found</p>
             </Link>
             {/* Conditional rendering based on user state */}
             {user ? (
-              <div className="relative" ref={dropdownRef}>
-                <button
-                  onClick={toggleMenu}
-                  className="flex items-center focus:outline-none"
-                >
-                  <img
-                    src={user.photoURL || "/default-avatar.png"}
-                    alt="User Avatar"
-                    className="h-8 w-8 rounded-full"
-                  />
-                  <span className="ml-2 text-white">{user.displayName}</span>
-                </button>
-                {isOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1">
-                    <button
-                      onClick={handleSignOut}
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-                    >
-                      Logout
-                    </button>
-                  </div>
-                )}
-              </div>
+              <>
+                <div className="relative" ref={dropdownRef}>
+                  <button
+                    onClick={toggleMenu}
+                    className="flex items-center focus:outline-none"
+                  >
+                    <img
+                      src={user.photoURL || "/default-avatar.png"}
+                      alt="User Avatar"
+                      className="h-8 w-8 rounded-full"
+                    />
+                    <span className="ml-2 text-white">{user.displayName}</span>
+                  </button>
+                  {isOpen && (
+                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1">
+                      <button
+                        onClick={handleSignOut}
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                      >
+                        Logout
+                      </button>
+                      <Link href="/myposts">
+                  <p className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left" onClick={handleMyPostsClick}>My Posts</p>
+                </Link>
+                    </div>
+                  )}
+                </div>
+              </>
             ) : (
               <button
                 className="bg-[#4ECCA3] flex text-white px-4 py-2 rounded-md hover:bg-emerald-500"
@@ -153,16 +172,16 @@ const Navbar: React.FC = () => {
         <div className="md:hidden">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             <Link href="/">
-              <p className="block px-3 py-2 rounded-md text-base font-medium text-white hover:text-gray-600 cursor-pointer">Home</p>
+              <p className={`block px-3 py-2 rounded-md text-base font-medium text-white hover:text-gray-600 cursor-pointer ${myPostsActive ? 'text-gray-600' : ''}`} onClick={() => setMyPostsActive(false)}>Home</p>
             </Link>
             <Link href="/lost">
-              <p className="block px-3 py-2 rounded-md text-base font-medium text-white hover:text-gray-600 cursor-pointer">Lost</p>
+              <p className={`block px-3 py-2 rounded-md text-base font-medium text-white hover:text-gray-600 cursor-pointer ${myPostsActive ? 'text-gray-600' : ''}`} onClick={() => setMyPostsActive(false)}>Lost</p>
             </Link>
             <Link href="/seek">
-              <p className="block px-3 py-2 rounded-md text-base font-medium text-white hover:text-gray-600 cursor-pointer">Seek</p>
+              <p className={`block px-3 py-2 rounded-md text-base font-medium text-white hover:text-gray-600 cursor-pointer ${myPostsActive ? 'text-gray-600' : ''}`} onClick={() => setMyPostsActive(false)}>Seek</p>
             </Link>
             <Link href="/found">
-              <p className="block px-3 py-2 rounded-md text-base font-medium text-white hover:text-gray-600 cursor-pointer">Found</p>
+              <p className={`block px-3 py-2 rounded-md text-base font-medium text-white hover:text-gray-600 cursor-pointer ${myPostsActive ? 'text-gray-600' : ''}`} onClick={() => setMyPostsActive(false)}>Found</p>
             </Link>
             {user ? (
               <button
@@ -178,6 +197,11 @@ const Navbar: React.FC = () => {
               >
                 Sign Up <Image src={google} alt="google" width={30} height={30}/>
               </button>
+            )}
+            {user && (
+              <Link href="/my-posts">
+                <p className={`block px-3 py-2 rounded-md text-base font-medium text-white hover:text-gray-600 cursor-pointer ${myPostsActive ? 'text-gray-600' : ''}`} onClick={handleMyPostsClick}>My Posts</p>
+              </Link>
             )}
           </div>
         </div>

@@ -59,8 +59,8 @@ const electronVariant = {
 
 const Home: React.FC = () => {
   return (
-    <div className=''>
-    <main className="bg-[#232931] text-white">
+    <div className='font-anton bg-[#232931]'>
+    <main className=" text-white">
       <Navbar />
       <div>
         <h1 className='font-semibold text-6xl text-center py-7 font-anton text-white pt-28'>Seek It</h1>

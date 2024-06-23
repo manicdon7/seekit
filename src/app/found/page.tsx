@@ -10,6 +10,7 @@ import Image from "next/image";
 import google from '@/app/assets/google_icon.png';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import '@/app/globals.css';
 
 type Props = {};
 
@@ -60,7 +61,7 @@ const FoundItemForm: React.FC<Props> = (props: Props) => {
     const { files } = e.target;
     if (files && files.length > 0) {
       const imageFile = files[0];
-      const storageRef = ref(storage, `images/${imageFile.name}`);
+      const storageRef = ref(storage, `foundimages/${imageFile.name}`);
       const uploadTask = uploadBytesResumable(storageRef, imageFile);
 
       try {
@@ -124,7 +125,7 @@ const FoundItemForm: React.FC<Props> = (props: Props) => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-gray-900 to-gray-800 text-white font-anton">
+    <div className="min-h-screen bg-gradient-to-r from-gray-900 to-gray-800 text-white font-anton" id="grid-bg">
       <Navbar />
       <motion.div
         initial={{ opacity: 0, y: -50 }}
