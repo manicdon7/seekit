@@ -1,10 +1,9 @@
-"use client";
+"use client"
 import React, { useEffect, useState, useRef } from 'react';
 import { auth } from '@/utils/firebase';
 import Navbar from '@/Components/Navbar';
 import Image from 'next/image';
 import { FaEllipsisH, FaWhatsapp, FaTwitter, FaCopy } from 'react-icons/fa';
-import { GetServerSideProps } from 'next';
 
 type Post = {
   id: string;
@@ -28,15 +27,10 @@ type User = {
   photoURL?: string | null;
 };
 
-type PageProps = {
-  initialPosts: Post[];
-  userEmail: string | null;
-};
-
-const Page: React.FC<PageProps> = ({ initialPosts, userEmail }) => {
-  const [posts, setPosts] = useState<Post[]>(initialPosts);
+const MyPostsPage: React.FC = () => {
+  const [posts, setPosts] = useState<Post[]>([]);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState<boolean>(!initialPosts.length);
+  const [loading, setLoading] = useState<boolean>(true); // Initially loading
   const [openDropdownId, setOpenDropdownId] = useState<string | null>(null);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -46,11 +40,7 @@ const Page: React.FC<PageProps> = ({ initialPosts, userEmail }) => {
       if (user) {
         const { email, displayName, photoURL } = user;
         setCurrentUser({ email: email!, displayName: displayName!, photoURL: photoURL ?? null });
-        if (!initialPosts.length) {
-          fetchUserPosts(email);
-        } else {
-          setLoading(false);
-        }
+        fetchUserPosts(email);
       } else {
         setCurrentUser(null);
         setPosts([]);
@@ -70,7 +60,7 @@ const Page: React.FC<PageProps> = ({ initialPosts, userEmail }) => {
     if (!userEmail) return;
 
     try {
-      const response = await fetch('https://seekit-server.vercel.app/api/posts', {
+      const response = await fetch('http://localhost:5000/api/posts', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -264,31 +254,5 @@ const Page: React.FC<PageProps> = ({ initialPosts, userEmail }) => {
   );
 };
 
-export const fetchUserPosts = async (userEmail: string | null): Promise<Post[]> => {
-  if (!userEmail) {
-    return [];
-  }
+export default MyPostsPage;
 
-  try {
-    const response = await fetch('http://localhost:5000/api/posts', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ userEmail }),
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-      return data.posts || [];
-    } else {
-      throw new Error('Failed to fetch posts');
-    }
-  } catch (error) {
-    console.error('Error fetching posts:', error);
-    return [];
-  }
-};
-
-
-export default Page;
