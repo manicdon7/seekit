@@ -1,9 +1,10 @@
 "use client"
 import React, { useEffect, useState, useRef } from 'react';
-import { auth } from '@/utils/firebase';
-import Navbar from '@/Components/Navbar';
 import Image from 'next/image';
 import { FaEllipsisH, FaWhatsapp, FaTwitter, FaCopy } from 'react-icons/fa';
+import { auth } from '@/utils/firebase';
+import Navbar from '@/Components/Navbar';
+import 'firebase/analytics';
 
 type Post = {
   id: string;
@@ -108,7 +109,7 @@ const MyPostsPage: React.FC = () => {
     } catch (error) {
       console.error('Error copying link:', error);
     }
-  };
+  };;
 
   if (loading) {
     return (
