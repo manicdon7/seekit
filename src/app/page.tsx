@@ -23,7 +23,7 @@ export default function Page() {
   }, []);
 
   return (
-    <main className="">
+    <main className=''>
       {loading && <Loader />}
       <div className={loading ? 'blur-sm' : ''}>
         <Home />
