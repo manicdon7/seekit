@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import { useEffect } from 'react';
 import About from '@/Components/About';
 import Navbar from '../../Components/Navbar';

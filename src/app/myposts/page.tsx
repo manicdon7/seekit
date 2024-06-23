@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import React, { useEffect, useState, useRef } from 'react';
 import Image from 'next/image';
 import { FaEllipsisH, FaWhatsapp, FaTwitter, FaCopy } from 'react-icons/fa';

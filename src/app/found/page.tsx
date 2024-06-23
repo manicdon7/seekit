@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import Navbar from '@/Components/Navbar';
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
