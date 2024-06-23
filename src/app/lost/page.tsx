@@ -24,7 +24,7 @@ type FormData = {
   address: string;
   gmail: string;
   lostEmail: string;
-  founderEmail: string; // Ensure founderEmail is included with its type
+  founderEmail: string;
 };
 
 const initialFormData: FormData = {
@@ -105,7 +105,7 @@ const LostItemForm: React.FC = () => {
     console.log(formData);
 
     try {
-      const response = await fetch('http://localhost:5000/api/lost-items', {
+      const response = await fetch('https://seekit-server.vercel.app/api/lost-items', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

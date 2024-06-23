@@ -25,7 +25,7 @@ const SeekPage: React.FC = () => {
   useEffect(() => {
     const fetchFoundItems = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/found-items');
+        const response = await fetch('https://seekit-server.vercel.app/api/found-items');
         const data = await response.json();
         setFoundItems(data);
       } catch (error) {
