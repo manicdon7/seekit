@@ -50,7 +50,7 @@ const SeekPage: React.FC = () => {
         <meta property="og:title" content="Found Items - Seekit" />
         <meta property="og:description" content="Explore found items shared by the community on Seekit." />
         <meta property="og:image" content={filteredItems.length > 0 ? filteredItems[0].imageURL : '/default-image.jpg'} />
-        <meta property="og:url" content="https://yourwebsite.com/seek" />
+        <meta property="og:url" content="https://seekit.vercel.app/seek" />
         <meta property="og:type" content="website" />
       </Head>
 
