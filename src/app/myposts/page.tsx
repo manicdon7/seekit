@@ -1,9 +1,9 @@
-"use client";
-import React, { useEffect, useState } from 'react';
+"use client"
+import React, { useEffect, useState, useRef } from 'react';
 import { auth } from '@/utils/firebase'; 
 import Navbar from '@/Components/Navbar';
 import Image from 'next/image';
-import Link from 'next/link';
+import { FaEllipsisH, FaWhatsapp, FaTwitter, FaCopy } from 'react-icons/fa';
 
 type Post = {
   id: string;
@@ -18,13 +18,16 @@ type Post = {
   address: string;
   gmail: string;
   founderEmail: string;
-  reunited: boolean; // New field to indicate if the item has been reunited
+  reunited: boolean;
 };
 
 const Page: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [currentUser, setCurrentUser] = useState<any | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [openDropdownId, setOpenDropdownId] = useState<string | null>(null);
+
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -38,7 +41,12 @@ const Page: React.FC = () => {
       }
     });
 
-    return () => unsubscribe();
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      unsubscribe();
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
   }, []);
 
   const fetchUserPosts = async (userEmail: string) => {
@@ -64,6 +72,32 @@ const Page: React.FC = () => {
     }
   };
 
+  const handleClickOutside = (event: MouseEvent) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      setOpenDropdownId(null);
+    }
+  };
+
+  const toggleDropdown = (postId: string) => {
+    if (openDropdownId === postId) {
+      setOpenDropdownId(null);
+    } else {
+      setOpenDropdownId(postId);
+    }
+  };
+
+  const copyPostLink = async (post: Post) => {
+    try {
+      const postUrl = `${window.location.origin}/posts/${post.id}`;
+      console.log(postUrl);
+      
+      await navigator.clipboard.writeText(postUrl);
+      console.log('Link copied to clipboard:', postUrl);
+    } catch (error) {
+      console.error('Error copying link:', error);
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen bg-gray-100 fade-in">
@@ -77,7 +111,6 @@ const Page: React.FC = () => {
   const postCount = posts.length;
   const reunitedCount = posts.filter(post => post.reunited).length;
 
-  // Group posts by category
   const postCategories = posts.reduce((acc, post) => {
     acc[post.category] = (acc[post.category] || 0) + 1;
     return acc;
@@ -125,12 +158,35 @@ const Page: React.FC = () => {
             </div>
           </div>
         </div>
-        <h2 className="text-2xl font-semibold mb-6">Your foundings:</h2>
+        <h2 className="text-2xl font-semibold mb-6">Your findings:</h2>
         {posts.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mx-20">
             {posts.map((post) => (
-              <div key={post.id} className="max-w-sm rounded overflow-hidden shadow-lg bg-white transition-transform transform hover:scale-105 hover:shadow-2xl">
-                <Image className="w-full h-48 object-cover" src={post.imageURL} alt="Item" width={500} height={300} />
+              <div key={post.id} className="relative max-w-sm rounded overflow-hidden shadow-2xl bg-white transition-transform transform hover:scale-105 hover:shadow-2xl">
+                <div className="absolute top-2 right-2" ref={dropdownRef}>
+                  <button className="relative z-10 p-3 focus:outline-none" onClick={() => toggleDropdown(post.id)}>
+                    <FaEllipsisH className="text-gray-600 hover:text-gray-800" />
+                  </button>
+                  {openDropdownId === post.id && (
+                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-20">
+                      <div className="border-t border-gray-200">
+                        <div className="py-2 px-4 hover:bg-gray-200 flex items-center space-x-2 cursor-pointer" onClick={() => copyPostLink(post)}>
+                          <FaCopy className="text-purple-500" />
+                          <span className='text-black'>Copy Link</span>
+                        </div>
+                        <div className="py-2 px-4 hover:bg-gray-200 flex items-center space-x-2 cursor-pointer">
+                          <FaWhatsapp className="text-green-500" />
+                          <span className='text-black'>Share on WhatsApp</span>
+                        </div>
+                        <div className="py-2 px-4 hover:bg-gray-200 flex items-center space-x-2 cursor-pointer">
+                          <FaTwitter className="text-blue-500" />
+                          <span className='text-black'>Share on Twitter</span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+                <Image className="w-full h-60 p-3 rounded-3xl object-cover" src={post.imageURL} alt="Item" width={500} height={300} />
                 <div className="px-6 py-4">
                   <div className="font-bold text-xl mb-2">{post.itemName}</div>
                   <p className="text-gray-700 text-base"><strong>Time:</strong> {post.time}</p>
