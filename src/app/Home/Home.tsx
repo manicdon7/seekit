@@ -1,8 +1,11 @@
+"use client";
+import { useEffect } from 'react';
 import About from '@/Components/About';
 import Navbar from '../../Components/Navbar';
 import '@/app/globals.css';
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import Aos from 'aos';
+import 'aos/dist/aos.css';
 
 // const bg = {
 //   backgroundImage: "url(https://img.freepik.com/free-vector/abstract-horizontal-grid-lines-graph-style-graphic-design_1017-39918.jpg?w=1060&t=st=1718889502~exp=1718890102~hmac=f4e55a277cceef96421e65aa76868caf3e4ccad4223f7ae5f596c6069244d316)",
@@ -58,16 +61,22 @@ const electronVariant = {
 
 
 const Home: React.FC = () => {
+
+  useEffect(() => {
+    Aos.init({ duration: 1000 });
+}, []);
+
+
   return (
     <div className='font-anton bg-[#232931]'>
     <main className=" text-white">
       <Navbar />
       <div>
-        <h1 className='font-semibold text-6xl text-center py-7 font-anton text-white pt-28'>Seek It</h1>
+        <h1 className='font-semibold text-6xl text-center py-7 font-anton text-white pt-28'  data-aos="flip-down">Seek It</h1>
       </div>
       <div className='grid grid-cols-2 items-center mt-20 mx-28'>
         <div className=''>
-          <div className=' space-y-7 ml-20'>
+          <div className=' space-y-7 ml-20' data-aos="fade-right">
             <h1 className='text-4xl font-anton font-semibold'>
               Reuniting You with Your Lost Treasures
             </h1>

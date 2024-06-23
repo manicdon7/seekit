@@ -18,7 +18,6 @@ const About: React.FC = () => {
       <div className='text-4xl font-anton capitalize font-semibold text-center' data-aos="flip-down" >
         why this platform
       </div>
-
       <div className="pt-10" data-aos="fade-right" >
       <h1 className='text-2xl font-semibold'>Motive</h1>
       <p className='text-2xl font-light text-justify text-[#EEEEEE] pt-4'>SeekIt is dedicated to bridging the gap between lost items and their rightful owners. Our mission is to create a community-driven platform where people can easily report and find lost possessions, ensuring valuable items are returned to their owners swiftly and securely.</p>
@@ -29,7 +28,7 @@ const About: React.FC = () => {
             <span></span>
           </div>
           <div>
-            <h1 className="font-semibold text-2xl items-start py-7">Find your Losings</h1>
+            <h1 className="font-semibold text-2xl items-start py-7" data-aos="flip-down">Find your Losings</h1>
           </div>
         </div>
         <div className=''>
