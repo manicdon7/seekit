@@ -114,10 +114,12 @@ const Navbar: React.FC = () => {
                     onClick={toggleMenu}
                     className="flex items-center focus:outline-none"
                   >
-                    <img
+                    <Image
                       src={user.photoURL || "/default-avatar.png"}
                       alt="User Avatar"
                       className="h-8 w-8 rounded-full"
+                      width={500} // Adjust the width according to your design
+                      height={300} // Adjust the height according to your design
                     />
                     <span className="ml-2 text-white">{user.displayName}</span>
                   </button>

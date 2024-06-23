@@ -1,7 +1,5 @@
 "use client";
 import { useEffect } from 'react';
-import Image from "next/image";
-import img from '../Assets/Startup business landing page, isometric rocket.png';
 import '@/app/globals.css';
 import Aos from 'aos';
 import 'aos/dist/aos.css';

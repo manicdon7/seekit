@@ -2,6 +2,7 @@
 import Navbar from '@/Components/Navbar';
 import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
+import Image from 'next/image';
 
 type FoundItem = {
   _id: string;
@@ -70,12 +71,18 @@ const SeekPage: React.FC = () => {
             filteredItems.map((item: FoundItem) => (
               <div key={item._id} className="bg-gray-700 p-6 rounded-lg shadow-lg flex flex-col">
                 {item.imageURL && (
-                  <img
-                    src={item.imageURL}
-                    alt={item.itemName}
-                    className="mb-4 rounded-lg object-cover h-64 w-full"
-                  />
+                  <div className="mb-4 rounded-lg overflow-hidden h-64 w-full">
+                    <Image
+                      src={item.imageURL}
+                      alt={item.itemName}
+                      layout="responsive"
+                      width={500} // Adjust the width according to your design
+                      height={300} // Adjust the height according to your design
+                      objectFit="cover"
+                    />
+                  </div>
                 )}
+
                 <div className="flex flex-col flex-grow">
                   <h3 className="text-2xl font-bold mb-2">{item.itemName}</h3>
                   <hr className="border-gray-500 mb-4" />
