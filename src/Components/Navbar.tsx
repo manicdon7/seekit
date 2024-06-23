@@ -1,6 +1,5 @@
-// Navbar.tsx
 "use client";
-import { useState, useEffect, useRef, MouseEvent } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { app } from "../utils/firebase";
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, User } from "firebase/auth";
@@ -21,7 +20,6 @@ const Navbar: React.FC = () => {
     try {
       const result = await signInWithPopup(auth, provider);
       setUser(result.user);
-      
     } catch (error) {
       if (error instanceof Error) {
         console.error("Error occurred during sign-in:", error.message);
@@ -55,7 +53,7 @@ const Navbar: React.FC = () => {
 
   // Effect to add event listener for clicks outside the dropdown
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
+    const handleClickOutside = (event: MouseEvent<Document>) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsOpen(false); // Close dropdown if clicked outside
       }
@@ -132,8 +130,8 @@ const Navbar: React.FC = () => {
                         Logout
                       </button>
                       <Link href="/myposts">
-                  <p className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left" onClick={handleMyPostsClick}>My Posts</p>
-                </Link>
+                        <p className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left" onClick={handleMyPostsClick}>My Posts</p>
+                      </Link>
                     </div>
                   )}
                 </div>
