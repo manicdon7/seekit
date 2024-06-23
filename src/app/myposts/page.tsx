@@ -60,7 +60,7 @@ const MyPostsPage: React.FC = () => {
     if (!userEmail) return;
 
     try {
-      const response = await fetch('http://localhost:5000/api/posts', {
+      const response = await fetch('https://seekit-server.vercel.app/api/posts', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -91,15 +91,13 @@ const MyPostsPage: React.FC = () => {
     setOpenDropdownId(openDropdownId === postId ? null : postId);
   };
 
-  const copyPostLink = async (post: Post) => {
-    if (typeof window !== 'undefined') {
-      try {
-        const postUrl = `${window.location.origin}/posts/${post.id}`;
-        await navigator.clipboard.writeText(postUrl);
-        console.log('Link copied to clipboard:', postUrl);
-      } catch (error) {
-        console.error('Error copying link:', error);
-      }
+  const copyPostLink = async (postId: string) => {
+    try {
+      const postUrl = `/posts/${postId}`;
+      await navigator.clipboard.writeText(postUrl);
+      console.log('Link copied to clipboard:', postUrl);
+    } catch (error) {
+      console.error('Error copying link:', error);
     }
   };
 
@@ -184,7 +182,7 @@ const MyPostsPage: React.FC = () => {
                       <div className="border-t border-gray-200">
                         <div
                           className="py-2 px-4 hover:bg-gray-200 flex items-center space-x-2 cursor-pointer"
-                          onClick={() => copyPostLink(post)}
+                          onClick={() => copyPostLink(post.id)}
                         >
                           <FaCopy className="text-purple-500" />
                           <span className="text-black">Copy Link</span>
@@ -255,4 +253,3 @@ const MyPostsPage: React.FC = () => {
 };
 
 export default MyPostsPage;
-
