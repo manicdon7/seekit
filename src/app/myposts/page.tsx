@@ -264,35 +264,31 @@ const Page: React.FC<PageProps> = ({ initialPosts, userEmail }) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const userEmail = context.req.cookies.userEmail || null;
-
-  let initialPosts: Post[] = [];
-  if (userEmail) {
-    try {
-      const response = await fetch('https://seekit-server.vercel.app/api/posts', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ userEmail }),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        initialPosts = data.posts || [];
-      }
-    } catch (error) {
-      console.error('Error fetching posts:', error);
-    }
+export const fetchUserPosts = async (userEmail: string | null): Promise<Post[]> => {
+  if (!userEmail) {
+    return [];
   }
 
-  return {
-    props: {
-      initialPosts,
-      userEmail,
-    },
-  };
+  try {
+    const response = await fetch('http://localhost:5000/api/posts', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ userEmail }),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      return data.posts || [];
+    } else {
+      throw new Error('Failed to fetch posts');
+    }
+  } catch (error) {
+    console.error('Error fetching posts:', error);
+    return [];
+  }
 };
+
 
 export default Page;
