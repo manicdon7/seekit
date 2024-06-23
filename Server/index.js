@@ -30,6 +30,11 @@ app.use('/api/found-items', foundItemsRoute);
 app.use('/api/posts', postsRoute);
 app.use('/api/lost-items', lostItemsRoute);
 
+// Home route
+app.get('/', (req, res) => {
+  res.send('Server is working!');
+});
+
 // Start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
