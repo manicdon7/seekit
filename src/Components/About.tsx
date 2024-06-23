@@ -42,7 +42,7 @@ const About: React.FC = () => {
                     </div>
                     <div className='pt-10' data-aos="fade-left">
                         <h1 className='text-2xl font-semibold'>Secure Communication</h1>
-                        <p className='font-light text-[#EEEEEE] pt-2'>Once a match is identified, SeekIt facilitates secure communication between the finder and the owner to arrange for the item's return.</p>
+                        <p className='font-light text-[#EEEEEE] pt-2'>Once a match is identified, SeekIt facilitates secure communication between the finder and the owner to arrange for the item&apos;s return.</p>
                     </div>
                     <div className='pt-10' data-aos="fade-left">
                         <h1 className='text-2xl font-semibold'>Reward System</h1>
