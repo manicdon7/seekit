@@ -4,6 +4,7 @@ import { auth } from '@/utils/firebase';
 import Navbar from '@/Components/Navbar';
 import Image from 'next/image';
 import { FaEllipsisH, FaWhatsapp, FaTwitter, FaCopy } from 'react-icons/fa';
+import { GetServerSideProps } from 'next';
 
 type Post = {
   id: string;
@@ -27,10 +28,15 @@ type User = {
   photoURL?: string | null;
 };
 
-const Page: React.FC = () => {
-  const [posts, setPosts] = useState<Post[]>([]);
+type PageProps = {
+  initialPosts: Post[];
+  userEmail: string | null;
+};
+
+const Page: React.FC<PageProps> = ({ initialPosts, userEmail }) => {
+  const [posts, setPosts] = useState<Post[]>(initialPosts);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(!initialPosts.length);
   const [openDropdownId, setOpenDropdownId] = useState<string | null>(null);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -40,7 +46,11 @@ const Page: React.FC = () => {
       if (user) {
         const { email, displayName, photoURL } = user;
         setCurrentUser({ email: email!, displayName: displayName!, photoURL: photoURL ?? null });
-        fetchUserPosts(email);
+        if (!initialPosts.length) {
+          fetchUserPosts(email);
+        } else {
+          setLoading(false);
+        }
       } else {
         setCurrentUser(null);
         setPosts([]);
@@ -92,12 +102,14 @@ const Page: React.FC = () => {
   };
 
   const copyPostLink = async (post: Post) => {
-    try {
-      const postUrl = `${window.location.origin}/posts/${post.id}`;
-      await navigator.clipboard.writeText(postUrl);
-      console.log('Link copied to clipboard:', postUrl);
-    } catch (error) {
-      console.error('Error copying link:', error);
+    if (typeof window !== 'undefined') {
+      try {
+        const postUrl = `${window.location.origin}/posts/${post.id}`;
+        await navigator.clipboard.writeText(postUrl);
+        console.log('Link copied to clipboard:', postUrl);
+      } catch (error) {
+        console.error('Error copying link:', error);
+      }
     }
   };
 
@@ -250,6 +262,37 @@ const Page: React.FC = () => {
       </div>
     </div>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const userEmail = context.req.cookies.userEmail || null;
+
+  let initialPosts: Post[] = [];
+  if (userEmail) {
+    try {
+      const response = await fetch('https://seekit-server.vercel.app/api/posts', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userEmail }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        initialPosts = data.posts || [];
+      }
+    } catch (error) {
+      console.error('Error fetching posts:', error);
+    }
+  }
+
+  return {
+    props: {
+      initialPosts,
+      userEmail,
+    },
+  };
 };
 
 export default Page;

@@ -11,7 +11,8 @@ const foundItemSchema = new mongoose.Schema({
   phone: { type: String, required: true },
   address: { type: String, required: true },
   gmail: { type: String },
-  founderEmail: {type: String}
+  founderEmail: {type: String},
+  reunited: {type: Boolean},
 });
 
 module.exports = mongoose.model('FoundItem', foundItemSchema);

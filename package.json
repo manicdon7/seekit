@@ -18,7 +18,8 @@
     "react-dom": "^18",
     "react-router-dom": "^6.23.1",
     "react-share": "^5.1.0",
-    "react-toastify": "^10.0.5"
+    "react-toastify": "^10.0.5",
+    "sharp": "^0.33.4"
   },
   "devDependencies": {
     "@types/aos": "^3.0.7",
