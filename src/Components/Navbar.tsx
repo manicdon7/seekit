@@ -53,7 +53,7 @@ const Navbar: React.FC = () => {
 
   // Effect to add event listener for clicks outside the dropdown
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent<Document>) => {
+    const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsOpen(false); // Close dropdown if clicked outside
       }

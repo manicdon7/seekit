@@ -1,6 +1,6 @@
 "use client"
 import React, { useEffect, useState, useRef } from 'react';
-import { auth } from '@/utils/firebase'; 
+import { auth } from '@/utils/firebase';
 import Navbar from '@/Components/Navbar';
 import Image from 'next/image';
 import { FaEllipsisH, FaWhatsapp, FaTwitter, FaCopy } from 'react-icons/fa';
@@ -49,7 +49,9 @@ const Page: React.FC = () => {
     };
   }, []);
 
-  const fetchUserPosts = async (userEmail: string) => {
+  const fetchUserPosts = async (userEmail: string | null) => {
+    if (!userEmail) return;
+
     try {
       const response = await fetch('http://localhost:5000/api/posts', {
         method: 'POST',
@@ -90,7 +92,7 @@ const Page: React.FC = () => {
     try {
       const postUrl = `${window.location.origin}/posts/${post.id}`;
       console.log(postUrl);
-      
+
       await navigator.clipboard.writeText(postUrl);
       console.log('Link copied to clipboard:', postUrl);
     } catch (error) {
@@ -111,10 +113,13 @@ const Page: React.FC = () => {
   const postCount = posts.length;
   const reunitedCount = posts.filter(post => post.reunited).length;
 
-  const postCategories = posts.reduce((acc, post) => {
+  const postCategories = posts.reduce<{ [key: string]: number }>((acc, post) => {
     acc[post.category] = (acc[post.category] || 0) + 1;
     return acc;
   }, {});
+
+
+
 
   return (
     <div className="min-h-screen bg-[#232931] text-white">
