@@ -10,7 +10,7 @@ dotenv.config();
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors("https://seekit.vercel.app/"));
 app.use(express.json());
 
 // Connect to MongoDB
@@ -29,6 +29,11 @@ const lostItemsRoute = require('./routes/lostitemsroute');
 app.use('/api/found-items', foundItemsRoute);
 app.use('/api/posts', postsRoute);
 app.use('/api/lost-items', lostItemsRoute);
+
+// Home route
+app.get('/', (req, res) => {
+  res.send('Server is working!');
+});
 
 // Start server
 const PORT = process.env.PORT || 5000;

@@ -91,7 +91,7 @@ const FoundItemForm: React.FC<Props> = (props: Props) => {
     console.log(formData);
 
     try {
-      const response = await fetch('http://localhost:5000/api/found-items', {
+      const response = await fetch('https://seekit-server.vercel.app/api/found-items', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

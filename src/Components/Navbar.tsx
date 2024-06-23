@@ -1,6 +1,5 @@
-// Navbar.tsx
 "use client";
-import { useState, useEffect, useRef, MouseEvent } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { app } from "../utils/firebase";
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, User } from "firebase/auth";
@@ -11,7 +10,7 @@ import google from '@/app/assets/google_icon.png';
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [user, setUser] = useState<User | null>(null);
-  const [myPostsActive, setMyPostsActive] = useState<boolean>(false); // State to manage active link state
+  const [myPostsActive, setMyPostsActive] = useState<boolean>(false);
 
   const auth = getAuth(app);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -21,7 +20,6 @@ const Navbar: React.FC = () => {
     try {
       const result = await signInWithPopup(auth, provider);
       setUser(result.user);
-      
     } catch (error) {
       if (error instanceof Error) {
         console.error("Error occurred during sign-in:", error.message);
@@ -114,10 +112,12 @@ const Navbar: React.FC = () => {
                     onClick={toggleMenu}
                     className="flex items-center focus:outline-none"
                   >
-                    <img
+                    <Image
                       src={user.photoURL || "/default-avatar.png"}
                       alt="User Avatar"
                       className="h-8 w-8 rounded-full"
+                      width={500} // Adjust the width according to your design
+                      height={300} // Adjust the height according to your design
                     />
                     <span className="ml-2 text-white">{user.displayName}</span>
                   </button>
@@ -130,8 +130,8 @@ const Navbar: React.FC = () => {
                         Logout
                       </button>
                       <Link href="/myposts">
-                  <p className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left" onClick={handleMyPostsClick}>My Posts</p>
-                </Link>
+                        <p className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left" onClick={handleMyPostsClick}>My Posts</p>
+                      </Link>
                     </div>
                   )}
                 </div>

@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import Navbar from '@/Components/Navbar';
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
@@ -12,24 +12,38 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import '@/app/globals.css';
 
-type Props = {};
+type FormData = {
+  itemName: string;
+  time: string;
+  place: string;
+  category: string;
+  color: string;
+  description: string;
+  imageURL: string;
+  phone: string;
+  address: string;
+  gmail: string;
+  lostEmail: string;
+  founderEmail: string;
+};
 
-const LostItemForm: React.FC<Props> = (props: Props) => {
-  const initialFormData = {
-    itemName: '',
-    time: '',
-    place: '',
-    category: '',
-    color: '',
-    description: '',
-    imageURL: '',
-    phone: '',
-    address: '',
-    gmail: '',
-    lostEmail: ''
-  };
+const initialFormData: FormData = {
+  itemName: '',
+  time: '',
+  place: '',
+  category: '',
+  color: '',
+  description: '',
+  imageURL: '',
+  phone: '',
+  address: '',
+  gmail: '',
+  lostEmail: '',
+  founderEmail: '', // Initialize founderEmail with an empty string
+};
 
-  const [formData, setFormData] = useState(initialFormData);
+const LostItemForm: React.FC = () => {
+  const [formData, setFormData] = useState<FormData>(initialFormData);
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [showSignInPopup, setShowSignInPopup] = useState(false);
 
@@ -91,7 +105,7 @@ const LostItemForm: React.FC<Props> = (props: Props) => {
     console.log(formData);
 
     try {
-      const response = await fetch('http://localhost:5000/api/lost-items', {
+      const response = await fetch('https://seekit-server.vercel.app/api/lost-items', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
