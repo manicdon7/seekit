@@ -4,6 +4,7 @@ import 'aos/dist/aos.css';
 import Aos from 'aos';
 import '@/app/globals.css';
 
+
 const About: React.FC = () => {
     useEffect(() => {
         Aos.init({ duration: 1000 });
