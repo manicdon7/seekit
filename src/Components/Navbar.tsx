@@ -1,17 +1,10 @@
-"use client";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, UserCredential, getAdditionalUserInfo, User } from "firebase/auth";
+import emailjs from "emailjs-com";
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { app } from "../utils/firebase";
-import {
-  getAuth,
-  GoogleAuthProvider,
-  signInWithPopup,
-  signOut,
-  User,
-} from "firebase/auth";
-import "@/app/globals.css";
 import Image from "next/image";
 import googleIcon from "@/app/assets/google_icon.png";
+import { app } from "../utils/firebase";
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -21,11 +14,42 @@ const Navbar: React.FC = () => {
   const auth = getAuth(app);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
+  const sendOnboardingEmail = (email: string | null, displayName: string | null) => {
+    if (!email || !displayName) {
+      console.error("Email or display name is missing.");
+      return;
+    }
+
+    const templateParams = {
+      to_name: displayName,
+      to_email: email,
+      subject: "Welcome to Seekit!",
+      message: "We're thrilled to have you on board!",
+    };
+
+    emailjs.send(
+      'service_ttp4zxu',  // Replace with your EmailJS service ID
+      'template_6l70tuj', // Replace with your EmailJS template ID
+      templateParams,
+      'l6rbabXEYkrhk3WSb' // Replace with your EmailJS user ID (public key)
+    ).then((response) => {
+      console.log('SUCCESS!', response.status, response.text, displayName, email);
+    }, (error) => {
+      console.error('FAILED...', error);
+    });
+  };
+
   const signInWithGoogle = async () => {
     const provider = new GoogleAuthProvider();
     try {
-      const result = await signInWithPopup(auth, provider);
+      const result: UserCredential = await signInWithPopup(auth, provider);
       setUser(result.user);
+
+      // Check if the user is new
+      const additionalUserInfo = getAdditionalUserInfo(result);
+      if (additionalUserInfo?.isNewUser) {
+        sendOnboardingEmail(result.user.email, result.user.displayName); // Send email to signed-in user
+      }
     } catch (error) {
       console.error("Error occurred during sign-in:", (error as Error).message);
     }
@@ -36,10 +60,7 @@ const Navbar: React.FC = () => {
       await signOut(auth);
       setUser(null);
     } catch (error) {
-      console.error(
-        "Error occurred during sign-out:",
-        (error as Error).message
-      );
+      console.error("Error occurred during sign-out:", (error as Error).message);
     }
   };
 
