@@ -1,8 +1,8 @@
-"use client"
-import Navbar from '@/components/Navbar';
-import React, { useEffect, useState } from 'react';
-import Head from 'next/head';
-import Image from 'next/image';
+"use client";
+import Navbar from "@/Components/Navbar";
+import React, { useEffect, useState } from "react";
+import Head from "next/head";
+import Image from "next/image";
 
 type FoundItem = {
   _id: string;
@@ -20,43 +20,61 @@ type FoundItem = {
 
 const SeekPage: React.FC = () => {
   const [foundItems, setFoundItems] = useState<FoundItem[]>([]);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     const fetchFoundItems = async () => {
       try {
-        const response = await fetch('https://seekit-server.vercel.app/api/found-items');
+        const response = await fetch(
+          "https://seekit-server.vercel.app/api/found-items"
+        );
         const data = await response.json();
         setFoundItems(data);
       } catch (error) {
-        console.error('Error fetching found items:', error);
+        console.error("Error fetching found items:", error);
       }
     };
 
     fetchFoundItems();
   }, []);
 
-  const filteredItems = foundItems.filter(item =>
-    item.itemName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    item.place.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    item.category.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredItems = foundItems.filter(
+    (item) =>
+      item.itemName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.place.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.category.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-gray-900 to-gray-800 text-white font-anton">
       <Head>
         <title>Found Items - Seekit</title>
-        <meta name="description" content="Explore found items shared by the community on Seekit." />
+        <meta
+          name="description"
+          content="Explore found items shared by the community on Seekit."
+        />
         <meta property="og:title" content="Found Items - Seekit" />
-        <meta property="og:description" content="Explore found items shared by the community on Seekit." />
-        <meta property="og:image" content={filteredItems.length > 0 ? filteredItems[0].imageURL : '/default-image.jpg'} />
+        <meta
+          property="og:description"
+          content="Explore found items shared by the community on Seekit."
+        />
+        <meta
+          property="og:image"
+          content={
+            filteredItems.length > 0
+              ? filteredItems[0].imageURL
+              : "/default-image.jpg"
+          }
+        />
         <meta property="og:url" content="https://seekit.vercel.app/seek" />
         <meta property="og:type" content="website" />
       </Head>
 
       <Navbar />
       <div className="container mx-auto p-8">
-        <h2 className="text-3xl font-bold mb-6 text-center pt-20">Found Items</h2>
+        <h2 className="text-3xl font-bold mb-6 text-center pt-20">
+          Found Items
+        </h2>
         <div className="mb-6 text-center">
           <input
             type="text"
@@ -69,7 +87,10 @@ const SeekPage: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredItems.length > 0 ? (
             filteredItems.map((item: FoundItem) => (
-              <div key={item._id} className="bg-gray-700 p-6 rounded-lg shadow-lg flex flex-col">
+              <div
+                key={item._id}
+                className="bg-gray-700 p-6 rounded-lg shadow-lg flex flex-col"
+              >
                 {item.imageURL && (
                   <div className="mb-4 rounded-lg overflow-hidden h-64 w-full">
                     <Image
@@ -88,7 +109,8 @@ const SeekPage: React.FC = () => {
                   <hr className="border-gray-500 mb-4" />
                   <div className="mb-4">
                     <p>
-                      <span className="font-bold">Category:</span> {item.category}
+                      <span className="font-bold">Category:</span>{" "}
+                      {item.category}
                     </p>
                     <p>
                       <span className="font-bold">Color:</span> {item.color}
@@ -96,16 +118,18 @@ const SeekPage: React.FC = () => {
                   </div>
                   <div className="mb-4 flex-grow">
                     <p>
-                      <span className="font-bold">Description:</span> {item.description}
+                      <span className="font-bold">Description:</span>{" "}
+                      {item.description}
                     </p>
                   </div>
                   <div className="mb-4">
                     <p>
-                      <span className="font-bold">Time Found:</span>{' '}
+                      <span className="font-bold">Time Found:</span>{" "}
                       {new Date(item.time).toLocaleString()}
                     </p>
                     <p>
-                      <span className="font-bold">Place Found:</span> {item.place}
+                      <span className="font-bold">Place Found:</span>{" "}
+                      {item.place}
                     </p>
                   </div>
                   <div className="mb-4">
@@ -129,7 +153,9 @@ const SeekPage: React.FC = () => {
               </div>
             ))
           ) : (
-            <p className="text-center w-full">No items found matching your search criteria.</p>
+            <p className="text-center w-full">
+              No items found matching your search criteria.
+            </p>
           )}
         </div>
       </div>
@@ -139,6 +165,5 @@ const SeekPage: React.FC = () => {
     </div>
   );
 };
-
 
 export default SeekPage;
