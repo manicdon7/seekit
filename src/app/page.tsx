@@ -1,7 +1,7 @@
 "use client"
 import { useState, useEffect } from 'react';
 import Home from './Home/Home';
-import Loader from '@/Components/Loader';
+import Loader from '@/components/Loader';
 import '@/app/globals.css';
 import { Analytics } from "@vercel/analytics/react"
 

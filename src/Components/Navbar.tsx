@@ -18,7 +18,7 @@ const Navbar: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
   const [myPostsActive, setMyPostsActive] = useState<boolean>(false);
 
-  const auth = getAuth(app);
+  const auth = getAuth();
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const signInWithGoogle = async () => {
