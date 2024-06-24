@@ -2,10 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Playwrite+SK:wght@100..400&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Playwrite+SK:wght@100..400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Anton&display=swap");
 
-:root {
+/* :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
@@ -17,7 +17,7 @@
     --background-start-rgb: 0, 0, 0;
     --background-end-rgb: 0, 0, 0;
   }
-}
+} */
 /* 
 body {
   color: rgb(var(--foreground-rgb));
@@ -35,7 +35,7 @@ body {
   height: 150px;
   background: transparent;
   border-radius: 50%;
-  box-shadow: 25px 25px 75px rgba(0,0,0,0.55);
+  box-shadow: 25px 25px 75px rgba(0, 0, 0, 0.55);
   border: 1px solid #333;
   display: flex;
   align-items: center;
@@ -44,25 +44,25 @@ body {
 }
 
 .loader::before {
-  content: '';
+  content: "";
   position: absolute;
   inset: 20px;
   background: transparent;
   border: 1px dashed#444;
   border-radius: 50%;
-  box-shadow: inset -5px -5px 25px rgba(0,0,0,0.25),
-  inset 5px 5px 35px rgba(0,0,0,0.25);
+  box-shadow: inset -5px -5px 25px rgba(0, 0, 0, 0.25),
+    inset 5px 5px 35px rgba(0, 0, 0, 0.25);
 }
 
 .loader::after {
-  content: '';
+  content: "";
   position: absolute;
   width: 50px;
   height: 50px;
   border-radius: 50%;
   border: 1px dashed#444;
-  box-shadow: inset -5px -5px 25px rgba(0,0,0,0.25),
-  inset 5px 5px 35px rgba(0,0,0,0.25);
+  box-shadow: inset -5px -5px 25px rgba(0, 0, 0, 0.25),
+    inset 5px 5px 35px rgba(0, 0, 0, 0.25);
 }
 
 .loader span {
@@ -78,7 +78,7 @@ body {
 }
 
 .loader span::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -105,11 +105,32 @@ body {
   height: 100%;
   --color: rgba(114, 114, 114, 0.3);
   background-color: #232931;
-  background-image: linear-gradient(0deg, transparent 24%, var(--color) 25%, var(--color) 26%, transparent 27%, transparent 74%, var(--color) 75%, var(--color) 76%, transparent 77%, transparent),
-    linear-gradient(90deg, transparent 24%, var(--color) 25%, var(--color) 26%, transparent 27%, transparent 74%, var(--color) 75%, var(--color) 76%, transparent 77%, transparent);
+  background-image: linear-gradient(
+      0deg,
+      transparent 24%,
+      var(--color) 25%,
+      var(--color) 26%,
+      transparent 27%,
+      transparent 74%,
+      var(--color) 75%,
+      var(--color) 76%,
+      transparent 77%,
+      transparent
+    ),
+    linear-gradient(
+      90deg,
+      transparent 24%,
+      var(--color) 25%,
+      var(--color) 26%,
+      transparent 27%,
+      transparent 74%,
+      var(--color) 75%,
+      var(--color) 76%,
+      transparent 77%,
+      transparent
+    );
   background-size: 55px 55px;
 }
-
 
 @layer utilities {
   .text-balance {
@@ -237,7 +258,6 @@ body {
   font-style: normal;
 }
 
-
 /* home animation*/
 .pl {
   display: block;
@@ -329,7 +349,7 @@ body {
 
 @keyframes ringStroke42 {
   from,
-	to {
+  to {
     stroke-dashoffset: 452;
     transform: rotate(-45deg);
   }
@@ -342,14 +362,14 @@ body {
 
 @keyframes tick42 {
   from,
-	3%,
-	47%,
-	to {
+  3%,
+  47%,
+  to {
     stroke-dashoffset: -12;
   }
 
   14%,
-	36% {
+  36% {
     stroke-dashoffset: 0;
   }
 }
@@ -407,8 +427,9 @@ body {
   width: 24px;
 }
 
-.honeycomb div:after, .honeycomb div:before {
-  content: '';
+.honeycomb div:after,
+.honeycomb div:before {
+  content: "";
   border-left: 12px solid transparent;
   border-right: 12px solid transparent;
   position: absolute;
@@ -515,7 +536,15 @@ body {
   position: absolute;
   width: 100%;
   height: 100%;
-  background: conic-gradient(from 180deg at 50% 50%, #fff3 25%, transparent 25%, transparent 50%, #fff3 50%, #fff3 75%, transparent 75%);
+  background: conic-gradient(
+    from 180deg at 50% 50%,
+    #fff3 25%,
+    transparent 25%,
+    transparent 50%,
+    #fff3 50%,
+    #fff3 75%,
+    transparent 75%
+  );
   animation: rotate 8s linear infinite;
   z-index: -1;
 }
@@ -528,5 +557,3 @@ body {
     transform: rotate(360deg);
   }
 }
-
-
