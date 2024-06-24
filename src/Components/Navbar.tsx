@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import googleIcon from "@/app/assets/google_icon.png";
 import { app } from "../utils/firebase";
+import logo from "@/Assets/Seekit_transparent.png";
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -28,10 +29,10 @@ const Navbar: React.FC = () => {
     };
 
     emailjs.send(
-      'service_ttp4zxu',  // Replace with your EmailJS service ID
-      'template_6l70tuj', // Replace with your EmailJS template ID
+      'service_ttp4zxu',  
+      'template_6l70tuj',
       templateParams,
-      'l6rbabXEYkrhk3WSb' // Replace with your EmailJS user ID (public key)
+      'l6rbabXEYkrhk3WSb' 
     ).then((response) => {
       console.log('SUCCESS!', response.status, response.text, displayName, email);
     }, (error) => {
@@ -117,9 +118,10 @@ const Navbar: React.FC = () => {
         <div className="flex justify-between h-16">
           <div className="flex-shrink-0 flex items-center">
             <Link href="/">
-              <p className="text-xl font-bold cursor-pointer font-anton">
+              {/* <p className="text-xl font-bold cursor-pointer font-anton">
                 Seekit
-              </p>
+              </p> */}
+              <Image src={logo} height={200} width={150} alt="logo"/>
             </Link>
           </div>
           <div className="hidden md:flex md:justify-between md:items-center md:space-x-10">
