@@ -1,9 +1,9 @@
-"use client"
+"use client";
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { app } from '../utils/firebase';
+import { auth } from '@/utils/firebase';
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, User } from 'firebase/auth';
-import '../../src/app/globals.css';
+import '@/app/globals.css';
 import Image from 'next/image';
 import google from '@/app/assets/google_icon.png';
 
@@ -12,7 +12,7 @@ const Navbar: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
   const [myPostsActive, setMyPostsActive] = useState<boolean>(false);
 
-  const auth = getAuth(app);
+  const auth = getAuth();
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const signInWithGoogle = async () => {
@@ -38,24 +38,22 @@ const Navbar: React.FC = () => {
     }
   };
 
-  // Effect to listen for changes in authentication state
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
-        setUser(user); // Set user state if user is authenticated
+        setUser(user);
       } else {
-        setUser(null); // Reset user state if no user is authenticated
+        setUser(null);
       }
     });
 
-    return () => unsubscribe(); // Cleanup function to unsubscribe from auth state changes
+    return () => unsubscribe();
   }, [auth]);
 
-  // Effect to add event listener for clicks outside the dropdown
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsOpen(false); // Close dropdown if clicked outside
+        setIsOpen(false);
       }
     };
 
@@ -66,20 +64,13 @@ const Navbar: React.FC = () => {
     };
   }, []);
 
-  // Function to toggle dropdown
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
 
-  // Function to handle clicking on 'My Posts' link
   const handleMyPostsClick = () => {
-    setMyPostsActive(true); // Set active state for 'My Posts'
-    setIsOpen(false); // Close dropdown
-
-    // Navigate to '/my-posts' route or implement fetching posts logic
-    // Replace with actual logic based on your routing and data fetching needs
-    // Example:
-    // router.push('/my-posts');
+    setMyPostsActive(true);
+    setIsOpen(false);
   };
 
   return (
@@ -104,65 +95,33 @@ const Navbar: React.FC = () => {
             <Link href='/found'>
               <p className={`text-white hover:text-gray-600 cursor-pointer ${myPostsActive ? 'text-gray-600' : ''}`} onClick={() => setMyPostsActive(false)}>Found</p>
             </Link>
-            {/* Conditional rendering based on user state */}
             {user ? (
-              <>
-                <div className='relative' ref={dropdownRef}>
-                  <button
-                    onClick={toggleMenu}
-                    className='flex items-center focus:outline-none'
-                  >
-                    <Image
-                      src={user.photoURL || '/default-avatar.png'}
-                      alt='User Avatar'
-                      className='h-8 w-8 rounded-full'
-                      width={500} // Adjust the width according to your design
-                      height={300} // Adjust the height according to your design
-                    />
-                    <span className='ml-2 text-white'>{user.displayName}</span>
-                  </button>
-                  {isOpen && (
-                    <div className='absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1'>
-                      <button
-                        onClick={handleSignOut}
-                        className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left'
-                      >
-                        Logout
-                      </button>
-                      <Link href='/myposts'>
-                        <p className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left' onClick={handleMyPostsClick}>My Posts</p>
-                      </Link>
-                    </div>
-                  )}
-                </div>
-              </>
+              <div className='relative' ref={dropdownRef}>
+                <button onClick={toggleMenu} className='flex items-center focus:outline-none'>
+                  <Image src={user.photoURL || '/default-avatar.png'} alt='User Avatar' className='h-8 w-8 rounded-full' width={500} height={300} />
+                  <span className='ml-2 text-white'>{user.displayName}</span>
+                </button>
+                {isOpen && (
+                  <div className='absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1'>
+                    <button onClick={handleSignOut} className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left'>
+                      Logout
+                    </button>
+                    <Link href='/myposts'>
+                      <p className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left' onClick={handleMyPostsClick}>My Posts</p>
+                    </Link>
+                  </div>
+                )}
+              </div>
             ) : (
-              <button
-                className='bg-[#4ECCA3] flex text-white px-4 py-2 rounded-md hover:bg-emerald-500'
-                onClick={signInWithGoogle}
-              >
+              <button className='bg-[#4ECCA3] flex text-white px-4 py-2 rounded-md hover:bg-emerald-500' onClick={signInWithGoogle}>
                 Sign Up <Image src={google} alt='google' width={30} height={30}/>
               </button>
             )}
           </div>
           <div className='flex items-center md:hidden'>
-            <button
-              onClick={toggleMenu}
-              className='text-white hover:text-gray-600 focus:outline-none focus:text-gray-600'
-            >
-              <svg
-                className='h-6 w-6'
-                xmlns='http://www.w3.org/2000/svg'
-                fill='none'
-                viewBox='0 0 24 24'
-                stroke='currentColor'
-              >
-                <path
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  strokeWidth='2'
-                  d={isOpen ? 'M6 18L18 6M6 6l12 12' : 'M4 6h16M4 12h16m-7 6h7'}
-                />
+            <button onClick={toggleMenu} className='text-white hover:text-gray-600 focus:outline-none focus:text-gray-600'>
+              <svg className='h-6 w-6' xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
+                <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d={isOpen ? 'M6 18L18 6M6 6l12 12' : 'M4 6h16M4 12h16m-7 6h7'} />
               </svg>
             </button>
           </div>
@@ -184,17 +143,11 @@ const Navbar: React.FC = () => {
               <p className={`block px-3 py-2 rounded-md text-base font-medium text-white hover:text-gray-600 cursor-pointer ${myPostsActive ? 'text-gray-600' : ''}`} onClick={() => setMyPostsActive(false)}>Found</p>
             </Link>
             {user ? (
-              <button
-                onClick={handleSignOut}
-                className='block px-3 py-2 rounded-md text-base font-medium text-gray-800 hover:text-gray-600 cursor-pointer w-full text-left'
-              >
+              <button onClick={handleSignOut} className='block px-3 py-2 rounded-md text-base font-medium text-gray-800 hover:text-gray-600 cursor-pointer w-full text-left'>
                 Logout
               </button>
             ) : (
-              <button
-                onClick={signInWithGoogle}
-                className='block w-full text-center bg-[#4ECCA3] text-white px-4 py-2 rounded-md hover:bg-emerald-500'
-              >
+              <button onClick={signInWithGoogle} className='block w-full text-center bg-[#4ECCA3] text-white px-4 py-2 rounded-md hover:bg-emerald-500'>
                 Sign Up <Image src={google} alt='google' width={30} height={30}/>
               </button>
             )}
