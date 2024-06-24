@@ -9,7 +9,7 @@ import {
   signOut,
   User,
 } from "firebase/auth";
-import "../../src/app/globals.css";
+import "@/app/globals.css";
 import Image from "next/image";
 import googleIcon from "@/app/assets/google_icon.png";
 

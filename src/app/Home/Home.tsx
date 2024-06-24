@@ -1,7 +1,7 @@
 "use client";
 import { useEffect } from "react";
-import About from "@/components/About";
-import Navbar from "@/components/Navbar";
+import About from "@/Components/About";
+import Navbar from "@/Components/Navbar";
 import "@/app/globals.css";
 import Aos from "aos";
 import "aos/dist/aos.css";
