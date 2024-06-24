@@ -3,7 +3,7 @@ import React, { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import { FaEllipsisH, FaWhatsapp, FaTwitter, FaCopy } from "react-icons/fa";
 import { auth } from "@/utils/firebase";
-import Navbar from "@/Components/Navbar";
+import Navbar from "@/components/Navbar";
 import "firebase/analytics";
 
 type Post = {
