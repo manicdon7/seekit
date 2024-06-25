@@ -10,8 +10,10 @@ dotenv.config();
 const app = express();
 
 // Middleware
-app.use(cors("https://seekit.vercel.app/"));
+app.use(cors());
 app.use(express.json());
+
+// "https://seekit.vercel.app/",
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI, { 

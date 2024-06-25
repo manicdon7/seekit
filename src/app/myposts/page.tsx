@@ -1,7 +1,13 @@
 "use client";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import Image from "next/image";
-import { FaEllipsisH, FaWhatsapp, FaTwitter, FaCopy } from "react-icons/fa";
+import {
+  FaEllipsisH,
+  FaWhatsapp,
+  FaTwitter,
+  FaCopy,
+  FaFacebook,
+} from "react-icons/fa";
 import { auth } from "@/utils/firebase";
 import Navbar from "@/Components/Navbar";
 import "firebase/analytics";
@@ -33,8 +39,8 @@ const MyPostsPage: React.FC = () => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true); // Initially loading
   const [openDropdownId, setOpenDropdownId] = useState<string | null>(null);
-
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const postRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -47,7 +53,7 @@ const MyPostsPage: React.FC = () => {
             displayName: displayName!,
             photoURL: photoURL ?? null,
           });
-          fetchUserPosts(email);
+          await fetchUserPosts(email);
         } else {
           setCurrentUser(null);
           setPosts([]);
@@ -90,10 +96,12 @@ const MyPostsPage: React.FC = () => {
       }
 
       const data = await response.json();
-      setPosts(data.posts || []);
+      console.log(data); // Log the entire response
+      setPosts(data.posts || []); // Ensure data.posts exists
       setLoading(false);
     } catch (error) {
       console.error("Error fetching posts:", error);
+      setPosts([]); // Ensure posts is an empty array on error
       setLoading(false);
     }
   };
@@ -113,13 +121,70 @@ const MyPostsPage: React.FC = () => {
 
   const copyPostLink = async (postId: string) => {
     try {
-      const postUrl = `/posts/${postId}`;
+      const post = posts.find((post) => post.id === postId);
+      if (!post) {
+        console.error(`Post with ID ${postId} not found.`);
+        return;
+      }
+
+      const postUrl = `https://seekit.vercel.app/myposts/${postId}`;
       await navigator.clipboard.writeText(postUrl);
       console.log("Link copied to clipboard:", postUrl);
     } catch (error) {
       console.error("Error copying link:", error);
     }
   };
+
+  const shareOnSocialMedia = (postId: string) => {
+    const postUrl = `https://seekit.vercel.app/myposts/${postId}`;
+
+    // Share on WhatsApp
+    const whatsappShareUrl = `whatsapp://send?text=Check out this found item: ${encodeURIComponent(postUrl)}`;
+
+    // Share on Twitter
+    const twitterShareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(postUrl)}`;
+
+    // Share on Facebook
+    const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(postUrl)}`;
+
+    // Log post ID for debugging
+    console.log("Sharing post with ID:", postId);
+
+    // Open sharing URLs
+    window.open(whatsappShareUrl, "_blank");
+    window.open(twitterShareUrl, "_blank");
+    window.open(facebookShareUrl, "_blank");
+  };
+
+  const handleIntersect = useCallback(
+    (entries: IntersectionObserverEntry[]) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const postId = entry.target.getAttribute("data-post-id");
+          if (postId) {
+            console.log("Post in view:", postId);
+          }
+        }
+      });
+    },
+    []
+  );
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(handleIntersect, {
+      root: null,
+      rootMargin: "0px",
+      threshold: 0.1,
+    });
+
+    postRefs.current.forEach((ref) => {
+      if (ref) observer.observe(ref);
+    });
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [posts, handleIntersect]);
 
   if (loading) {
     return (
@@ -193,9 +258,10 @@ const MyPostsPage: React.FC = () => {
         <h2 className="text-2xl font-semibold mb-6">Your findings:</h2>
         {posts.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mx-20">
-            {posts.map((post) => (
+            {posts.map((post, index) => (
               <div
                 key={post.id}
+                data-post-id={post.id}
                 className="relative max-w-sm rounded overflow-hidden shadow-2xl bg-white transition-transform transform hover:scale-105 hover:shadow-2xl"
               >
                 <div className="absolute top-2 right-2" ref={dropdownRef}>
@@ -216,12 +282,40 @@ const MyPostsPage: React.FC = () => {
                           <span className="text-black">Copy Link</span>
                         </div>
                         <div className="py-2 px-4 hover:bg-gray-200 flex items-center space-x-2 cursor-pointer">
-                          <FaWhatsapp className="text-green-500" />
-                          <span className="text-black">Share on WhatsApp</span>
+                          <a
+                            href="#"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              shareOnSocialMedia(post.id);
+                            }}
+                          >
+                            <FaWhatsapp className="text-green-500" />
+                            <span className="text-black">Share on WhatsApp</span>
+                          </a>
                         </div>
                         <div className="py-2 px-4 hover:bg-gray-200 flex items-center space-x-2 cursor-pointer">
-                          <FaTwitter className="text-blue-500" />
-                          <span className="text-black">Share on Twitter</span>
+                          <a
+                            href="#"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              shareOnSocialMedia(post.id);
+                            }}
+                          >
+                            <FaTwitter className="text-blue-500" />
+                            <span className="text-black">Share on Twitter</span>
+                          </a>
+                        </div>
+                        <div className="py-2 px-4 hover:bg-gray-200 flex items-center space-x-2 cursor-pointer">
+                          <a
+                            href="#"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              shareOnSocialMedia(post.id);
+                            }}
+                          >
+                            <FaFacebook className="text-blue-700" />
+                            <span className="text-black">Share on Facebook</span>
+                          </a>
                         </div>
                       </div>
                     </div>

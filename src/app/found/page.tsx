@@ -15,6 +15,7 @@ import google from "@/app/assets/google_icon.png";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "@/app/globals.css";
+import FoundItemSteps from "@/Components/FoundItems";
 
 type Props = {};
 
@@ -36,6 +37,19 @@ const FoundItemForm: React.FC<Props> = (props: Props) => {
   const [formData, setFormData] = useState(initialFormData);
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [showSignInPopup, setShowSignInPopup] = useState(false);
+
+  const steps = [
+    'Secure the Item: Safely secure the lost item to prevent further loss or damage.',
+    'Document Details: Take note of all relevant details about the found item.',
+    'Check for Identification: Look for any identification tags, labels, or marks on the item.',
+    'Attempt to Contact Owner Directly: Use identifiable information to contact the owner directly.',
+    'Use Online Platforms: Utilize online platforms and social media to post about the found item.',
+    'Contact Local Authorities: Notify local authorities about the found item.',
+    'Keep Records: Maintain accurate records of all interactions and efforts made to reunite the item.',
+    'Follow Legal Requirements: Be aware of any legal obligations or requirements in your area.',
+    'Maintain Found Item Securely: Continue to securely store the found item until it can be returned.',
+    'Exercise Caution: Always exercise caution and use common sense when handling found items.',
+  ];
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -312,6 +326,20 @@ const FoundItemForm: React.FC<Props> = (props: Props) => {
             Submit
           </button>
         </form>
+        <div>
+          <div className="bg-[#232931] text-white font-anton flex justify-start items-center">
+          <div className="spinner mx-32 mt-5">
+            <div className="spinner1"></div>
+          </div>
+            <div className="max-w-3xl w-full p-8 transition-all ease-in-out duration-500" style={{ marginTop: "20vh" }}>
+              <h1 className="text-4xl font-bold text-center mb-8">Take a look at Steps to Reunite a Found Item</h1>
+              <FoundItemSteps description="Steps to Reunite a Found Item" steps={steps} />
+            </div>
+          <div className="spinner mx-32">
+            <div className="spinner1"></div>
+          </div>
+          </div>
+        </div>
       </motion.div>
       {showSignInPopup && (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">

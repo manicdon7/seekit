@@ -184,7 +184,7 @@ const LostItemForm: React.FC = () => {
           </div>
           <div className="mb-6">
             <label htmlFor="time" className="block text-gray-300">
-              Time Found
+              Time Lost
             </label>
             <input
               type="datetime-local"
@@ -198,7 +198,7 @@ const LostItemForm: React.FC = () => {
           </div>
           <div className="mb-6">
             <label htmlFor="place" className="block text-gray-300">
-              Place Found
+              Place Lost or Place You Remember
             </label>
             <input
               type="text"
