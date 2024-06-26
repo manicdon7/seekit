@@ -161,7 +161,7 @@ const FoundItemForm: React.FC<Props> = (props: Props) => {
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="container mx-auto p-8"
       >
-        <h2 className="text-3xl font-bold mb-6 text-center pt-20">
+        <h2 className="text-5xl font-bold mb-6 text-center pt-20">
           Report Found Item
         </h2>
         <form

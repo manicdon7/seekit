@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import Image from "next/image";
 import {
@@ -10,10 +10,10 @@ import {
 } from "react-icons/fa";
 import { auth } from "@/utils/firebase";
 import Navbar from "@/Components/Navbar";
-import "firebase/analytics";
+import Link from "next/link"; // Import Link from Next.js for navigation
 
 type Post = {
-  id: string;
+  _id: string;
   itemName: string;
   time: string;
   place: string;
@@ -37,9 +37,8 @@ type User = {
 const MyPostsPage: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState<boolean>(true); // Initially loading
+  const [loading, setLoading] = useState<boolean>(true);
   const [openDropdownId, setOpenDropdownId] = useState<string | null>(null);
-  const dropdownRef = useRef<HTMLDivElement>(null);
   const postRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
@@ -107,10 +106,7 @@ const MyPostsPage: React.FC = () => {
   };
 
   const handleClickOutside = (event: MouseEvent) => {
-    if (
-      dropdownRef.current &&
-      !dropdownRef.current.contains(event.target as Node)
-    ) {
+    if (!postRefs.current.some((ref) => ref?.contains(event.target as Node))) {
       setOpenDropdownId(null);
     }
   };
@@ -121,12 +117,12 @@ const MyPostsPage: React.FC = () => {
 
   const copyPostLink = async (postId: string) => {
     try {
-      const post = posts.find((post) => post.id === postId);
+      const post = posts.find((post) => post._id === postId);
       if (!post) {
         console.error(`Post with ID ${postId} not found.`);
         return;
       }
-
+  
       const postUrl = `https://seekit.vercel.app/myposts/${postId}`;
       await navigator.clipboard.writeText(postUrl);
       console.log("Link copied to clipboard:", postUrl);
@@ -134,26 +130,26 @@ const MyPostsPage: React.FC = () => {
       console.error("Error copying link:", error);
     }
   };
-
-  const shareOnSocialMedia = (postId: string) => {
+  
+  const shareOnSocialMedia = (postId: string, platform: string) => {
     const postUrl = `https://seekit.vercel.app/myposts/${postId}`;
 
-    // Share on WhatsApp
-    const whatsappShareUrl = `whatsapp://send?text=Check out this found item: ${encodeURIComponent(postUrl)}`;
+    let shareUrl = "";
+    if (platform === "whatsapp") {
+      shareUrl = `whatsapp://send?text=Check out this found item: ${encodeURIComponent(
+        postUrl
+      )}`;
+    } else if (platform === "twitter") {
+      shareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(
+        postUrl
+      )}`;
+    } else if (platform === "facebook") {
+      shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+        postUrl
+      )}`;
+    }
 
-    // Share on Twitter
-    const twitterShareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(postUrl)}`;
-
-    // Share on Facebook
-    const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(postUrl)}`;
-
-    // Log post ID for debugging
-    console.log("Sharing post with ID:", postId);
-
-    // Open sharing URLs
-    window.open(whatsappShareUrl, "_blank");
-    window.open(twitterShareUrl, "_blank");
-    window.open(facebookShareUrl, "_blank");
+    window.open(shareUrl, "_blank");
   };
 
   const handleIntersect = useCallback(
@@ -248,7 +244,7 @@ const MyPostsPage: React.FC = () => {
             <div className="bg-gray-600 hover:scale-105 transition transform rounded-3xl p-3">
               <h2 className="text-2xl font-semibold">Recent Activity</h2>
               {posts.slice(0, 3).map((post) => (
-                <p key={post.id} className="text-xl">
+                <p key={post._id} className="text-xl">
                   {post.itemName} - {post.time}
                 </p>
               ))}
@@ -259,111 +255,115 @@ const MyPostsPage: React.FC = () => {
         {posts.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mx-20">
             {posts.map((post, index) => (
-              <div
-                key={post.id}
-                data-post-id={post.id}
-                className="relative max-w-sm rounded overflow-hidden shadow-2xl bg-white transition-transform transform hover:scale-105 hover:shadow-2xl"
-              >
-                <div className="absolute top-2 right-2" ref={dropdownRef}>
-                  <button
-                    className="relative z-10 p-3 focus:outline-none"
-                    onClick={() => toggleDropdown(post.id)}
+              <Link href={"/posts/[postId]"} as={`/myposts/posts/${post._id}`} key={post._id}>
+                <p>
+                  <div
+                    data-post-id={post._id}
+                    ref={(el) => { postRefs.current[index] = el; }}
+                    className="relative max-w-sm rounded overflow-hidden shadow-2xl bg-white transition-transform transform hover:scale-105 hover:shadow-2xl"
                   >
-                    <FaEllipsisH className="text-gray-600 hover:text-gray-800" />
-                  </button>
-                  {openDropdownId === post.id && (
-                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-20">
-                      <div className="border-t border-gray-200">
-                        <div
-                          className="py-2 px-4 hover:bg-gray-200 flex items-center space-x-2 cursor-pointer"
-                          onClick={() => copyPostLink(post.id)}
-                        >
-                          <FaCopy className="text-purple-500" />
-                          <span className="text-black">Copy Link</span>
+                    <div className="absolute top-2 right-2">
+                      <button
+                        className="relative z-10 p-3 focus:outline-none"
+                        onClick={() => toggleDropdown(post._id)}
+                      >
+                        <FaEllipsisH className="text-gray-600 hover:text-gray-800" />
+                      </button>
+                      {openDropdownId === post._id && (
+                        <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-20">
+                          <div className="border-t border-gray-200">
+                            <div
+                              className="py-2 px-4 hover:bg-gray-200 flex items-center space-x-2 cursor-pointer"
+                              onClick={() => copyPostLink(post._id)}
+                            >
+                              <FaCopy className="text-purple-500" />
+                              <span className="text-black">Copy Link</span>
+                            </div>
+                            <div className="py-2 px-4 hover:bg-gray-200 flex items-center space-x-2 cursor-pointer">
+                              <a
+                                href="#"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  shareOnSocialMedia(post._id, "whatsapp");
+                                }}
+                              >
+                                <FaWhatsapp className="text-green-500" />
+                                <span className="text-black">Share on WhatsApp</span>
+                              </a>
+                            </div>
+                            <div className="py-2 px-4 hover:bg-gray-200 flex items-center space-x-2 cursor-pointer">
+                              <a
+                                href="#"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  shareOnSocialMedia(post._id, "twitter");
+                                }}
+                              >
+                                <FaTwitter className="text-blue-500" />
+                                <span className="text-black">Share on Twitter</span>
+                              </a>
+                            </div>
+                            <div className="py-2 px-4 hover:bg-gray-200 flex items-center space-x-2 cursor-pointer">
+                              <a
+                                href="#"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  shareOnSocialMedia(post._id, "facebook");
+                                }}
+                              >
+                                <FaFacebook className="text-blue-700" />
+                                <span className="text-black">Share on Facebook</span>
+                              </a>
+                            </div>
+                          </div>
                         </div>
-                        <div className="py-2 px-4 hover:bg-gray-200 flex items-center space-x-2 cursor-pointer">
-                          <a
-                            href="#"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              shareOnSocialMedia(post.id);
-                            }}
-                          >
-                            <FaWhatsapp className="text-green-500" />
-                            <span className="text-black">Share on WhatsApp</span>
-                          </a>
-                        </div>
-                        <div className="py-2 px-4 hover:bg-gray-200 flex items-center space-x-2 cursor-pointer">
-                          <a
-                            href="#"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              shareOnSocialMedia(post.id);
-                            }}
-                          >
-                            <FaTwitter className="text-blue-500" />
-                            <span className="text-black">Share on Twitter</span>
-                          </a>
-                        </div>
-                        <div className="py-2 px-4 hover:bg-gray-200 flex items-center space-x-2 cursor-pointer">
-                          <a
-                            href="#"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              shareOnSocialMedia(post.id);
-                            }}
-                          >
-                            <FaFacebook className="text-blue-700" />
-                            <span className="text-black">Share on Facebook</span>
-                          </a>
-                        </div>
-                      </div>
+                      )}
                     </div>
-                  )}
-                </div>
-                <Image
-                  className="w-full h-60 p-3 rounded-3xl object-cover"
-                  src={post.imageURL}
-                  alt="Item"
-                  width={500}
-                  height={300}
-                />
-                <div className="px-6 py-4">
-                  <div className="font-bold text-xl mb-2">{post.itemName}</div>
-                  <p className="text-gray-700 text-base">
-                    <strong>Time:</strong> {post.time}
-                  </p>
-                  <p className="text-gray-700 text-base">
-                    <strong>Place:</strong> {post.place}
-                  </p>
-                  <p className="text-gray-700 text-base">
-                    <strong>Category:</strong> {post.category}
-                  </p>
-                  <p className="text-gray-700 text-base">
-                    <strong>Color:</strong> {post.color}
-                  </p>
-                  <p className="text-gray-700 text-base">
-                    <strong>Description:</strong> {post.description}
-                  </p>
-                  <p className="text-gray-700 text-base">
-                    <strong>Phone:</strong> {post.phone}
-                  </p>
-                  <p className="text-gray-700 text-base">
-                    <strong>Address:</strong> {post.address}
-                  </p>
-                  <p className="text-gray-700 text-base">
-                    <strong>Gmail:</strong> {post.gmail}
-                  </p>
-                  <p className="text-gray-700 text-base">
-                    <strong>Posted by:</strong> {post.founderEmail}
-                  </p>
-                  {post.reunited && (
-                    <p className="text-green-500 text-base">
-                      <strong>Status:</strong> Reunited
-                    </p>
-                  )}
-                </div>
-              </div>
+                    <Image
+                      className="w-full h-60 p-3 rounded-3xl object-cover"
+                      src={post.imageURL}
+                      alt="Item"
+                      width={500}
+                      height={300}
+                    />
+                    <div className="px-6 py-4">
+                      <div className="font-bold text-xl mb-2">{post.itemName}</div>
+                      <p className="text-gray-700 text-base">
+                        <strong>Time:</strong> {post.time}
+                      </p>
+                      <p className="text-gray-700 text-base">
+                        <strong>Place:</strong> {post.place}
+                      </p>
+                      <p className="text-gray-700 text-base">
+                        <strong>Category:</strong> {post.category}
+                      </p>
+                      <p className="text-gray-700 text-base">
+                        <strong>Color:</strong> {post.color}
+                      </p>
+                      <p className="text-gray-700 text-base">
+                        <strong>Description:</strong> {post.description}
+                      </p>
+                      <p className="text-gray-700 text-base">
+                        <strong>Phone:</strong> {post.phone}
+                      </p>
+                      <p className="text-gray-700 text-base">
+                        <strong>Address:</strong> {post.address}
+                      </p>
+                      <p className="text-gray-700 text-base">
+                        <strong>Gmail:</strong> {post.gmail}
+                      </p>
+                      <p className="text-gray-700 text-base">
+                        <strong>Posted by:</strong> {post.founderEmail}
+                      </p>
+                      {post.reunited && (
+                        <p className="text-green-500 text-base">
+                          <strong>Status:</strong> Reunited
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </p>
+              </Link>
             ))}
           </div>
         ) : (
@@ -375,3 +375,4 @@ const MyPostsPage: React.FC = () => {
 };
 
 export default MyPostsPage;
+
