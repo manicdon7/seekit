@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import Image from "next/image";
 import {
@@ -10,7 +10,6 @@ import {
 } from "react-icons/fa";
 import { auth } from "@/utils/firebase";
 import Navbar from "@/Components/Navbar";
-import Link from "next/link"; // Import Link from Next.js for navigation
 
 type Post = {
   _id: string;
@@ -122,17 +121,17 @@ const MyPostsPage: React.FC = () => {
         console.error(`Post with ID ${postId} not found.`);
         return;
       }
-  
-      const postUrl = `https://seekit.vercel.app/myposts/${postId}`;
+
+      const postUrl = `https://seekit.vercel.app/api/posts/${postId}`;
       await navigator.clipboard.writeText(postUrl);
       console.log("Link copied to clipboard:", postUrl);
     } catch (error) {
       console.error("Error copying link:", error);
     }
   };
-  
+
   const shareOnSocialMedia = (postId: string, platform: string) => {
-    const postUrl = `https://seekit.vercel.app/myposts/${postId}`;
+    const postUrl = `https://seekit.vercel.app/api/posts/${postId}`;
 
     let shareUrl = "";
     if (platform === "whatsapp") {
@@ -255,115 +254,112 @@ const MyPostsPage: React.FC = () => {
         {posts.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mx-20">
             {posts.map((post, index) => (
-              <Link href={"/posts/[postId]"} as={`/myposts/posts/${post._id}`} key={post._id}>
-                <p>
-                  <div
-                    data-post-id={post._id}
-                    ref={(el) => { postRefs.current[index] = el; }}
-                    className="relative max-w-sm rounded overflow-hidden shadow-2xl bg-white transition-transform transform hover:scale-105 hover:shadow-2xl"
+              <div
+                key={post._id}
+                data-post-id={post._id}
+                ref={(el) => { postRefs.current[index] = el; }}
+                className="relative max-w-sm rounded overflow-hidden shadow-2xl bg-white transition-transform transform hover:scale-105 hover:shadow-2xl"
+              >
+                <div className="absolute top-2 right-2">
+                  <button
+                    className="relative z-10 p-3 focus:outline-none"
+                    onClick={() => toggleDropdown(post._id)}
                   >
-                    <div className="absolute top-2 right-2">
-                      <button
-                        className="relative z-10 p-3 focus:outline-none"
-                        onClick={() => toggleDropdown(post._id)}
-                      >
-                        <FaEllipsisH className="text-gray-600 hover:text-gray-800" />
-                      </button>
-                      {openDropdownId === post._id && (
-                        <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-20">
-                          <div className="border-t border-gray-200">
-                            <div
-                              className="py-2 px-4 hover:bg-gray-200 flex items-center space-x-2 cursor-pointer"
-                              onClick={() => copyPostLink(post._id)}
-                            >
-                              <FaCopy className="text-purple-500" />
-                              <span className="text-black">Copy Link</span>
-                            </div>
-                            <div className="py-2 px-4 hover:bg-gray-200 flex items-center space-x-2 cursor-pointer">
-                              <a
-                                href="#"
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                  shareOnSocialMedia(post._id, "whatsapp");
-                                }}
-                              >
-                                <FaWhatsapp className="text-green-500" />
-                                <span className="text-black">Share on WhatsApp</span>
-                              </a>
-                            </div>
-                            <div className="py-2 px-4 hover:bg-gray-200 flex items-center space-x-2 cursor-pointer">
-                              <a
-                                href="#"
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                  shareOnSocialMedia(post._id, "twitter");
-                                }}
-                              >
-                                <FaTwitter className="text-blue-500" />
-                                <span className="text-black">Share on Twitter</span>
-                              </a>
-                            </div>
-                            <div className="py-2 px-4 hover:bg-gray-200 flex items-center space-x-2 cursor-pointer">
-                              <a
-                                href="#"
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                  shareOnSocialMedia(post._id, "facebook");
-                                }}
-                              >
-                                <FaFacebook className="text-blue-700" />
-                                <span className="text-black">Share on Facebook</span>
-                              </a>
-                            </div>
-                          </div>
+                    <FaEllipsisH className="text-gray-600 hover:text-gray-800" />
+                  </button>
+                  {openDropdownId === post._id && (
+                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-20">
+                      <div className="border-t border-gray-200">
+                        <div
+                          className="py-2 px-4 hover:bg-gray-200 flex items-center space-x-2 cursor-pointer"
+                          onClick={() => copyPostLink(post._id)}
+                        >
+                          <FaCopy className="text-purple-500" />
+                          <span className="text-black">Copy Link</span>
                         </div>
-                      )}
+                        <div className="py-2 px-4 hover:bg-gray-200 flex items-center space-x-2 cursor-pointer">
+                          <a
+                            href="#"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              shareOnSocialMedia(post._id, "whatsapp");
+                            }}
+                          >
+                            <FaWhatsapp className="text-green-500" />
+                            <span className="text-black">Share on WhatsApp</span>
+                          </a>
+                        </div>
+                        <div className="py-2 px-4 hover:bg-gray-200 flex items-center space-x-2 cursor-pointer">
+                          <a
+                            href="#"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              shareOnSocialMedia(post._id, "twitter");
+                            }}
+                          >
+                            <FaTwitter className="text-blue-500" />
+                            <span className="text-black">Share on Twitter</span>
+                          </a>
+                        </div>
+                        <div className="py-2 px-4 hover:bg-gray-200 flex items-center space-x-2 cursor-pointer">
+                          <a
+                            href="#"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              shareOnSocialMedia(post._id, "facebook");
+                            }}
+                          >
+                            <FaFacebook className="text-blue-700" />
+                            <span className="text-black">Share on Facebook</span>
+                          </a>
+                        </div>
+                      </div>
                     </div>
-                    <Image
-                      className="w-full h-60 p-3 rounded-3xl object-cover"
-                      src={post.imageURL}
-                      alt="Item"
-                      width={500}
-                      height={300}
-                    />
-                    <div className="px-6 py-4">
-                      <div className="font-bold text-xl mb-2">{post.itemName}</div>
-                      <p className="text-gray-700 text-base">
-                        <strong>Time:</strong> {post.time}
-                      </p>
-                      <p className="text-gray-700 text-base">
-                        <strong>Place:</strong> {post.place}
-                      </p>
-                      <p className="text-gray-700 text-base">
-                        <strong>Category:</strong> {post.category}
-                      </p>
-                      <p className="text-gray-700 text-base">
-                        <strong>Color:</strong> {post.color}
-                      </p>
-                      <p className="text-gray-700 text-base">
-                        <strong>Description:</strong> {post.description}
-                      </p>
-                      <p className="text-gray-700 text-base">
-                        <strong>Phone:</strong> {post.phone}
-                      </p>
-                      <p className="text-gray-700 text-base">
-                        <strong>Address:</strong> {post.address}
-                      </p>
-                      <p className="text-gray-700 text-base">
-                        <strong>Gmail:</strong> {post.gmail}
-                      </p>
-                      <p className="text-gray-700 text-base">
-                        <strong>Posted by:</strong> {post.founderEmail}
-                      </p>
-                      {post.reunited && (
-                        <p className="text-green-500 text-base">
-                          <strong>Status:</strong> Reunited
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                </p>
-              </Link>
+                  )}
+                </div>
+                <Image
+                  className="w-full h-60 p-3 rounded-3xl object-cover"
+                  src={post.imageURL}
+                  alt="Item"
+                  width={500}
+                  height={300}
+                />
+                <div className="px-6 py-4">
+                  <div className="font-bold text-xl mb-2">{post.itemName}</div>
+                  <p className="text-gray-700 text-base">
+                    <strong>Time:</strong> {post.time}
+                  </p>
+                  <p className="text-gray-700 text-base">
+                    <strong>Place:</strong> {post.place}
+                  </p>
+                  <p className="text-gray-700 text-base">
+                    <strong>Category:</strong> {post.category}
+                  </p>
+                  <p className="text-gray-700 text-base">
+                    <strong>Color:</strong> {post.color}
+                  </p>
+                  <p className="text-gray-700 text-base">
+                    <strong>Description:</strong> {post.description}
+                  </p>
+                  <p className="text-gray-700 text-base">
+                    <strong>Phone:</strong> {post.phone}
+                  </p>
+                  <p className="text-gray-700 text-base">
+                    <strong>Address:</strong> {post.address}
+                  </p>
+                  <p className="text-gray-700 text-base">
+                    <strong>Gmail:</strong> {post.gmail}
+                  </p>
+                  <p className="text-gray-700 text-base">
+                    <strong>Posted by:</strong> {post.founderEmail}
+                  </p>
+                  {post.reunited && (
+                    <p className="text-green-500 text-base">
+                      <strong>Status:</strong> Reunited
+                    </p>
+                  )}
+                </div>
+              </div>
             ))}
           </div>
         ) : (
@@ -375,4 +371,3 @@ const MyPostsPage: React.FC = () => {
 };
 
 export default MyPostsPage;
-

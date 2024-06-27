@@ -10,7 +10,7 @@ dotenv.config();
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors("https://seekit.vercel.app/"));
 app.use(express.json());
 
 // "https://seekit.vercel.app/",
@@ -27,10 +27,12 @@ mongoose.connect(process.env.MONGO_URI, {
 const foundItemsRoute = require('./routes/founditemsroute');
 const postsRoute = require('./routes/allposts');
 const lostItemsRoute = require('./routes/lostitemsroute');
+const postDetailsRoute = require('./routes/allposts');
 
 app.use('/api/found-items', foundItemsRoute);
 app.use('/api/posts', postsRoute);
 app.use('/api/lost-items', lostItemsRoute);
+app.use('/api/posts', postDetailsRoute);
 
 // Home route
 app.get('/', (req, res) => {

@@ -3,6 +3,25 @@ const FoundItem = require('../models/founditems');
 
 const router = express.Router();
 
+router.get('/:postId', async (req, res) => {
+  const { postId } = req.params;
+  console.log(postId);
+  
+  try {
+    const post = await FoundItem.findById(postId);
+    console.log(post);
+    
+    if (!post) {
+      return res.status(404).json({ error: 'Post not found' });
+    }
+
+    res.status(200).json({ post });
+  } catch (error) {
+    console.error('Error fetching post:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 // Get posts by user email
 router.post('/', async (req, res) => {
   try {
