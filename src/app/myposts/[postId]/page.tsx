@@ -1,5 +1,6 @@
 "use client"
-import { notFound } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import Navbar from '@/Components/Navbar';
 
@@ -33,11 +34,30 @@ async function fetchPost(postId: string): Promise<Post | null> {
   }
 }
 
-export default async function PostDetailPage({ params }: { params: { postId: string } }) {
-  const post = await fetchPost(params.postId);
+export default function PostDetailPage() {
+  const { postId } = useParams(); // Extract postId from URL
+  const [post, setPost] = useState<Post | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    const fetchPostData = async () => {
+      if (postId) {
+        setLoading(true);
+        const postData = await fetchPost(postId as string);
+        setPost(postData);
+        setLoading(false);
+      }
+    };
+
+    fetchPostData();
+  }, [postId]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   if (!post) {
-    notFound();
+    return <div>Post not found</div>; // Handle post not found state
   }
 
   return (

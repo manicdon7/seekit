@@ -5,11 +5,11 @@ const router = express.Router();
 
 router.get('/:postId', async (req, res) => {
   const { postId } = req.params;
-  console.log(postId);
+  console.log(postId); // Logging the postId to verify it's received correctly
   
   try {
     const post = await FoundItem.findById(postId);
-    console.log(post);
+    console.log(post); // Logging the retrieved post to verify
     
     if (!post) {
       return res.status(404).json({ error: 'Post not found' });
@@ -21,6 +21,7 @@ router.get('/:postId', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
 
 // Get posts by user email
 router.post('/', async (req, res) => {
