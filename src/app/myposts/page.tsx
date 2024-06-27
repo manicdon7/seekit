@@ -122,7 +122,7 @@ const MyPostsPage: React.FC = () => {
         return;
       }
 
-      const postUrl = `https://seekit.vercel.app/api/posts/${postId}`;
+      const postUrl = `https://seekit.vercel.app/myposts/${postId}`;
       await navigator.clipboard.writeText(postUrl);
       console.log("Link copied to clipboard:", postUrl);
     } catch (error) {
@@ -131,7 +131,7 @@ const MyPostsPage: React.FC = () => {
   };
 
   const shareOnSocialMedia = (postId: string, platform: string) => {
-    const postUrl = `https://seekit.vercel.app/api/posts/${postId}`;
+    const postUrl = `https://seekit.vercel.app/myposts/${postId}`;
 
     let shareUrl = "";
     if (platform === "whatsapp") {
