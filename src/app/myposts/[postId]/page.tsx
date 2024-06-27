@@ -1,8 +1,7 @@
-"use client";
-import { useEffect, useState } from 'react';
-import Navbar from '@/Components/Navbar';
+"use client"
+import { notFound } from 'next/navigation';
 import Image from 'next/image';
-import { usePathname, useParams } from 'next/navigation';
+import Navbar from '@/Components/Navbar';
 
 type Post = {
   _id: string;
@@ -20,43 +19,25 @@ type Post = {
   reunited: boolean;
 };
 
-const PostDetail: React.FC = () => {
-  const pathname = usePathname();
-  const params = useParams();
-  const postId = params.postId;
-
-  const [post, setPost] = useState<Post | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-
-  console.log(postId);
-
-  useEffect(() => {
-    const fetchPostDetails = async () => {
-      if (!postId) return;
-
-      try {
-        const response = await fetch(`https://seekit-server.vercel.app/api/posts/${postId}`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch post');
-        }
-        const data = await response.json();
-        setPost(data.post || null);
-        setLoading(false);
-      } catch (error) {
-        console.error('Error fetching post:', error);
-        setLoading(false);
-      }
-    };
-
-    fetchPostDetails();
-  }, [postId]);
-
-  if (loading) {
-    return <div>Loading...</div>; // Handle loading state
+async function fetchPost(postId: string): Promise<Post | null> {
+  try {
+    const response = await fetch(`http://localhost:5000/api/posts/${postId}`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch post');
+    }
+    const data = await response.json();
+    return data.post;
+  } catch (error) {
+    console.error('Error fetching post:', error);
+    return null;
   }
+}
+
+export default async function PostDetailPage({ params }: { params: { postId: string } }) {
+  const post = await fetchPost(params.postId);
 
   if (!post) {
-    return <div>Post not found</div>; // Handle post not found state
+    notFound();
   }
 
   return (
@@ -92,6 +73,4 @@ const PostDetail: React.FC = () => {
       </div>
     </div>
   );
-};
-
-export default PostDetail;
+}
