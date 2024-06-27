@@ -21,7 +21,7 @@ type Post = {
 
 async function fetchPost(postId: string): Promise<Post | null> {
   try {
-    const response = await fetch(`http://localhost:5000/api/posts/${postId}`);
+    const response = await fetch(`https://seekit-server.vercel.app/api/posts/${postId}`);
     if (!response.ok) {
       throw new Error('Failed to fetch post');
     }
