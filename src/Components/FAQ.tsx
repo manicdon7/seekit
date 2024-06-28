@@ -23,7 +23,7 @@ const FAQ: React.FC = () => {
                 </div>
                 <div>
                     <h1 className="font-anton font-semibold pt-4 text-3xl">FAQ! Need Help ?</h1>
-                    <h1 className='font-anton font-medium pl-6'>We've Got You Covered!</h1>
+                    <h1 className='font-anton font-medium pl-6'>We&apos;ve Got You Covered!</h1>
                 </div>
             </div>
 
