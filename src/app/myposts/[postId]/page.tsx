@@ -38,7 +38,7 @@ async function fetchPost(postId: string): Promise<Post | null> {
 }
 
 export default function PostDetailPage() {
-  const { postId } = useParams(); // Extract postId from URL
+  const { postId } = useParams();
   const [post, setPost] = useState<Post | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const router = useRouter();
@@ -49,7 +49,7 @@ export default function PostDetailPage() {
         setLoading(true);
         const postData = await fetchPost(postId as string);
         if (!postData) {
-          router.push('/404'); // Navigate to custom 404 page
+          router.push('/404');
         } else {
           setPost(postData);
         }
