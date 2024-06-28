@@ -1,13 +1,18 @@
-"use client"
-import React, { useEffect, useState, useRef } from 'react';
-import Image from 'next/image';
-import { FaEllipsisH, FaWhatsapp, FaTwitter, FaCopy } from 'react-icons/fa';
-import { auth } from '@/utils/firebase';
-import Navbar from '@/Components/Navbar';
-import 'firebase/analytics';
+"use client";
+import React, { useEffect, useState, useRef, useCallback } from "react";
+import Image from "next/image";
+import {
+  FaEllipsisH,
+  FaWhatsapp,
+  FaTwitter,
+  FaCopy,
+  FaFacebook,
+} from "react-icons/fa";
+import { auth } from "@/utils/firebase";
+import Navbar from "@/Components/Navbar";
 
 type Post = {
-  id: string;
+  _id: string;
   itemName: string;
   time: string;
   place: string;
@@ -31,10 +36,9 @@ type User = {
 const MyPostsPage: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState<boolean>(true); // Initially loading
+  const [loading, setLoading] = useState<boolean>(true);
   const [openDropdownId, setOpenDropdownId] = useState<string | null>(null);
-
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  const postRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -42,15 +46,19 @@ const MyPostsPage: React.FC = () => {
         const user = await auth.currentUser;
         if (user) {
           const { email, displayName, photoURL } = user;
-          setCurrentUser({ email: email!, displayName: displayName!, photoURL: photoURL ?? null });
-          fetchUserPosts(email);
+          setCurrentUser({
+            email: email!,
+            displayName: displayName!,
+            photoURL: photoURL ?? null,
+          });
+          await fetchUserPosts(email);
         } else {
           setCurrentUser(null);
           setPosts([]);
           setLoading(false);
         }
       } catch (error) {
-        console.error('Error fetching user:', error);
+        console.error("Error fetching user:", error);
         setCurrentUser(null);
         setPosts([]);
         setLoading(false);
@@ -59,10 +67,10 @@ const MyPostsPage: React.FC = () => {
 
     fetchData();
 
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
 
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
@@ -70,29 +78,34 @@ const MyPostsPage: React.FC = () => {
     if (!userEmail) return;
 
     try {
-      const response = await fetch('https://seekit-server.vercel.app/api/posts', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ userEmail }),
-      });
+      const response = await fetch(
+        "https://seekit-server.vercel.app/api/posts",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userEmail }),
+        }
+      );
 
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error("Network response was not ok");
       }
 
       const data = await response.json();
-      setPosts(data.posts || []);
+      console.log(data); // Log the entire response
+      setPosts(data.posts || []); // Ensure data.posts exists
       setLoading(false);
     } catch (error) {
-      console.error('Error fetching posts:', error);
+      console.error("Error fetching posts:", error);
+      setPosts([]); // Ensure posts is an empty array on error
       setLoading(false);
     }
   };
 
   const handleClickOutside = (event: MouseEvent) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+    if (!postRefs.current.some((ref) => ref?.contains(event.target as Node))) {
       setOpenDropdownId(null);
     }
   };
@@ -103,13 +116,70 @@ const MyPostsPage: React.FC = () => {
 
   const copyPostLink = async (postId: string) => {
     try {
-      const postUrl = `/posts/${postId}`;
+      const post = posts.find((post) => post._id === postId);
+      if (!post) {
+        console.error(`Post with ID ${postId} not found.`);
+        return;
+      }
+
+      const postUrl = `https://seekit.vercel.app/myposts/${postId}`;
       await navigator.clipboard.writeText(postUrl);
-      console.log('Link copied to clipboard:', postUrl);
+      console.log("Link copied to clipboard:", postUrl);
     } catch (error) {
-      console.error('Error copying link:', error);
+      console.error("Error copying link:", error);
     }
-  };;
+  };
+
+  const shareOnSocialMedia = (postId: string, platform: string) => {
+    const postUrl = `https://seekit.vercel.app/myposts/${postId}`;
+
+    let shareUrl = "";
+    if (platform === "whatsapp") {
+      shareUrl = `whatsapp://send?text=Check out this found item: ${encodeURIComponent(
+        postUrl
+      )}`;
+    } else if (platform === "twitter") {
+      shareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(
+        postUrl
+      )}`;
+    } else if (platform === "facebook") {
+      shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+        postUrl
+      )}`;
+    }
+
+    window.open(shareUrl, "_blank");
+  };
+
+  const handleIntersect = useCallback(
+    (entries: IntersectionObserverEntry[]) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const postId = entry.target.getAttribute("data-post-id");
+          if (postId) {
+            console.log("Post in view:", postId);
+          }
+        }
+      });
+    },
+    []
+  );
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(handleIntersect, {
+      root: null,
+      rootMargin: "0px",
+      threshold: 0.1,
+    });
+
+    postRefs.current.forEach((ref) => {
+      if (ref) observer.observe(ref);
+    });
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [posts, handleIntersect]);
 
   if (loading) {
     return (
@@ -124,10 +194,13 @@ const MyPostsPage: React.FC = () => {
   const postCount = posts.length;
   const reunitedCount = posts.filter((post) => post.reunited).length;
 
-  const postCategories = posts.reduce<{ [key: string]: number }>((acc, post) => {
-    acc[post.category] = (acc[post.category] || 0) + 1;
-    return acc;
-  }, {});
+  const postCategories = posts.reduce<{ [key: string]: number }>(
+    (acc, post) => {
+      acc[post.category] = (acc[post.category] || 0) + 1;
+      return acc;
+    },
+    {}
+  );
 
   return (
     <div className="min-h-screen bg-[#232931] text-white">
@@ -144,7 +217,9 @@ const MyPostsPage: React.FC = () => {
                 className="rounded-full"
               />
             )}
-            <h1 className="text-3xl font-semibold">Welcome, {currentUser?.displayName}</h1>
+            <h1 className="text-3xl font-semibold">
+              Welcome, {currentUser?.displayName}
+            </h1>
           </div>
         </div>
         <div className="shadow-md rounded-lg p-6 mb-6 bg-gray-800">
@@ -168,7 +243,7 @@ const MyPostsPage: React.FC = () => {
             <div className="bg-gray-600 hover:scale-105 transition transform rounded-3xl p-3">
               <h2 className="text-2xl font-semibold">Recent Activity</h2>
               {posts.slice(0, 3).map((post) => (
-                <p key={post.id} className="text-xl">
+                <p key={post._id} className="text-xl">
                   {post.itemName} - {post.time}
                 </p>
               ))}
@@ -178,32 +253,65 @@ const MyPostsPage: React.FC = () => {
         <h2 className="text-2xl font-semibold mb-6">Your findings:</h2>
         {posts.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mx-20">
-            {posts.map((post) => (
+            {posts.map((post, index) => (
               <div
-                key={post.id}
+                key={post._id}
+                data-post-id={post._id}
+                ref={(el) => { postRefs.current[index] = el; }}
                 className="relative max-w-sm rounded overflow-hidden shadow-2xl bg-white transition-transform transform hover:scale-105 hover:shadow-2xl"
               >
-                <div className="absolute top-2 right-2" ref={dropdownRef}>
-                  <button className="relative z-10 p-3 focus:outline-none" onClick={() => toggleDropdown(post.id)}>
+                <div className="absolute top-2 right-2">
+                  <button
+                    className="relative z-10 p-3 focus:outline-none"
+                    onClick={() => toggleDropdown(post._id)}
+                  >
                     <FaEllipsisH className="text-gray-600 hover:text-gray-800" />
                   </button>
-                  {openDropdownId === post.id && (
+                  {openDropdownId === post._id && (
                     <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-20">
                       <div className="border-t border-gray-200">
                         <div
                           className="py-2 px-4 hover:bg-gray-200 flex items-center space-x-2 cursor-pointer"
-                          onClick={() => copyPostLink(post.id)}
+                          onClick={() => copyPostLink(post._id)}
                         >
                           <FaCopy className="text-purple-500" />
                           <span className="text-black">Copy Link</span>
                         </div>
                         <div className="py-2 px-4 hover:bg-gray-200 flex items-center space-x-2 cursor-pointer">
-                          <FaWhatsapp className="text-green-500" />
-                          <span className="text-black">Share on WhatsApp</span>
+                          <a
+                            href="#"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              shareOnSocialMedia(post._id, "whatsapp");
+                            }}
+                          >
+                            <FaWhatsapp className="text-green-500" />
+                            <span className="text-black">Share on WhatsApp</span>
+                          </a>
                         </div>
                         <div className="py-2 px-4 hover:bg-gray-200 flex items-center space-x-2 cursor-pointer">
-                          <FaTwitter className="text-blue-500" />
-                          <span className="text-black">Share on Twitter</span>
+                          <a
+                            href="#"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              shareOnSocialMedia(post._id, "twitter");
+                            }}
+                          >
+                            <FaTwitter className="text-blue-500" />
+                            <span className="text-black">Share on Twitter</span>
+                          </a>
+                        </div>
+                        <div className="py-2 px-4 hover:bg-gray-200 flex items-center space-x-2 cursor-pointer">
+                          <a
+                            href="#"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              shareOnSocialMedia(post._id, "facebook");
+                            }}
+                          >
+                            <FaFacebook className="text-blue-700" />
+                            <span className="text-black">Share on Facebook</span>
+                          </a>
                         </div>
                       </div>
                     </div>

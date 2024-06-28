@@ -3,15 +3,35 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const cors = require('cors');
 
-// Load environment variables
 dotenv.config();
 
-// Initialize Express app
 const app = express();
 
-// Middleware
-app.use(cors("https://seekit.vercel.app/"));
+const allowedOrigins = [
+  'https://seekit.vercel.app',
+  'https://seekit.vercel.app/myposts/:postId',
+  'http://localhost:3000'
+];
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: ['GET', 'POST'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+};
+
+app.use(cors(corsOptions));
+
 app.use(express.json());
+
+// "https://seekit.vercel.app/",
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI, { 
@@ -25,6 +45,7 @@ mongoose.connect(process.env.MONGO_URI, {
 const foundItemsRoute = require('./routes/founditemsroute');
 const postsRoute = require('./routes/allposts');
 const lostItemsRoute = require('./routes/lostitemsroute');
+
 
 app.use('/api/found-items', foundItemsRoute);
 app.use('/api/posts', postsRoute);
