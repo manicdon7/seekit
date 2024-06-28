@@ -73,7 +73,7 @@ const FAQ: React.FC = () => {
                     </div>
                     <div className='pt-10 flex justify-evenly px-2'>
                         <div>
-                        <h1 className='text-lg text-white font-medium text-justify'>How to Post Founded Things in Seekit ? </h1> 
+                        <h1 className='text-lg text-white font-medium text-justify'>How to Post Losted Things in Seekit ? </h1> 
                         </div>
                         <div className='pt-16'>
                         <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 8 8"><path fill="white" d="M5 1v2H0v1h5v2l3-2.53z"/></svg> 
@@ -89,7 +89,7 @@ const FAQ: React.FC = () => {
                     </div>
                     <div className='pt-10 flex justify-evenly px-2'>
                         <div>
-                        <h1 className='text-lg text-white font-medium text-justify'>How to Post Founded Things in Seekit ? </h1> 
+                        <h1 className='text-lg text-white font-medium text-justify'>How to Seek Things in Seekit ? </h1> 
                         </div>
                         <div className='pt-16'>
                         <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 8 8"><path fill="white" d="M5 1v2H0v1h5v2l3-2.53z"/></svg> 
