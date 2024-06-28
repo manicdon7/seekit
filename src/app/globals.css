@@ -584,7 +584,6 @@ body {
     transform: rotate(360deg);
   }
 }
-<<<<<<< HEAD
 
 /* FAQ */
 
@@ -703,5 +702,4 @@ body {
     transform: translate(-100%, -100%) translate3d(0, 0, 0);
   }
 }
-=======
->>>>>>> 5639b55c1dfb8a70b9a8a2311be0f3fbdf6bc211
+

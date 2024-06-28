@@ -1,5 +1,4 @@
 "use client";
-<<<<<<< HEAD
 import { useEffect } from 'react';
 import About from '@/Components/About';
 import Navbar from '../../Components/Navbar';
@@ -13,16 +12,6 @@ import FAQ from '@/Components/FAQ';
 //   backgroundImage: "url(https://img.freepik.com/free-vector/abstract-horizontal-grid-lines-graph-style-graphic-design_1017-39918.jpg?w=1060&t=st=1718889502~exp=1718890102~hmac=f4e55a277cceef96421e65aa76868caf3e4ccad4223f7ae5f596c6069244d316)",
 //   backgroundSize: "cover",
 // };
-
-
-=======
-import { useEffect } from "react";
-import About from "@/Components/About";
-import Navbar from "@/Components/Navbar";
-import "@/app/globals.css";
-import Aos from "aos";
-import "aos/dist/aos.css";
->>>>>>> 5639b55c1dfb8a70b9a8a2311be0f3fbdf6bc211
 
 const words = [
   "Reunited!",
@@ -316,23 +305,14 @@ const Home: React.FC = () => {
             </div>
           </div>
         </div>
-<<<<<<< HEAD
-      </div>
-      <div>
-        <About />
-      </div>
-      <div>
-        <FAQ/>
-      </div>
-    </main>
-                </div>
-=======
         <div>
           <About />
         </div>
+        <div>
+          <FAQ />
+        </div>
       </main>
     </div>
->>>>>>> 5639b55c1dfb8a70b9a8a2311be0f3fbdf6bc211
   );
 };
 

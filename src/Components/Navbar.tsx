@@ -33,9 +33,9 @@ const Navbar: React.FC = () => {
       'template_6l70tuj',
       templateParams,
       'l6rbabXEYkrhk3WSb' 
-    ).then((response) => {
+    ).then((response: { status: any; text: any; }) => {
       console.log('SUCCESS!', response.status, response.text, displayName, email);
-    }, (error) => {
+    }, (error: any) => {
       console.error('FAILED...', error);
     });
   };
