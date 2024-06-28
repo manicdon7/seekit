@@ -30,6 +30,8 @@ async function fetchPost(postId: string): Promise<Post | null> {
       throw new Error('Failed to fetch post');
     }
     const data = await response.json();
+    console.log(data);
+    
     return data.post;
   } catch (error) {
     console.error('Error fetching post:', error);
@@ -38,7 +40,7 @@ async function fetchPost(postId: string): Promise<Post | null> {
 }
 
 export default function PostDetailPage() {
-  const { postId } = useParams();
+  const { postId } = useParams<{ postId: string }>();
   const [post, setPost] = useState<Post | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const router = useRouter();
@@ -47,9 +49,9 @@ export default function PostDetailPage() {
     const fetchPostData = async () => {
       if (postId) {
         setLoading(true);
-        const postData = await fetchPost(postId as string);
+        const postData = await fetchPost(postId);
         if (!postData) {
-          router.push('/404');
+          router.push('/404'); // Redirect to 404 page if post not found
         } else {
           setPost(postData);
         }
@@ -59,6 +61,10 @@ export default function PostDetailPage() {
 
     fetchPostData();
   }, [postId, router]);
+
+  useEffect(() => {
+    console.log("Post ID from URL:", postId);
+  }, [postId]);
 
   if (loading) {
     return <div>Loading...</div>;

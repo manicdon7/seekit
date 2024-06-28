@@ -1,13 +1,7 @@
 "use client";
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import Image from "next/image";
-import {
-  FaEllipsisH,
-  FaWhatsapp,
-  FaTwitter,
-  FaCopy,
-  FaFacebook,
-} from "react-icons/fa";
+import { FaEllipsisH, FaWhatsapp, FaTwitter, FaCopy, FaFacebook } from "react-icons/fa";
 import { auth } from "@/utils/firebase";
 import Navbar from "@/Components/Navbar";
 
@@ -78,16 +72,13 @@ const MyPostsPage: React.FC = () => {
     if (!userEmail) return;
 
     try {
-      const response = await fetch(
-        "https://seekit-server.vercel.app/api/posts",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ userEmail }),
-        }
-      );
+      const response = await fetch("https://seekit-server.vercel.app/api/posts", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userEmail }),
+      });
 
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -116,13 +107,14 @@ const MyPostsPage: React.FC = () => {
 
   const copyPostLink = async (postId: string) => {
     try {
-      const post = posts.find((post) => post._id === postId);
-      if (!post) {
-        console.error(`Post with ID ${postId} not found.`);
-        return;
+      const response = await fetch(`https://seekit-server.vercel.app/api/posts/${postId}`);
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
       }
 
-      const postUrl = `https://seekit.vercel.app/myposts/${postId}`;
+      const data = await response.json();
+      const postUrl = data.postUrl;
+
       await navigator.clipboard.writeText(postUrl);
       console.log("Link copied to clipboard:", postUrl);
     } catch (error) {
@@ -130,40 +122,41 @@ const MyPostsPage: React.FC = () => {
     }
   };
 
-  const shareOnSocialMedia = (postId: string, platform: string) => {
-    const postUrl = `https://seekit.vercel.app/myposts/${postId}`;
+  const shareOnSocialMedia = async (postId: string, platform: string) => {
+    try {
+      const response = await fetch(`https://seekit-server.vercel.app/api/posts/${postId}`);
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
 
-    let shareUrl = "";
-    if (platform === "whatsapp") {
-      shareUrl = `whatsapp://send?text=Check out this found item: ${encodeURIComponent(
-        postUrl
-      )}`;
-    } else if (platform === "twitter") {
-      shareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(
-        postUrl
-      )}`;
-    } else if (platform === "facebook") {
-      shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-        postUrl
-      )}`;
+      const data = await response.json();
+      const postUrl = data.postUrl;
+
+      let shareUrl = "";
+      if (platform === "whatsapp") {
+        shareUrl = `whatsapp://send?text=Check out this found item: ${encodeURIComponent(postUrl)}`;
+      } else if (platform === "twitter") {
+        shareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(postUrl)}`;
+      } else if (platform === "facebook") {
+        shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(postUrl)}`;
+      }
+
+      window.open(shareUrl, "_blank");
+    } catch (error) {
+      console.error("Error sharing link:", error);
     }
-
-    window.open(shareUrl, "_blank");
   };
 
-  const handleIntersect = useCallback(
-    (entries: IntersectionObserverEntry[]) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const postId = entry.target.getAttribute("data-post-id");
-          if (postId) {
-            console.log("Post in view:", postId);
-          }
+  const handleIntersect = useCallback((entries: IntersectionObserverEntry[]) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        const postId = entry.target.getAttribute("data-post-id");
+        if (postId) {
+          console.log("Post in view:", postId);
         }
-      });
-    },
-    []
-  );
+      }
+    });
+  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(handleIntersect, {
@@ -194,13 +187,10 @@ const MyPostsPage: React.FC = () => {
   const postCount = posts.length;
   const reunitedCount = posts.filter((post) => post.reunited).length;
 
-  const postCategories = posts.reduce<{ [key: string]: number }>(
-    (acc, post) => {
-      acc[post.category] = (acc[post.category] || 0) + 1;
-      return acc;
-    },
-    {}
-  );
+  const postCategories = posts.reduce<{ [key: string]: number }>((acc, post) => {
+    acc[post.category] = (acc[post.category] || 0) + 1;
+    return acc;
+  }, {});
 
   return (
     <div className="min-h-screen bg-[#232931] text-white">
@@ -257,7 +247,9 @@ const MyPostsPage: React.FC = () => {
               <div
                 key={post._id}
                 data-post-id={post._id}
-                ref={(el) => { postRefs.current[index] = el; }}
+                ref={(el) => {
+                  postRefs.current[index] = el;
+                }}
                 className="relative max-w-sm rounded overflow-hidden shadow-2xl bg-white transition-transform transform hover:scale-105 hover:shadow-2xl"
               >
                 <div className="absolute top-2 right-2">
@@ -361,7 +353,7 @@ const MyPostsPage: React.FC = () => {
                 </div>
               </div>
             ))}
-          </div>
+          </div>  
         ) : (
           <p className="text-lg">No posts found.</p>
         )}
