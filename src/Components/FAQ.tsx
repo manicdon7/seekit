@@ -10,6 +10,7 @@ const FAQ: React.FC = () => {
     }, []);
     return (
         <div className='mx-10'>
+
             <div className="flex gap-6 justify-center py-10" data-aos="flip-down">
                 <div>
                     <button className="faq-button">
@@ -25,6 +26,7 @@ const FAQ: React.FC = () => {
                     <h1 className='font-anton font-medium pl-6'>We've Got You Covered!</h1>
                 </div>
             </div>
+
             <div>
                 <div className='flex pt-10 pb-20 justify-center gap-6 pr-20'>
                     <div>
@@ -48,6 +50,7 @@ const FAQ: React.FC = () => {
                     </div>
                 </div>
             </div>
+
             <div className='flex gap-8 space-x-16 justify-center'>
             <div className="card">
                 <div className="bg">
@@ -99,6 +102,7 @@ const FAQ: React.FC = () => {
                 <div className="blob"></div>
             </div>
             </div>
+            
         </div>
     )
 }
