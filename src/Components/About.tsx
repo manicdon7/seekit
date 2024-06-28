@@ -10,7 +10,7 @@ const About: React.FC = () => {
     }, []);
 
     return (
-        <main className="mx-28 py-28">
+        <main className="mx-28 pt-28">
             <div className='text-4xl font-anton capitalize font-semibold text-center' data-aos="flip-down">
                 why this platform
             </div>
