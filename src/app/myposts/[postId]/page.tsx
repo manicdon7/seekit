@@ -1,8 +1,11 @@
+/* eslint-disable @next/next/no-img-element */
+/* eslint-disable jsx-a11y/alt-text */
 "use client"
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import Navbar from '@/Components/Navbar';
+import Head from 'next/head';
 
 type Post = {
   _id: string;
@@ -62,6 +65,14 @@ export default function PostDetailPage() {
 
   return (
     <div className="min-h-screen bg-[#232931] text-white">
+      <Head>
+        <title>{post.itemName}</title>
+        <meta property="og:title" content={post.itemName} />
+        <meta property="og:description" content={post.description} />
+        <meta property="og:image" content={post.imageURL} />
+        <meta property="og:url" content={`https://seekit.vercel.app/myposts/${post._id}`} />
+        <meta property="og:type" content="article" />
+      </Head>
       <Navbar />
       <div className="container mx-auto px-4 py-8 pt-20">
         <div className="max-w-4xl mx-auto bg-gray-800 rounded-lg p-6 shadow-lg">
