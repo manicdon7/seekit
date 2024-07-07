@@ -51,7 +51,7 @@ export default function PostDetailPage() {
         setLoading(true);
         const postData = await fetchPost(postId);
         if (!postData) {
-          router.push('/404'); // Redirect to 404 page if post not found
+          router.push('/404');
         } else {
           setPost(postData);
         }

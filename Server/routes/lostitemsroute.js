@@ -3,10 +3,10 @@ const lostItem = require('../models/lostitems');
 
 const router = express.Router();
 
-// Route to get all found items
+// Route to get all lost items
 router.get('/', async (req, res) => {
   try {
-    const lostItems = await LostItem.find();
+    const lostItems = await lostItem.find();
     res.json(lostItems);
   } catch (error) {
     console.error('Server error:', error);
@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-// Route to add a new found item
+// Route to add a new lost item
 router.post('/', async (req, res) => {
   const { itemName, time, place, category, color, description, imageURL, phone, address, gmail, lostEmail } = req.body;
 
@@ -43,7 +43,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-//founder email finding api
+//loster email finding api
 router.post('/', async (req, res) => {
   try {
     const { userEmail } = req.body;
