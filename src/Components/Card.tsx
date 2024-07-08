@@ -28,7 +28,7 @@ return(
                 </div>
                 <div className="pt-10" data-aos="fade-right">
                     <h1 className='text-2xl font-semibold'>Information Access</h1>
-                    <p className='font-light text-[#EEEEEE] pt-2'>Provides additional context and details about each found item's location.</p>
+                    <p className='font-light text-[#EEEEEE] pt-2'>Provides additional context and details about each found item&apos;s location.</p>
                 </div>
             </div>
             <div className="ml-40 mt-40" data-aos="zoom-in">
