@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import '@/app/globals.css';
 import Aos from 'aos';
 import 'aos/dist/aos.css';
+import Link from 'next/link';
 
 const FAQ: React.FC = () => {
     useEffect(() => {
@@ -61,10 +62,18 @@ const FAQ: React.FC = () => {
                         <div>
                         <h1 className='text-lg text-white font-medium'>How to Post Founded Things in Seekit ? </h1> 
                         </div>
-                        <div className='pt-16'>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 8 8"><path fill="white" d="M5 1v2H0v1h5v2l3-2.53z"/></svg> 
+                        <div className='pt-10 flex justify-evenly px-2'>
+                            <div>
+                                <h1 className='text-lg text-white font-medium text-justify'>Where to Post Founded Things in Seekit ? </h1>
+                            </div>
+                            <Link href="/found">
+                                <div className='pt-16'>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 8 8"><path fill="white" d="M5 1v2H0v1h5v2l3-2.53z" /></svg>
+                                </div>
+                            </Link>
                         </div>
                     </div>
+                    <div className="blob"></div>
                 </div>
                 <div className="blob"></div>
             </div>
@@ -78,10 +87,18 @@ const FAQ: React.FC = () => {
                         <div>
                         <h1 className='text-lg text-white font-medium '>How to Post Losted Things in Seekit ? </h1> 
                         </div>
-                        <div className='pt-16'>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 8 8"><path fill="white" d="M5 1v2H0v1h5v2l3-2.53z"/></svg> 
+                        <div className='pt-10 flex justify-evenly px-2'>
+                            <div>
+                                <h1 className='text-lg text-white font-medium text-justify'>Where to Post Losted Things in Seekit ? </h1>
+                            </div>
+                            <Link href="/lost">
+                                <div className='pt-16'>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 8 8"><path fill="white" d="M5 1v2H0v1h5v2l3-2.53z" /></svg>
+                                </div>
+                            </Link>
                         </div>
                     </div>
+                    <div className="blob"></div>
                 </div>
                 <div className="blob"></div>
             </div>
@@ -110,15 +127,22 @@ const FAQ: React.FC = () => {
                         <div>
                         <h1 className='text-lg text-white font-medium'>Where to See Myposts in Seekit ? </h1> 
                         </div>
-                        <div className='pt-16'>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 8 8"><path fill="white" d="M5 1v2H0v1h5v2l3-2.53z"/></svg> 
+                        <div className='pt-10 flex justify-evenly px-2'>
+                            <div>
+                                <h1 className='text-lg text-white font-medium text-justify'>where to Seek Things in Seekit ? </h1>
+                            </div>
+                            <Link href="/seek">
+                                <div className='pt-16'>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 8 8"><path fill="white" d="M5 1v2H0v1h5v2l3-2.53z" /></svg>
+                                </div>
+                            </Link>
                         </div>
                     </div>
+                    <div className="blob"></div>
                 </div>
-                <div className="blob"></div>
             </div>
-            </div>
-            
+
+        </div>
         </div>
     )
 }

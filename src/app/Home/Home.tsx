@@ -7,10 +7,9 @@ import { motion } from 'framer-motion';
 import Aos from 'aos';
 import 'aos/dist/aos.css';
 import FAQ from '@/Components/FAQ';
-import Review from '@/Components/Review';
-import Map from '@/Components/map';
 import Card from '@/Components/Card';
 import Footer from '@/Components/Footer';
+
 
 // const bg = {
 //   backgroundImage: "url(https://img.freepik.com/free-vector/abstract-horizontal-grid-lines-graph-style-graphic-design_1017-39918.jpg?w=1060&t=st=1718889502~exp=1718890102~hmac=f4e55a277cceef96421e65aa76868caf3e4ccad4223f7ae5f596c6069244d316)",
@@ -315,9 +314,6 @@ const Home: React.FC = () => {
         <div>
           <Card/>
         </div>
-        {/* <div className='ml-20'>
-          <Map/>
-        </div> */}
         <div>
           <FAQ />
         </div>
