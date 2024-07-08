@@ -21,6 +21,7 @@ type FoundItem = {
 const SeekPage: React.FC = () => {
   const [foundItems, setFoundItems] = useState<FoundItem[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
+  
 
   useEffect(() => {
     const fetchFoundItems = async () => {

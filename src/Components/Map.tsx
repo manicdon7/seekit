@@ -2,6 +2,7 @@
 
 const Map: React.FC = () => {
     return (
+        <div className=""> 
         <div className="map">
             <div className="section-banner">
                 <div id="star-1">
@@ -82,6 +83,7 @@ const Map: React.FC = () => {
                 </div>
             </div>
 
+        </div>
         </div>
     )
 }

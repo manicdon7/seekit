@@ -9,7 +9,7 @@ const FAQ: React.FC = () => {
         Aos.init({ duration: 1000 });
     }, []);
     return (
-        <div className='mx-10'>
+        <div className='mx-10 my-20'>
 
             <div className="flex gap-6 justify-center py-10" data-aos="flip-down">
                 <div>
@@ -27,7 +27,7 @@ const FAQ: React.FC = () => {
                 </div>
             </div>
 
-            <div>
+            {/* <div>
                 <div className='flex pt-10 pb-20 justify-center gap-6 pr-20'>
                     <div>
                         <h1 className='text-lg text-white pt-2' data-aos="fade-right">
@@ -49,7 +49,7 @@ const FAQ: React.FC = () => {
                         <button className='border-2 bg-[#4ECCA3] border-none py-3 px-4 font-semibold rounded-lg hover:bg-[#378a70]' data-aos="fade-left" >Search</button>
                     </div>
                 </div>
-            </div>
+            </div> */}
 
             <div className='flex gap-8 space-x-16 justify-center'>
             <div className="card">
@@ -59,7 +59,7 @@ const FAQ: React.FC = () => {
                     </div>
                     <div className='pt-10 flex justify-evenly px-2'>
                         <div>
-                        <h1 className='text-lg text-white font-medium text-justify'>How to Post Founded Things in Seekit ? </h1> 
+                        <h1 className='text-lg text-white font-medium'>How to Post Founded Things in Seekit ? </h1> 
                         </div>
                         <div className='pt-16'>
                         <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 8 8"><path fill="white" d="M5 1v2H0v1h5v2l3-2.53z"/></svg> 
@@ -76,7 +76,7 @@ const FAQ: React.FC = () => {
                     </div>
                     <div className='pt-10 flex justify-evenly px-2'>
                         <div>
-                        <h1 className='text-lg text-white font-medium text-justify'>How to Post Losted Things in Seekit ? </h1> 
+                        <h1 className='text-lg text-white font-medium '>How to Post Losted Things in Seekit ? </h1> 
                         </div>
                         <div className='pt-16'>
                         <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 8 8"><path fill="white" d="M5 1v2H0v1h5v2l3-2.53z"/></svg> 
@@ -92,7 +92,23 @@ const FAQ: React.FC = () => {
                     </div>
                     <div className='pt-10 flex justify-evenly px-2'>
                         <div>
-                        <h1 className='text-lg text-white font-medium text-justify'>How to Seek Things in Seekit ? </h1> 
+                        <h1 className='text-lg text-white font-medium'>How to Seek Things in Seekit ? </h1> 
+                        </div>
+                        <div className='pt-16'>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 8 8"><path fill="white" d="M5 1v2H0v1h5v2l3-2.53z"/></svg> 
+                        </div>
+                    </div>
+                </div>
+                <div className="blob"></div>
+            </div>
+            <div className="card">
+                <div className="bg">
+                    <div className='flex justify-center pt-10'>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="70" height="70" viewBox="0 0 24 24"><path fill="white" d="M15 3H5c-1.11 0-2 .89-2 2v5.82a6.505 6.505 0 0 1 9.1.08a6.525 6.525 0 0 1 0 9.2c-.36.35-.75.64-1.16.9H19c1.11 0 2-.89 2-2V9zm-1 7V4.5l5.5 5.5zm-6.5 1C5 11 3 13 3 15.5c0 .88.25 1.71.69 2.4L.61 21L2 22.39l3.12-3.07c.69.43 1.51.68 2.38.68c2.5 0 4.5-2 4.5-4.5S10 11 7.5 11m0 7a2.5 2.5 0 0 1 0-5a2.5 2.5 0 0 1 0 5"/></svg>
+                    </div>
+                    <div className='pt-10 flex justify-evenly px-2'>
+                        <div>
+                        <h1 className='text-lg text-white font-medium'>Where to See Myposts in Seekit ? </h1> 
                         </div>
                         <div className='pt-16'>
                         <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 8 8"><path fill="white" d="M5 1v2H0v1h5v2l3-2.53z"/></svg> 
