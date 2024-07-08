@@ -62,7 +62,7 @@ const Home: React.FC = () => {
   }, []);
 
   return (
-    <div className="font-anton bg-[#232931]">
+    <div className="font-anton bg-[#232931] overflow-x-hidden">
       <main className="text-white">
         <Navbar />
         <div>
@@ -73,7 +73,7 @@ const Home: React.FC = () => {
             Seek It
           </h1>
         </div>
-        <div className="flex px-5 flex-col md:flex-row gap-5 items-center md:mt-20 md:mx-28">
+        <div className="px-5 flex-col grid md:grid-cols-2 gap-5 items-center md:mt-20 md:mx-10">
           <div className="">
             <div className="md:space-y-7 md:ml-20" data-aos="fade-right">
               <h1 className="text-xl md:text-4xl font-anton font-semibold">

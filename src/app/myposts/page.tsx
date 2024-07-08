@@ -176,7 +176,7 @@ const MyPostsPage: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-screen bg-gray-100 fade-in">
+      <div className="flex items-center justify-center h-screen bg-gray-700 fade-in">
         <div className="text-center">
           <p className="text-4xl font-anton">Loading...</p>
         </div>
@@ -250,7 +250,7 @@ const MyPostsPage: React.FC = () => {
                 ref={(el) => {
                   postRefs.current[index] = el;
                 }}
-                className="relative max-w-sm rounded overflow-hidden shadow-2xl bg-white transition-transform transform hover:scale-105 hover:shadow-2xl"
+                className="relative max-w-sm overflow-hidden shadow-2xl bg-gray-700 text-white rounded-3xl transition-transform transform hover:scale-105 hover:shadow-2xl"
               >
                 <div className="absolute top-2 right-2">
                   <button
@@ -318,31 +318,31 @@ const MyPostsPage: React.FC = () => {
                 />
                 <div className="px-6 py-4">
                   <div className="font-bold text-xl mb-2">{post.itemName}</div>
-                  <p className="text-gray-700 text-base">
+                  <p className="text-white text-base">
                     <strong>Time:</strong> {post.time}
                   </p>
-                  <p className="text-gray-700 text-base">
+                  <p className="text-white text-base">
                     <strong>Place:</strong> {post.place}
                   </p>
-                  <p className="text-gray-700 text-base">
+                  <p className="text-white text-base">
                     <strong>Category:</strong> {post.category}
                   </p>
-                  <p className="text-gray-700 text-base">
+                  <p className="text-white text-base">
                     <strong>Color:</strong> {post.color}
                   </p>
-                  <p className="text-gray-700 text-base">
+                  <p className="text-white text-base">
                     <strong>Description:</strong> {post.description}
                   </p>
-                  <p className="text-gray-700 text-base">
+                  <p className="text-white text-base">
                     <strong>Phone:</strong> {post.phone}
                   </p>
-                  <p className="text-gray-700 text-base">
+                  <p className="text-white text-base">
                     <strong>Address:</strong> {post.address}
                   </p>
-                  <p className="text-gray-700 text-base">
+                  <p className="text-white text-base">
                     <strong>Gmail:</strong> {post.gmail}
                   </p>
-                  <p className="text-gray-700 text-base">
+                  <p className="text-white text-base">
                     <strong>Posted by:</strong> {post.founderEmail}
                   </p>
                   {post.reunited && (

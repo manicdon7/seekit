@@ -12,7 +12,7 @@ export default function Page() {
     const handleComplete = () => {
       setTimeout(() => {
         setLoading(false);
-      }, 0);
+      }, 3000);
     };
 
     if (document.readyState === "complete") {

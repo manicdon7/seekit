@@ -10,16 +10,16 @@ const About: React.FC = () => {
   }, []);
   
     return (
-        <main className="mx-28 pt-28">
+        <main className="lg:mx-28 mx-5 lg:pt-28 pt-10">
             <div className='text-4xl font-anton capitalize font-semibold text-center' data-aos="flip-down">
                 why this platform
             </div>
             <div className="pt-10" data-aos="fade-right">
-                <h1 className='text-2xl font-semibold'>Motive</h1>
-                <p className='text-2xl font-light text-justify text-[#EEEEEE] pt-4'>SeekIt is dedicated to bridging the gap between lost items and their rightful owners. Our mission is to create a community-driven platform where people can easily report and find lost possessions, ensuring valuable items are returned to their owners swiftly and securely.</p>
+                <h1 className='lg:text-3xl text-xl font-semibold mx-4 lg:mx-0'>Motive</h1>
+                <p className='lg:text-xl text-lg font-light text-justify text-[#EEEEEE] pt-4 mx-4 lg:mx-0'>SeekIt is dedicated to bridging the gap between lost items and their rightful owners. Our mission is to create a community-driven platform where people can easily report and find lost possessions, ensuring valuable items are returned to their owners swiftly and securely.</p>
             </div>
-            <div className='grid grid-cols-2 mt-10'>
-                <div className="w-full p-52 scale-150">
+            <div className='grid md:grid-cols-2 mt-10'>
+                <div className="lg:w-full lg:p-52 p-14 scale-150">
                     <div className="loader p-28">
                         <span></span>
                     </div>
