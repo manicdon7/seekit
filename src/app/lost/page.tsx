@@ -15,6 +15,7 @@ import google from "@/app/assets/google_icon.png";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "@/app/globals.css";
+import Footer from "@/Components/Footer";
 
 type FormData = {
   itemName: string;
@@ -358,6 +359,9 @@ const LostItemForm: React.FC = () => {
         pauseOnFocusLoss
         theme="colored"
       />
+      <div>
+        <Footer/>
+      </div>
     </div>
   );
 };

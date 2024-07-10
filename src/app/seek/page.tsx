@@ -3,6 +3,7 @@ import Navbar from "@/Components/Navbar";
 import React, { useEffect, useState } from "react";
 import Head from "next/head";
 import Image from "next/image";
+import Footer from "@/Components/Footer";
 
 type FoundItem = {
   _id: string;
@@ -291,9 +292,12 @@ const SeekPage: React.FC = () => {
           {showFoundItems ? renderFoundItems() : renderLostItems()}
         </div>
       </div>
-      <footer className="bg-gray-800 p-4 text-center text-gray-400 mt-8">
+      <div>
+        <Footer/>
+      </div>
+      {/* <footer className="bg-gray-800 p-4 text-center text-gray-400 mt-8">
         <p>&copy; 2024 Seekit. All rights reserved.</p>
-      </footer>
+      </footer> */}
     </div>
   );
 };

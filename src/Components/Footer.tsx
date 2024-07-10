@@ -25,9 +25,9 @@ const Footer = () => {
                     <h1 className="font-anton text-gray-300 font-bold text-2xl border-b-2 border-gray-700 lg:mr-80">LEGAL</h1>
                 </div>
                 <div>
-                    <a href='#'><h1 className=" text-gray-400 hover:text-[#4ECCA3] font-semibold text-xl ">Terms of use</h1></a>
-                    <a href='#'><h1 className=" text-gray-400 hover:text-[#4ECCA3] font-semibold text-xl ">Privacy policy</h1></a>
-                    <a href='#'><h1 className=" text-gray-400 hover:text-[#4ECCA3] font-semibold text-xl ">Cookie policy</h1></a>
+                    <a href='/terms&policy'><h1 className=" text-gray-400 hover:text-[#4ECCA3] font-semibold text-xl ">Terms of use</h1></a>
+                    <a href='/terms&policy'><h1 className=" text-gray-400 hover:text-[#4ECCA3] font-semibold text-xl ">Privacy policy</h1></a>
+                    <a href='/terms&policy'><h1 className=" text-gray-400 hover:text-[#4ECCA3] font-semibold text-xl ">Cookie policy</h1></a>
                     <a href='#'><h1 className=" text-gray-400 hover:text-[#4ECCA3] font-semibold text-xl ">Blog</h1></a>
                 </div>
             </div>

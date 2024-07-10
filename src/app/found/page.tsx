@@ -16,6 +16,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "@/app/globals.css";
 import FoundItemSteps from "@/Components/FoundItems";
+import Footer from "@/Components/Footer";
 
 type Props = {};
 
@@ -328,14 +329,14 @@ const FoundItemForm: React.FC<Props> = (props: Props) => {
         </form>
         <div>
           <div className="bg-[#232931] text-white font-anton flex justify-start items-center">
-          <div className="spinner mx-32 mt-5">
+          <div className="hidden spinner mx-32 mt-5 lg:block">
             <div className="spinner1"></div>
           </div>
             <div className="max-w-3xl w-full p-8 transition-all ease-in-out duration-500" style={{ marginTop: "20vh" }}>
               <h1 className="text-4xl font-bold text-center mb-8">Take a look at Steps to Reunite a Found Item</h1>
               <FoundItemSteps description="Steps to Reunite a Found Item" steps={steps} />
             </div>
-          <div className="spinner mx-32">
+          <div className="hidden spinner mx-32 lg:block">
             <div className="spinner1"></div>
           </div>
           </div>
@@ -373,6 +374,9 @@ const FoundItemForm: React.FC<Props> = (props: Props) => {
         pauseOnFocusLoss
         theme="colored"
       />
+      <div>
+        <Footer/>
+      </div>
     </div>
   );
 };
