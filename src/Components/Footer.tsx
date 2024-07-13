@@ -4,7 +4,7 @@ import logo from "@/Assets/Seekit_transparent.png";
 
 const Footer = () => {
     return(
-        <div className="bg-[#393E46] text-white top-0 sticky z-50 lg:w-full backdrop-filter backdrop-blur-lg shadow-2xl bg-opacity-20">
+        <div className="bg-[#393E46] text-white z-50 lg:w-full backdrop-filter backdrop-blur-lg shadow-2xl bg-opacity-20">
             <div className="grid lg:grid-cols-3 grid-cols-1">
             <div className="lg:mx-10">
              <Image src={logo} height={500} width={250} alt="logo"/>
@@ -32,7 +32,7 @@ const Footer = () => {
                 </div>
             </div>
             </div>
-            <div className="bg-[#393E46] text-white top-0 sticky z-50 w-full backdrop-filter backdrop-blur-lg shadow-2xl bg-opacity-20">
+            <div className="bg-[#393E46] text-white  w-full backdrop-filter backdrop-blur-lg shadow-2xl bg-opacity-20">
             <div className="mt-10 lg:mt-0   ">
                 <h1 className="flex justify-center text-xl py-2 text-gray-400">&copy; 2024 Seekit. All rights reserved.</h1>
             </div>

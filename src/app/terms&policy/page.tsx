@@ -2,18 +2,20 @@
 import Footer from "@/Components/Footer";
 import Navbar from '../../Components/Navbar';
 
+
 const Terms: React.FC = () => {
     return(
         <div className="font-anton bg-[#232931] overflow-x-hidden text-white">
             <div>
                 <Navbar/>
             </div>
-            <div>
+            <div className="md:mt-20">
                 <h1 className="text-4xl md:text-5xl lg:text-6xl py-6 md:py-8 lg:py-10 px-10" > Terms & Policies </h1>
             </div> 
+            <div className="grid grid-cols-2">
             <div className="mx-4 md:mx-10 lg:mx-20">
             <div className="border-b border-gray-400">
-            <div>
+            <div className="">
                 <h1 className="text-3xl md:text-4xl">Terms To Use</h1>
                 <p className="ml-10 text-lg md:text-xl lg:text-2xl p-2 md:p-4">By accessing or using our website, you agree to comply with and be bound by the following terms and conditions. Please review them carefully.</p>
             </div>
@@ -187,8 +189,15 @@ const Terms: React.FC = () => {
                 <h1 className="font-extralight text-lg md:text-xl lg:text-2xl ">SeekIt is dedicated to providing a seamless and secure online experience for all our users. Our Terms of Use, Cookies Policy, and Privacy Policy are designed to ensure transparency, protect your privacy, and uphold your trust. By using SeekIt, you join us in our mission to create a safe and efficient online environment where you can access information with confidence. Thank you for being a part of our community.</h1>
             </div>
             </div>
-            <div>
-                <Footer/>
+            <div className="" id="">
+                <video autoPlay loop className="w-[700px] rounded-2xl  fixed top-32">
+                <source src="document.mp4" type="video/mp4"/>
+                Your Video is not supported
+                </video>
+            </div>
+            </div>
+            <div className="">
+                <Footer/> 
             </div>
         </div>
     )

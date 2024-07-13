@@ -15,6 +15,7 @@ import google from "@/app/assets/google_icon.png";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "@/app/globals.css";
+import FoundItemSteps from "@/Components/FoundItems";
 import Footer from "@/Components/Footer";
 
 type FormData = {
@@ -51,6 +52,21 @@ const LostItemForm: React.FC = () => {
   const [formData, setFormData] = useState<FormData>(initialFormData);
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [showSignInPopup, setShowSignInPopup] = useState(false);
+
+  const steps = [
+    'Stay Calm: Take a deep breath and try to stay calm. Panic can make it harder to think clearly and retrace your steps.',
+    'Retrace Your Steps: Go back to the places where you last remember having the item. Carefully check those areas.',
+    'Ask Around: Ask people in the vicinity if they have seen the item or if it has been turned in. ',
+    'Notify Relevant Parties: Inform any relevant authorities or management (e.g., store managers, event organizers) about the lost item.',
+    'Check Lost Location: Visit or contact lost offices or departments in the area where the item was lost. ',
+    'Post Online: Utilize online platforms and social media to post about the lost item. Include a detailed description and photo if possible.',
+    'Create Flyers: Create flyers with a description and photo of the lost item. Post them in the area where the item was lost and in high-traffic locations. ',
+    'Offer a Reward: Consider offering a reward for the return of the lost item, but be cautious of potential scams.',
+    'Keep Your Contact Information Updated: Ensure that your contact information is up-to-date and readily available for anyone who may find your item. ',
+    'Regularly Check Back: Regularly follow up with found offices, online postings, and any other places where you reported the lost item.',
+    'Consider Legal Steps: If the item is valuable or sensitive, consider filing a report with local authorities and checking if there are any legal steps you need to take. ',
+    'Stay Vigilant: Keep an eye out for your item and be patient. Sometimes it takes a while for lost items to be found and returned.',
+  ];
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -327,6 +343,20 @@ const LostItemForm: React.FC = () => {
             Submit
           </button>
         </form>
+        <div>
+          <div className="bg-[#232931] text-white font-anton flex justify-start items-center">
+          <div className="hidden spinner mx-32 mt-5 lg:block">
+            <div className="spinner1"></div>
+          </div>
+            <div className="max-w-3xl w-full p-8 transition-all ease-in-out duration-500" style={{ marginTop: "20vh" }}>
+              <h1 className="text-4xl font-bold text-center mb-8">Take a look at Steps to a Lost Item</h1>
+              <FoundItemSteps description="Steps to Reunite a Found Item" steps={steps} />
+            </div>
+          <div className="hidden spinner mx-32 lg:block">
+            <div className="spinner1"></div>
+          </div>
+          </div>
+        </div>
       </motion.div>
       {showSignInPopup && (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
