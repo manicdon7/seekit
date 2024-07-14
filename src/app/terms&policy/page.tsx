@@ -67,7 +67,7 @@ const Terms: React.FC = () => {
                 <ul className="list-disc list-inside pl-4 md:pl-6">
                     <li className="flex flex-col md:flex-row gap-2 md:gap-4 text-lg md:text-xl py-2">
                         <h1 className="ml-16">No Warranties:</h1>
-                        <p>SeekIt is provided "as is" without any warranties of any kind.</p>
+                        <p>SeekIt is provided &quot;as is&quot; without any warranties of any kind.</p>
                     </li>
                     <li className="flex flex-col md:flex-row gap-2 md:gap-4 text-lg md:text-xl py-2">
                         <h1 className="ml-16">Limitation:</h1>
