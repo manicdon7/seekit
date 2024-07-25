@@ -13,6 +13,8 @@ const Navbar: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [user, setUser] = useState<User | null>(null);
   const [myPostsActive, setMyPostsActive] = useState<boolean>(false);
+  const [isChecked, setIsChecked] = useState<boolean>(false);
+
 
   const auth = getAuth(app);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -41,8 +43,15 @@ const Navbar: React.FC = () => {
       console.error('FAILED...', error);
     });
   };
+ 
 
   const signInWithGoogle = async () => {
+
+    if (!isChecked) {
+      alert("You must agree to the terms and conditions before signing up with Google.");
+      return; // Exit the function if the checkbox is not checked
+    }
+
     const provider = new GoogleAuthProvider();
     try {
       const result: UserCredential = await signInWithPopup(auth, provider);
@@ -54,7 +63,7 @@ const Navbar: React.FC = () => {
         sendOnboardingEmail(result.user.email, result.user.displayName); // Send email to signed-in user
       }
 
-      setIsModalOpen(false); // Close the modal after successful signup
+      setIsModalOpen(false);// Close the modal after successful signup
     } catch (error) {
       console.error("Error occurred during sign-in:", (error as Error).message);
     }
@@ -114,6 +123,10 @@ const Navbar: React.FC = () => {
     // Replace with actual logic based on your routing and data fetching needs
     // Example:
     // router.push('/my-posts');
+  };
+
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setIsChecked(e.target.checked);
   };
 
   return (
@@ -336,8 +349,8 @@ const Navbar: React.FC = () => {
           <input
             type="checkbox"
             required
-            // checked={isChecked}
-            // onChange={handleCheckboxChange}
+            checked={isChecked}
+            onChange={handleCheckboxChange}
             className="mr-2 "
           />
           <a href='/terms&policy'><span className="hover:underline">Agree to terms and conditions</span></a>
@@ -350,6 +363,7 @@ const Navbar: React.FC = () => {
         <button
           onClick={signInWithGoogle}
           className="bg-[#4ECCA3] text-white flex items-center px-14 py-4 mx-12 my-4 rounded-xl hover:bg-emerald-500"
+          // disabled={!isChecked}
         >
           <span> Sign Up with Google </span>
           <Image src={googleIcon} alt="google" width={30} height={30} />
