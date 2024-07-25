@@ -82,14 +82,12 @@ const Navbar: React.FC = () => {
 
   const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
+    
     if (password !== confirmPassword) {
-      
       alert("Passwords do not match!");
       return;
     }
 
-    // Handle form submission here (e.g., sign up logic)
     alert("Form submitted successfully!");
   };
 
