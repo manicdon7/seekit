@@ -52,7 +52,7 @@ const FAQ: React.FC = () => {
                 </div>
             </div> */}
 
-            <div className='grid lg:grid-cols-4 grid-cols-1 gap-8 justify-center mb-10 lg:mb-0'>
+            <div className='grid lg:grid-cols-4 grid-cols-1 gap-8 justify-center items-center mb-10 lg:mb-0'>
                 {/* <div className="card">
                 <div className="bg">
                     <div className='flex justify-center pt-10'>

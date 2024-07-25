@@ -23,27 +23,27 @@ type Post = {
   reunited: boolean;
 };
 
-async function fetchPost(postId: string): Promise<Post | null> {
-  try {
-    const response = await fetch(`https://seekit-server.vercel.app/api/posts/${postId}`);
-    if (!response.ok) {
-      throw new Error('Failed to fetch post');
-    }
-    const data = await response.json();
-    console.log(data);
-    
-    return data.post;
-  } catch (error) {
-    console.error('Error fetching post:', error);
-    return null;
-  }
-}
-
 export default function PostDetailPage() {
   const { postId } = useParams<{ postId: string }>();
   const [post, setPost] = useState<Post | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const router = useRouter();
+
+  async function fetchPost(postId: string): Promise<Post | null> {
+    try {
+      const response = await fetch(`https://seekit-server.vercel.app/api/posts/${postId}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch post');
+      }
+      const data = await response.json();
+      console.log(data);
+      
+      return data.post;
+    } catch (error) {
+      console.error('Error fetching post:', error);
+      return null;
+    }
+  }
 
   useEffect(() => {
     const fetchPostData = async () => {
