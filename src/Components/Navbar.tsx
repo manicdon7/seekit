@@ -14,6 +14,8 @@ const Navbar: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
   const [myPostsActive, setMyPostsActive] = useState<boolean>(false);
   const [isChecked, setIsChecked] = useState<boolean>(false);
+  const [password, setPassword] = useState<string>("");
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
 
 
   const auth = getAuth(app);
@@ -77,6 +79,20 @@ const Navbar: React.FC = () => {
       console.error("Error occurred during sign-out:", (error as Error).message);
     }
   };
+
+  const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (password !== confirmPassword) {
+      
+      alert("Passwords do not match!");
+      return;
+    }
+
+    // Handle form submission here (e.g., sign up logic)
+    alert("Form submitted successfully!");
+  };
+
 
   // Effect to listen for changes in authentication state
   useEffect(() => {
@@ -326,7 +342,7 @@ const Navbar: React.FC = () => {
 
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <h2 className="text-xl font-semibold mb-4">Sign Up</h2>
-        <form className="text-center">
+        <form className="text-center" onSubmit={handleFormSubmit} >
           <input 
           placeholder="E-mail" 
           type='email'
@@ -336,12 +352,16 @@ const Navbar: React.FC = () => {
           <input 
           placeholder="Password" 
           type='password'
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
           required
           className="my-2 px-10 border-2 border-gray-400 rounded-xl py-2"
           />
           <input 
           placeholder="Confrom Password" 
           type='password'
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
           required
           className="my-2 px-10 border-2 border-gray-400 rounded-xl py-2"
           />

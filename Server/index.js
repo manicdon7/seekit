@@ -45,11 +45,13 @@ mongoose.connect(process.env.MONGO_URI, {
 const foundItemsRoute = require('./routes/founditemsroute');
 const postsRoute = require('./routes/allposts');
 const lostItemsRoute = require('./routes/lostitemsroute');
+const UserRoute = require('./routes/userroute');
 
 
 app.use('/api/found-items', foundItemsRoute);
 app.use('/api/posts', postsRoute);
 app.use('/api/lost-items', lostItemsRoute);
+app.use('/api/user',UserRoute);
 
 // Home route
 app.get('/', (req, res) => {
