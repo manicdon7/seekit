@@ -113,6 +113,8 @@ const MyPostsPage: React.FC = () => {
       }
 
       const data = await response.json();
+      console.log(data);
+      
       const postUrl = data.postUrl;
 
       await navigator.clipboard.writeText(postUrl);

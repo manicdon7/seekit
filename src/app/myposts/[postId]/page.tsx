@@ -1,5 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
-/* eslint-disable jsx-a11y/alt-text */
 "use client"
 import { useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
@@ -23,27 +21,29 @@ type Post = {
   reunited: boolean;
 };
 
-async function fetchPost(postId: string): Promise<Post | null> {
-  try {
-    const response = await fetch(`https://seekit-server.vercel.app/api/posts/${postId}`);
-    if (!response.ok) {
-      throw new Error('Failed to fetch post');
-    }
-    const data = await response.json();
-    console.log(data);
-    
-    return data.post;
-  } catch (error) {
-    console.error('Error fetching post:', error);
-    return null;
-  }
-}
-
 export default function PostDetailPage() {
   const { postId } = useParams<{ postId: string }>();
   const [post, setPost] = useState<Post | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+
+  async function fetchPost(postId: string): Promise<Post | null> {
+    try {
+      const response = await fetch(`https://seekit-server.vercel.app/api/posts/${postId}`);
+      if (!response.ok) {
+        console.error('Response status:', response.status);
+        throw new Error('Failed to fetch post');
+      }
+      const data = await response.json();
+      console.log(data);
+      return data.post;
+    } catch (error) {
+      console.error('Error fetching post:', error);
+      setError('An error occurred while fetching the post.');
+      return null;
+    }
+  }
 
   useEffect(() => {
     const fetchPostData = async () => {
@@ -62,22 +62,26 @@ export default function PostDetailPage() {
     fetchPostData();
   }, [postId, router]);
 
-  useEffect(() => {
-    console.log("Post ID from URL:", postId);
-  }, [postId]);
-
   if (loading) {
     return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>{error}</div>;
+  }
+
+  if (!post) {
+    return <div>Post not found</div>;
   }
 
   return (
     <div className="min-h-screen bg-[#232931] text-white">
       <Head>
-        <title>{post?.itemName}</title>
-        <meta property="og:title" content={post?.itemName} />
-        <meta property="og:description" content={post?.description} />
-        <meta property="og:image" content={post?.imageURL} />
-        <meta property="og:url" content={`https://seekit.vercel.app/myposts/${post?._id}`} />
+        <title>{post.itemName}</title>
+        <meta property="og:title" content={post.itemName} />
+        <meta property="og:description" content={post.description} />
+        <meta property="og:image" content={post.imageURL} />
+        <meta property="og:url" content={`https://seekit.vercel.app/myposts/${post._id}`} />
         <meta property="og:type" content="article" />
       </Head>
       <Navbar />
