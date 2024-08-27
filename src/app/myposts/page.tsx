@@ -109,7 +109,7 @@ const MyPostsPage: React.FC = () => {
 
   const copyPostLink = async (postId: string) => {
     try {
-      const postUrl = `https://seekit-server.vercel.app/myposts/${postId}`;
+      const postUrl = `https://seekit.vercel.app/myposts/${postId}`;
       await navigator.clipboard.writeText(postUrl);
       console.log("Link copied to clipboard:", postUrl);
     } catch (error) {
