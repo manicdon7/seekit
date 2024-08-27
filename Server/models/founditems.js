@@ -12,6 +12,7 @@ const foundItemSchema = new mongoose.Schema({
   address: { type: String, required: true },
   gmail: { type: String },
   founderEmail: {type: String},
+  losterId: {type: String},
   reunited: {type: Boolean},
 });
 

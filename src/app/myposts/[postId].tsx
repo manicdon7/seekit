@@ -1,9 +1,9 @@
-"use client"
-import { useEffect, useState } from 'react';
-import { useRouter, useParams } from 'next/navigation';
-import Image from 'next/image';
-import Navbar from '@/Components/Navbar';
-import Head from 'next/head';
+"use client";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import Image from "next/image";
+import Navbar from "@/Components/Navbar";
+import Head from "next/head";
 
 type Post = {
   _id: string;
@@ -22,36 +22,38 @@ type Post = {
 };
 
 export default function PostDetailPage() {
-  const { postId } = useParams<{ postId: string }>();
+  const router = useRouter();
+  const { postId } = router.query;
   const [post, setPost] = useState<Post | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const router = useRouter();
 
   async function fetchPost(postId: string): Promise<Post | null> {
     try {
-      const response = await fetch(`https://seekit-server.vercel.app/api/posts/${postId}`);
+      const response = await fetch(
+        `https://seekit-server.vercel.app/api/posts/${postId}`
+      );
       if (!response.ok) {
-        console.error('Response status:', response.status);
-        throw new Error('Failed to fetch post');
+        console.error("Response status:", response.status);
+        throw new Error("Failed to fetch post");
       }
       const data = await response.json();
       console.log(data);
       return data.post;
     } catch (error) {
-      console.error('Error fetching post:', error);
-      setError('An error occurred while fetching the post.');
+      console.error("Error fetching post:", error);
+      setError("An error occurred while fetching the post.");
       return null;
     }
   }
 
   useEffect(() => {
     const fetchPostData = async () => {
-      if (postId) {
+      if (postId && typeof postId === "string") {
         setLoading(true);
         const postData = await fetchPost(postId);
         if (!postData) {
-          router.push('/404');
+          router.push("/404");
         } else {
           setPost(postData);
         }
@@ -81,7 +83,10 @@ export default function PostDetailPage() {
         <meta property="og:title" content={post.itemName} />
         <meta property="og:description" content={post.description} />
         <meta property="og:image" content={post.imageURL} />
-        <meta property="og:url" content={`https://seekit.vercel.app/myposts/${post._id}`} />
+        <meta
+          property="og:url"
+          content={`https://seekit.vercel.app/myposts/${post._id}`}
+        />
         <meta property="og:type" content="article" />
       </Head>
       <Navbar />
@@ -104,17 +109,37 @@ export default function PostDetailPage() {
           <div className="mt-4 space-y-2">
             {post && (
               <>
-                <p><strong>Time:</strong> {post.time}</p>
-                <p><strong>Place:</strong> {post.place}</p>
-                <p><strong>Category:</strong> {post.category}</p>
-                <p><strong>Color:</strong> {post.color}</p>
-                <p><strong>Description:</strong> {post.description}</p>
-                <p><strong>Phone:</strong> {post.phone}</p>
-                <p><strong>Address:</strong> {post.address}</p>
-                <p><strong>Gmail:</strong> {post.gmail}</p>
-                <p><strong>Posted by:</strong> {post.founderEmail}</p>
+                <p>
+                  <strong>Time:</strong> {post.time}
+                </p>
+                <p>
+                  <strong>Place:</strong> {post.place}
+                </p>
+                <p>
+                  <strong>Category:</strong> {post.category}
+                </p>
+                <p>
+                  <strong>Color:</strong> {post.color}
+                </p>
+                <p>
+                  <strong>Description:</strong> {post.description}
+                </p>
+                <p>
+                  <strong>Phone:</strong> {post.phone}
+                </p>
+                <p>
+                  <strong>Address:</strong> {post.address}
+                </p>
+                <p>
+                  <strong>Gmail:</strong> {post.gmail}
+                </p>
+                <p>
+                  <strong>Posted by:</strong> {post.founderEmail}
+                </p>
                 {post.reunited && (
-                  <p className="text-green-500"><strong>Status:</strong> Reunited</p>
+                  <p className="text-green-500">
+                    <strong>Status:</strong> Reunited
+                  </p>
                 )}
               </>
             )}
