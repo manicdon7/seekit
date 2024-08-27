@@ -66,7 +66,7 @@ const MyPostsPage: React.FC = () => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, []); 
 
   const fetchUserPosts = async (userEmail: string | null) => {
     if (!userEmail) return;
