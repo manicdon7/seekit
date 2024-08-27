@@ -15,7 +15,7 @@ router.get('/:postId', async (req, res) => {
       return res.status(404).json({ error: 'Post not found' });
     }
 
-    const postUrl = `https://seekit.vercel.app/myposts/${postId}`;
+    const postUrl = `https://seekit.vercel.app/myposts/myposts?postId=${postId}`;
     res.status(200).json({ post, postUrl });
   } catch (error) {
     console.error('Error fetching post:', error);
