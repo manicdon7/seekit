@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import { useSearchParams } from "next/navigation"; // useSearchParams for query parameters
 import Image from "next/image";
 import Navbar from "@/Components/Navbar";
 import Head from "next/head";
@@ -22,14 +22,14 @@ type Post = {
 };
 
 export default function PostDetailPage() {
-  const router = useRouter();
-  const { postId } = router.query;
+  const searchParams = useSearchParams();
+  const postId = searchParams.get("id"); // Extracting 'id' from query parameters
   const [post, setPost] = useState<Post | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   async function fetchPost(postId: string): Promise<Post | null> {
-    try { 
+    try {
       const response = await fetch(
         `https://seekit-server.vercel.app/api/posts/${postId}`
       );
@@ -38,7 +38,6 @@ export default function PostDetailPage() {
         throw new Error("Failed to fetch post");
       }
       const data = await response.json();
-      console.log(data);
       return data.post;
     } catch (error) {
       console.error("Error fetching post:", error);
@@ -49,11 +48,11 @@ export default function PostDetailPage() {
 
   useEffect(() => {
     const fetchPostData = async () => {
-      if (postId && typeof postId === "string") {
+      if (postId) {
         setLoading(true);
         const postData = await fetchPost(postId);
         if (!postData) {
-          router.push("/404");
+          console.error("Post not found");
         } else {
           setPost(postData);
         }
@@ -62,7 +61,7 @@ export default function PostDetailPage() {
     };
 
     fetchPostData();
-  }, [postId, router]);
+  }, [postId]);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -85,11 +84,11 @@ export default function PostDetailPage() {
         <meta property="og:image" content={post.imageURL} />
         <meta
           property="og:url"
-          content={`https://seekit.vercel.app/myposts/${post._id}`}
+          content={`https://seekit.vercel.app/mypost?id=${post._id}`}
         />
         <meta property="og:type" content="article" />
       </Head>
-      <Navbar />  
+      <Navbar />
       <div className="container mx-auto px-4 py-8 pt-20">
         <div className="max-w-4xl mx-auto bg-gray-800 rounded-lg p-6 shadow-lg">
           <div className="text-center">
