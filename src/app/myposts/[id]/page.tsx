@@ -64,7 +64,7 @@ export default function PostDetailPage() {
           setLoading(false);
         });
     }
-  }, [id]);
+  }, [id,loading]);
 
   if (loading) {
     return <div>Loading...</div>;
