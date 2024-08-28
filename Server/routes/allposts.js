@@ -9,13 +9,13 @@ router.get('/:postId', async (req, res) => {
 
   try {
     const post = await FoundItem.findById(postId);
-    console.log(post); // Logging the retrieved post to verify
+    console.log(post);
 
     if (!post) {
       return res.status(404).json({ error: 'Post not found' });
     }
 
-    const postUrl = `https://seekit.vercel.app/myposts/myposts?postId=${postId}`;
+    const postUrl = `https://seekit.vercel.app/myposts?postId=${postId}`;
     res.status(200).json({ post, postUrl });
   } catch (error) {
     console.error('Error fetching post:', error);
