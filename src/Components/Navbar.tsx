@@ -313,7 +313,7 @@ const Navbar: React.FC = () => {
                   >
                     Logout
                   </button>
-                  <Link href="/my-posts">
+                  <Link href="/myposts">
                     <p
                       className={`block px-3 py-2 rounded-md text-base font-medium text-white hover:text-gray-600 cursor-pointer ${
                         myPostsActive ? "text-gray-600" : ""

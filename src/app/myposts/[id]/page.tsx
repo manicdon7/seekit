@@ -89,7 +89,7 @@ export default function PostDetailPage() {
         />
         <meta property="og:type" content="article" />
       </Head>
-      <Navbar />
+      <Navbar />  
       <div className="container mx-auto px-4 py-8 pt-20">
         <div className="max-w-4xl mx-auto bg-gray-800 rounded-lg p-6 shadow-lg">
           <div className="text-center">
