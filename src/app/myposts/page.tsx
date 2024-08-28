@@ -72,7 +72,7 @@ const MyPostsPage: React.FC = () => {
     if (!userEmail) return;
 
     try {
-      const response = await fetch("https://seekit-server.vercel.app/api/posts", {
+      const response = await fetch("https://seekit-server.vercel.app/api/myposts", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -107,7 +107,7 @@ const MyPostsPage: React.FC = () => {
 
   const copyPostLink = async (postId: string) => {
     try {
-      const response = await fetch(`https://seekit-server.vercel.app/api/posts/${postId}`);
+      const response = await fetch(`https://seekit-server.vercel.app/api/myposts/${postId}`);
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
@@ -126,7 +126,7 @@ const MyPostsPage: React.FC = () => {
 
   const shareOnSocialMedia = async (postId: string, platform: string) => {
     try {
-      const response = await fetch(`https://seekit-server.vercel.app/api/posts/${postId}`);
+      const response = await fetch(`https://seekit-server.vercel.app/api/myposts/${postId}`);
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
