@@ -4,7 +4,6 @@ import Image from "next/image";
 import { FaEllipsisH, FaWhatsapp, FaTwitter, FaCopy, FaFacebook } from "react-icons/fa";
 import { auth } from "@/utils/firebase";
 import Navbar from "@/Components/Navbar";
-import { useRouter } from "next/navigation"; // Adjusted for the App Router
 
 type Post = {
   _id: string;
@@ -34,7 +33,6 @@ const MyPostsPage: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [openDropdownId, setOpenDropdownId] = useState<string | null>(null);
   const postRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const router = useRouter(); // Using useRouter for navigation
 
   useEffect(() => {
     const fetchData = async () => {
@@ -68,7 +66,7 @@ const MyPostsPage: React.FC = () => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, []); 
 
   const fetchUserPosts = async (userEmail: string | null) => {
     if (!userEmail) return;
@@ -87,6 +85,7 @@ const MyPostsPage: React.FC = () => {
       }
 
       const data = await response.json();
+      console.log(data); // Log the entire response
       setPosts(data.posts || []); // Ensure data.posts exists
       setLoading(false);
     } catch (error) {
@@ -108,7 +107,16 @@ const MyPostsPage: React.FC = () => {
 
   const copyPostLink = async (postId: string) => {
     try {
-      const postUrl = `https://seekit.vercel.app/myposts/${postId}`;
+      const response = await fetch(`https://seekit-server.vercel.app/api/posts/${postId}`);
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const data = await response.json();
+      console.log(data);
+      
+      const postUrl = data.postUrl;
+
       await navigator.clipboard.writeText(postUrl);
       console.log("Link copied to clipboard:", postUrl);
     } catch (error) {
@@ -118,7 +126,13 @@ const MyPostsPage: React.FC = () => {
 
   const shareOnSocialMedia = async (postId: string, platform: string) => {
     try {
-      const postUrl = `https://seekit.vercel.app/myposts/${postId}`;
+      const response = await fetch(`https://seekit-server.vercel.app/api/posts/${postId}`);
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const data = await response.json();
+      const postUrl = data.postUrl;
 
       let shareUrl = "";
       if (platform === "whatsapp") {
