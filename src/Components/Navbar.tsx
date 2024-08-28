@@ -1,3 +1,4 @@
+"use client"
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, UserCredential, getAdditionalUserInfo, User } from "firebase/auth";
 import emailjs from "emailjs-com";
 import { useState, useEffect, useRef } from "react";
