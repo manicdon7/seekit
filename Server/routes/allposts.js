@@ -16,14 +16,13 @@ router.get('/:postId', async (req, res) => {
     }
 
     // Correct URL to match the Next.js App Router structure
-    const postUrl = `https://seekit.vercel.app/myposts?id=${postId}`;
+    const postUrl = `https://seekit.vercel.app/myposts/${postId}`;
     res.status(200).json({ post, postUrl });
   } catch (error) {
     console.error('Error fetching post:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
-
 
 // Get posts by user email
 router.post('/', async (req, res) => {

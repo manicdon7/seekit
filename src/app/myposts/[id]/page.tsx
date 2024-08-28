@@ -1,9 +1,8 @@
-"use client";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
-import Image from "next/image";
-import Navbar from "@/Components/Navbar";
-import Head from "next/head";
+import { useRouter } from 'next/router';
+import Image from 'next/image';
+import Navbar from '@/Components/Navbar';
+import Head from 'next/head';
+import { GetServerSideProps } from 'next';
 
 type Post = {
   _id: string;
@@ -21,61 +20,14 @@ type Post = {
   reunited: boolean;
 };
 
-export default function PostDetailPage() {
-  const router = useRouter();
-  const { id } = router.query; // Extracting 'id' from query parameters
-  const [post, setPost] = useState<Post | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+interface PostDetailProps {
+  post: Post | null;
+  error: string | null;
+}
 
-  async function fetchPost(postId: string): Promise<Post | null> {
-    try {
-      const response = await fetch(
-        `https://seekit-server.vercel.app/api/posts/${postId}`
-      );
-      if (!response.ok) {
-        console.error("Response status:", response.status);
-        throw new Error("Failed to fetch post");
-      }
-      const data = await response.json();
-      return data.post;
-    } catch (error) {
-      console.error("Error fetching post:", error);
-      setError("An error occurred while fetching the post.");
-      return null;
-    }
-  }
-
-  useEffect(() => {
-    if (id && typeof id === "string") {
-      setLoading(true);
-      fetchPost(id)
-        .then((postData) => {
-          if (!postData) {
-            setError("Post not found");
-          } else {
-            setPost(postData);
-          }
-        })
-        .catch((err) => {
-          setError(err.message);
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    }
-  }, [id,loading]);
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>{error}</div>;
-  }
-
+const PostDetailPage: React.FC<PostDetailProps> = ({ post, error }) => {
   if (!post) {
-    return <div>Post not found</div>;
+    return <div>{error || 'Post not found'}</div>;
   }
 
   return (
@@ -87,7 +39,7 @@ export default function PostDetailPage() {
         <meta property="og:image" content={post.imageURL} />
         <meta
           property="og:url"
-          content={`https://seekit.vercel.app/mypost?id=${post._id}`}
+          content={`https://seekit.vercel.app/myposts/${post._id}`}
         />
         <meta property="og:type" content="article" />
       </Head>
@@ -142,4 +94,43 @@ export default function PostDetailPage() {
       </div>
     </div>
   );
-}
+};
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { id } = context.params!;
+
+  try {
+    const res = await fetch(`https://seekit-server.vercel.app/api/posts/${id}`);
+    if (!res.ok) {
+      throw new Error('Failed to fetch post');
+    }
+
+    const data = await res.json();
+
+    if (!data.post) {
+      return {
+        props: {
+          post: null,
+          error: 'Post not found',
+        },
+      };
+    }
+
+    return {
+      props: {
+        post: data.post,
+        error: null,
+      },
+    };
+  } catch (error) {
+    // Cast the error to Error
+    return {
+      props: {
+        post: null,
+        error: (error as Error).message || 'An error occurred',
+      },
+    };
+  }
+};
+
+
+export default PostDetailPage;
