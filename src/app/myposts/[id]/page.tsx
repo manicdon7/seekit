@@ -1,3 +1,4 @@
+"use client"
 import Image from "next/image";
 import Navbar from "@/Components/Navbar";
 import Head from "next/head";
