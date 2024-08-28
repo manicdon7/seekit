@@ -1,9 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation"; // useSearchParams for query parameters
+import { useRouter } from "next/router";
 import Image from "next/image";
 import Navbar from "@/Components/Navbar";
-import Router, { useRouter } from "next/router";
 import Head from "next/head";
 
 type Post = {
@@ -23,17 +22,16 @@ type Post = {
 };
 
 export default function PostDetailPage() {
-  const searchParams = useSearchParams();
   const router = useRouter();
   const { id } = router.query; // Extracting 'id' from query parameters
   const [post, setPost] = useState<Post | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  async function fetchPost(id: string): Promise<Post | null> {
+  async function fetchPost(postId: string): Promise<Post | null> {
     try {
       const response = await fetch(
-        `https://seekit-server.vercel.app/api/posts/${id}`
+        `https://seekit-server.vercel.app/api/posts/${postId}`
       );
       if (!response.ok) {
         console.error("Response status:", response.status);
@@ -49,20 +47,23 @@ export default function PostDetailPage() {
   }
 
   useEffect(() => {
-    const fetchPostData = async () => {
-      if (id) {
-        setLoading(true);
-        const postData = await fetchPost(id);
-        if (!postData) {
-          console.error("Post not found");
-        } else {
-          setPost(postData);
-        }
-        setLoading(false);
-      }
-    };
-
-    fetchPostData();
+    if (id && typeof id === "string") {
+      setLoading(true);
+      fetchPost(id)
+        .then((postData) => {
+          if (!postData) {
+            setError("Post not found");
+          } else {
+            setPost(postData);
+          }
+        })
+        .catch((err) => {
+          setError(err.message);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
   }, [id]);
 
   if (loading) {
@@ -94,55 +95,47 @@ export default function PostDetailPage() {
       <div className="container mx-auto px-4 py-8 pt-20">
         <div className="max-w-4xl mx-auto bg-gray-800 rounded-lg p-6 shadow-lg">
           <div className="text-center">
-            {post && (
-              <>
-                <Image
-                  src={post.imageURL}
-                  alt="Item"
-                  className="w-full h-60 object-cover rounded-3xl"
-                  width={500}
-                  height={300}
-                />
-                <h1 className="text-3xl font-bold my-4">{post.itemName}</h1>
-              </>
-            )}
+            <Image
+              src={post.imageURL}
+              alt="Item"
+              className="w-full h-60 object-cover rounded-3xl"
+              width={500}
+              height={300}
+            />
+            <h1 className="text-3xl font-bold my-4">{post.itemName}</h1>
           </div>
           <div className="mt-4 space-y-2">
-            {post && (
-              <>
-                <p>
-                  <strong>Time:</strong> {post.time}
-                </p>
-                <p>
-                  <strong>Place:</strong> {post.place}
-                </p>
-                <p>
-                  <strong>Category:</strong> {post.category}
-                </p>
-                <p>
-                  <strong>Color:</strong> {post.color}
-                </p>
-                <p>
-                  <strong>Description:</strong> {post.description}
-                </p>
-                <p>
-                  <strong>Phone:</strong> {post.phone}
-                </p>
-                <p>
-                  <strong>Address:</strong> {post.address}
-                </p>
-                <p>
-                  <strong>Gmail:</strong> {post.gmail}
-                </p>
-                <p>
-                  <strong>Posted by:</strong> {post.founderEmail}
-                </p>
-                {post.reunited && (
-                  <p className="text-green-500">
-                    <strong>Status:</strong> Reunited
-                  </p>
-                )}
-              </>
+            <p>
+              <strong>Time:</strong> {post.time}
+            </p>
+            <p>
+              <strong>Place:</strong> {post.place}
+            </p>
+            <p>
+              <strong>Category:</strong> {post.category}
+            </p>
+            <p>
+              <strong>Color:</strong> {post.color}
+            </p>
+            <p>
+              <strong>Description:</strong> {post.description}
+            </p>
+            <p>
+              <strong>Phone:</strong> {post.phone}
+            </p>
+            <p>
+              <strong>Address:</strong> {post.address}
+            </p>
+            <p>
+              <strong>Gmail:</strong> {post.gmail}
+            </p>
+            <p>
+              <strong>Posted by:</strong> {post.founderEmail}
+            </p>
+            {post.reunited && (
+              <p className="text-green-500">
+                <strong>Status:</strong> Reunited
+              </p>
             )}
           </div>
         </div>
