@@ -21,6 +21,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "Server/index.js", "src/app/mypost/[id]/PostDetailsPage.tstx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "Server/index.js", "src/app/myposts/[id]/PostDetailsPage.tstx"],
   "exclude": ["node_modules"]
 }

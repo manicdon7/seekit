@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation"; // useSearchParams for query parameters
 import Image from "next/image";
 import Navbar from "@/Components/Navbar";
+import Router, { useRouter } from "next/router";
 import Head from "next/head";
 
 type Post = {
@@ -23,7 +24,8 @@ type Post = {
 
 export default function PostDetailPage() {
   const searchParams = useSearchParams();
-  const id = searchParams.get("id"); // Extracting 'id' from query parameters
+  const router = useRouter();
+  const { id } = router.query; // Extracting 'id' from query parameters
   const [post, setPost] = useState<Post | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
