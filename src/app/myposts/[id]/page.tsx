@@ -1,8 +1,6 @@
-import { useRouter } from 'next/router';
-import Image from 'next/image';
-import Navbar from '@/Components/Navbar';
-import Head from 'next/head';
-import { GetServerSideProps } from 'next';
+import Image from "next/image";
+import Navbar from "@/components/Navbar";
+import Head from "next/head";
 
 type Post = {
   _id: string;
@@ -20,14 +18,27 @@ type Post = {
   reunited: boolean;
 };
 
-interface PostDetailProps {
-  post: Post | null;
-  error: string | null;
+interface PostDetailPageProps {
+  params: {
+    id: string;
+  };
 }
 
-const PostDetailPage: React.FC<PostDetailProps> = ({ post, error }) => {
+export default async function PostDetailPage({ params }: PostDetailPageProps) {
+  const { id } = params;
+
+  // Fetch the post data from the API
+  const res = await fetch(`https://seekit-server.vercel.app/api/posts/${id}`);
+  if (!res.ok) {
+    // Handle errors here, like showing a custom error message
+    return <div>Failed to load post data</div>;
+  }
+
+  const data = await res.json();
+  const post = data.post;
+
   if (!post) {
-    return <div>{error || 'Post not found'}</div>;
+    return <div>Post not found</div>;
   }
 
   return (
@@ -94,43 +105,4 @@ const PostDetailPage: React.FC<PostDetailProps> = ({ post, error }) => {
       </div>
     </div>
   );
-};
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { id } = context.params!;
-
-  try {
-    const res = await fetch(`https://seekit-server.vercel.app/api/posts/${id}`);
-    if (!res.ok) {
-      throw new Error('Failed to fetch post');
-    }
-
-    const data = await res.json();
-
-    if (!data.post) {
-      return {
-        props: {
-          post: null,
-          error: 'Post not found',
-        },
-      };
-    }
-
-    return {
-      props: {
-        post: data.post,
-        error: null,
-      },
-    };
-  } catch (error) {
-    // Cast the error to Error
-    return {
-      props: {
-        post: null,
-        error: (error as Error).message || 'An error occurred',
-      },
-    };
-  }
-};
-
-
-export default PostDetailPage;
+}
