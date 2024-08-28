@@ -3,12 +3,12 @@ const FoundItem = require('../models/founditems');
 
 const router = express.Router();
 
-router.get('/:postId', async (req, res) => {
-  const { postId } = req.params;
-  console.log(postId); // Logging the postId to verify it's received correctly
+router.get('/:id', async (req, res) => {
+  const { id } = req.params;
+  console.log(id); // Logging the postId to verify it's received correctly
 
   try {
-    const post = await FoundItem.findById(postId);
+    const post = await FoundItem.findById(id);
     console.log(post); // Logging the retrieved post to verify
 
     if (!post) {
@@ -16,7 +16,7 @@ router.get('/:postId', async (req, res) => {
     }
 
     // Correct URL to match the Next.js App Router structure
-    const postUrl = `https://seekit.vercel.app/mypost?id=${postId}`;
+    const postUrl = `https://seekit.vercel.app/mypost?id=${id}`;
     res.status(200).json({ post, postUrl });
   } catch (error) {
     console.error('Error fetching post:', error);

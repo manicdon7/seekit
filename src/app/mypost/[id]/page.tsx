@@ -23,15 +23,15 @@ type Post = {
 
 export default function PostDetailPage() {
   const searchParams = useSearchParams();
-  const postId = searchParams.get("id"); // Extracting 'id' from query parameters
+  const id = searchParams.get("id"); // Extracting 'id' from query parameters
   const [post, setPost] = useState<Post | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  async function fetchPost(postId: string): Promise<Post | null> {
+  async function fetchPost(id: string): Promise<Post | null> {
     try {
       const response = await fetch(
-        `https://seekit-server.vercel.app/api/posts/${postId}`
+        `https://seekit-server.vercel.app/api/posts/${id}`
       );
       if (!response.ok) {
         console.error("Response status:", response.status);
@@ -48,9 +48,9 @@ export default function PostDetailPage() {
 
   useEffect(() => {
     const fetchPostData = async () => {
-      if (postId) {
+      if (id) {
         setLoading(true);
-        const postData = await fetchPost(postId);
+        const postData = await fetchPost(id);
         if (!postData) {
           console.error("Post not found");
         } else {
@@ -61,7 +61,7 @@ export default function PostDetailPage() {
     };
 
     fetchPostData();
-  }, [postId]);
+  }, [id]);
 
   if (loading) {
     return <div>Loading...</div>;
