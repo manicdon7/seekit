@@ -29,7 +29,7 @@ export default function PostDetailPage() {
   const [error, setError] = useState<string | null>(null);
 
   async function fetchPost(postId: string): Promise<Post | null> {
-    try {
+    try { 
       const response = await fetch(
         `https://seekit-server.vercel.app/api/posts/${postId}`
       );
