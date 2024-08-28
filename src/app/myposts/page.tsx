@@ -4,6 +4,7 @@ import Image from "next/image";
 import { FaEllipsisH, FaWhatsapp, FaTwitter, FaCopy, FaFacebook } from "react-icons/fa";
 import { auth } from "@/utils/firebase";
 import Navbar from "@/Components/Navbar";
+import { useRouter } from "next/navigation"; // Importing the router
 
 type Post = {
   _id: string;
@@ -33,6 +34,7 @@ const MyPostsPage: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [openDropdownId, setOpenDropdownId] = useState<string | null>(null);
   const postRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const router = useRouter(); // Router instance
 
   useEffect(() => {
     const fetchData = async () => {
@@ -103,6 +105,10 @@ const MyPostsPage: React.FC = () => {
 
   const toggleDropdown = (postId: string) => {
     setOpenDropdownId(openDropdownId === postId ? null : postId);
+  };
+
+  const navigateToPost = (postId: string) => {
+    router.push(`/myposts/${postId}`); // Navigate to post details page
   };
 
   const copyPostLink = async (postId: string) => {
@@ -253,6 +259,7 @@ const MyPostsPage: React.FC = () => {
                   postRefs.current[index] = el;
                 }}
                 className="relative max-w-sm overflow-hidden shadow-2xl bg-gray-700 text-white rounded-3xl transition-transform transform hover:scale-105 hover:shadow-2xl"
+                onClick={() => navigateToPost(post._id)} // Navigate to post on click
               >
                 <div className="absolute top-2 right-2">
                   <button
