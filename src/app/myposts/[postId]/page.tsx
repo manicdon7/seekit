@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation"; // Adjusted for the App Router
+import { useRouter } from "next/router";
 import Image from "next/image";
 import Navbar from "@/Components/Navbar";
 import Head from "next/head";
@@ -23,7 +23,7 @@ type Post = {
 
 export default function PostDetailPage() {
   const router = useRouter();
-  const { postId } = router.query as { postId: string }; // Getting postId from the route
+  const { postId } = router.query;
   const [post, setPost] = useState<Post | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -38,6 +38,7 @@ export default function PostDetailPage() {
         throw new Error("Failed to fetch post");
       }
       const data = await response.json();
+      console.log(data);
       return data.post;
     } catch (error) {
       console.error("Error fetching post:", error);
@@ -48,7 +49,7 @@ export default function PostDetailPage() {
 
   useEffect(() => {
     const fetchPostData = async () => {
-      if (postId) {
+      if (postId && typeof postId === "string") {
         setLoading(true);
         const postData = await fetchPost(postId);
         if (!postData) {
