@@ -33,6 +33,8 @@ export default function PostDetailPage({ params }: PostDetailPageProps) {
 
   useEffect(() => {
     const fetchPostData = async () => {
+      console.log(id);
+      
       if (!id || typeof id !== "string") {
         setError("Invalid ID format");
         return;
