@@ -20,21 +20,20 @@ type Post = {
   reunited: boolean;
 };
 
-interface PostDetailPageProps {
-  params: {
-    id: string;
-  };
-}
-
-export default function PostDetailPage({ params }: PostDetailPageProps) {
-  const { id } = params; // Get the id directly from the params
+export default function PostDetailPage() {
   const [post, setPost] = useState<Post | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [id, setId] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Extract the ID from the URL using window.location
+    const pathArray = window.location.pathname.split("/");
+    const dynamicId = pathArray[pathArray.length - 1]; // Assuming the ID is at the end of the URL
+    setId(dynamicId);
+  }, []);
 
   useEffect(() => {
     const fetchPostData = async () => {
-      console.log(id);
-      
       if (!id || typeof id !== "string") {
         setError("Invalid ID format");
         return;
@@ -53,7 +52,9 @@ export default function PostDetailPage({ params }: PostDetailPageProps) {
       }
     };
 
-    fetchPostData();
+    if (id) {
+      fetchPostData();
+    }
   }, [id]);
 
   if (error) {
@@ -73,7 +74,7 @@ export default function PostDetailPage({ params }: PostDetailPageProps) {
         <meta property="og:image" content={post.imageURL} />
         <meta
           property="og:url"
-          content={`https://seekit.vercel.app/myposts/${post._id}`}
+          content={`https://seekit.vercel.app/${post._id}`}
         />
         <meta property="og:type" content="article" />
       </Head>
