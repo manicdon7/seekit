@@ -34,6 +34,8 @@ export default function PostDetailPage({ params }: PostDetailPageProps) {
   useEffect(() => {
     const fetchPostData = async () => {
       try {
+        console.log(id);
+        
         // Check if the id is valid before making the request
         if (!id || id.length !== 24) {
           setError('Invalid ID format');
