@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import Image from "next/image";
 import Navbar from "@/Components/Navbar";
 import Head from "next/head";
@@ -27,24 +27,21 @@ interface PostDetailPageProps {
 }
 
 export default function PostDetailPage({ params }: PostDetailPageProps) {
-  const { id } = params;  // Get the id directly from the params
+  const { id } = params; // Get the id directly from the params
   const [post, setPost] = useState<Post | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchPostData = async () => {
-      try {
-        console.log("ID:", id);
-        
-        // Check if the id is valid before making the request
-        if (!id || id.length !== 24) {
-          setError('Invalid ID format');
-          return;
-        }
+      if (!id || typeof id !== "string") {
+        setError("Invalid ID format");
+        return;
+      }
 
+      try {
         const res = await fetch(`https://seekit-server.vercel.app/api/posts/${id}`);
         if (!res.ok) {
-          throw new Error('Failed to load post data');
+          throw new Error("Failed to load post data");
         }
 
         const data = await res.json();
@@ -54,9 +51,7 @@ export default function PostDetailPage({ params }: PostDetailPageProps) {
       }
     };
 
-    if (id) {
-      fetchPostData();
-    }
+    fetchPostData();
   }, [id]);
 
   if (error) {
