@@ -39,7 +39,7 @@ export default function PostDetailPage({ params }: PostDetailPageProps) {
       }
 
       try {
-        const res = await fetch(`http://localhost:5000/api/posts/${id}`);
+        const res = await fetch(`https://seekit-server.vercel.app/api/posts/${id}`);
         if (!res.ok) {
           throw new Error("Failed to load post data");
         }

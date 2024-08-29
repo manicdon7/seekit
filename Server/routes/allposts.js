@@ -1,29 +1,30 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const FoundItem = require('../models/founditems');
+const { ObjectId } = mongoose.Types;
+
 
 const router = express.Router();
 
 router.get('/:id', async (req, res) => {
   const { id } = req.params;
-  console.log(id); // Logging the id to verify it's received correctly
+
+  // Validate ObjectId
+  if (!ObjectId.isValid(id)) {
+      return res.status(400).json({ error: 'Invalid post ID' });
+  }
 
   try {
-    const post = await FoundItem.findById(id);
-    console.log(post); // Logging the retrieved post to verify
-
-    if (!post) {
-      return res.status(404).json({ error: 'Post not found' });
-    }
-
-    // Correct URL to match the Next.js App Router structure
-    const postUrl = `https://seekit.vercel.app/${id}`;
-    res.status(200).json({ post, postUrl });
-  } catch (error) {
-    console.error('Error fetching post:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+      const post = await Post.findById(id);
+      if (!post) {
+          return res.status(404).json({ error: 'Post not found' });
+      }
+      res.json({ post });
+  } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Server error' });
   }
 });
-
 
 
 // Get posts by user email
