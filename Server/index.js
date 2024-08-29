@@ -9,7 +9,6 @@ const app = express();
 
 const allowedOrigins = [
   'https://seekit.vercel.app',
-  'https://seekit.vercel.app/myposts/:postId',
   'http://localhost:3000'
 ];
 

@@ -27,14 +27,14 @@ interface PostDetailPageProps {
 }
 
 export default function PostDetailPage({ params }: PostDetailPageProps) {
-  const { id } = params;
+  const { id } = params;  // Get the id directly from the params
   const [post, setPost] = useState<Post | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchPostData = async () => {
       try {
-        console.log(id);
+        console.log("ID:", id);
         
         // Check if the id is valid before making the request
         if (!id || id.length !== 24) {
@@ -54,7 +54,9 @@ export default function PostDetailPage({ params }: PostDetailPageProps) {
       }
     };
 
-    fetchPostData();
+    if (id) {
+      fetchPostData();
+    }
   }, [id]);
 
   if (error) {
