@@ -214,7 +214,7 @@ const SeekPage: React.FC = () => {
       filteredFoundItems.map((item) => <FoundItemCard key={item._id} item={item} />)
     ) : (
       <p className="text-center w-full">No items found matching your search criteria.</p>
-    );
+    );2
   };
 
   const renderLostItems = () => {

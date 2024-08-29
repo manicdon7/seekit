@@ -1,3 +1,4 @@
+"use client"
 import Image from "next/image";
 import Navbar from "@/Components/Navbar";
 import Head from "next/head";
@@ -36,6 +37,8 @@ export default async function PostDetailPage({ params }: PostDetailPageProps) {
 
   const data = await res.json();
   const post = data.post;
+  console.log("fetched post:",post);
+  
 
   if (!post) {
     return <div>Post not found</div>;
