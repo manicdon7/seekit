@@ -9,7 +9,6 @@ const router = express.Router();
 router.get('/:id', async (req, res) => {
   const { id } = req.params;
 
-  // Validate ObjectId
   if (!ObjectId.isValid(id)) {
       return res.status(400).json({ error: 'Invalid post ID' });
   }
