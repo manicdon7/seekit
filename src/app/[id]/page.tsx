@@ -2,6 +2,7 @@
 import Image from "next/image";
 import Navbar from "@/Components/Navbar";
 import Head from "next/head";
+import { useEffect, useState } from "react";
 
 type Post = {
   _id: string;
@@ -25,23 +26,41 @@ interface PostDetailPageProps {
   };
 }
 
-export default async function PostDetailPage({ params }: PostDetailPageProps) {
+export default function PostDetailPage({ params }: PostDetailPageProps) {
   const { id } = params;
+  const [post, setPost] = useState<Post | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
-  // Fetch the post data from the API
-  const res = await fetch(`https://seekit-server.vercel.app/api/posts/${id}`);
-  if (!res.ok) {
-    // Handle errors here, like showing a custom error message
-    return <div>Failed to load post data</div>;
+  useEffect(() => {
+    const fetchPostData = async () => {
+      try {
+        // Check if the id is valid before making the request
+        if (!id || id.length !== 24) {
+          setError('Invalid ID format');
+          return;
+        }
+
+        const res = await fetch(`https://seekit-server.vercel.app/api/posts/${id}`);
+        if (!res.ok) {
+          throw new Error('Failed to load post data');
+        }
+
+        const data = await res.json();
+        setPost(data.post);
+      } catch (err: any) {
+        setError(err.message);
+      }
+    };
+
+    fetchPostData();
+  }, [id]);
+
+  if (error) {
+    return <div>{error}</div>;
   }
 
-  const data = await res.json();
-  const post = data.post;
-  console.log("fetched post:",post);
-  
-
   if (!post) {
-    return <div>Post not found</div>;
+    return <div>Loading...</div>;
   }
 
   return (
