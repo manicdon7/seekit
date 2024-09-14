@@ -110,7 +110,6 @@ const FoundItemForm: React.FC<Props> = (props: Props) => {
       setShowSignInPopup(true);
       return;
     }
-
     console.log(formData);
 
     try {
@@ -149,7 +148,6 @@ const FoundItemForm: React.FC<Props> = (props: Props) => {
       console.error("Error signing in:", error);
     }
   };
-
   return (
     <div
       className="min-h-screen bg-gradient-to-r from-gray-900 to-gray-800 text-white font-anton"
