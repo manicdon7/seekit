@@ -2,7 +2,6 @@
 import Footer from "@/Components/Footer";
 import Navbar from '../../Components/Navbar';
 
-
 const Terms: React.FC = () => {
     return (
         <div className="font-anton bg-[#232931] overflow-x-hidden text-white">
@@ -189,7 +188,7 @@ const Terms: React.FC = () => {
                         <h1 className="font-extralight text-lg md:text-xl lg:text-2xl ">SeekIt is dedicated to providing a seamless and secure online experience for all our users. Our Terms of Use, Cookies Policy, and Privacy Policy are designed to ensure transparency, protect your privacy, and uphold your trust. By using SeekIt, you join us in our mission to create a safe and efficient online environment where you can access information with confidence. Thank you for being a part of our community.</h1>
                     </div>
                 </div>
-                {/* <div className="" id="">
+{/*                 <div className="" id="">
                     <video autoPlay loop className="w-[600px] h-60 fixed rounded-2xl top-32">
                         <source src="document.mp4" type="video/mp4" />
                         Your Video is not supported
