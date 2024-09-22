@@ -130,10 +130,8 @@ const MyPostsPage: React.FC = () => {
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
-
       const data = await response.json();
       const postUrl = data.postUrl;
-
       let shareUrl = "";
       if (platform === "whatsapp") {
         shareUrl = `whatsapp://send?text=Check out this found item: ${encodeURIComponent(postUrl)}`;
@@ -148,7 +146,6 @@ const MyPostsPage: React.FC = () => {
       console.error("Error sharing link:", error);
     }
   };
-
   const handleIntersect = useCallback((entries: IntersectionObserverEntry[]) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
